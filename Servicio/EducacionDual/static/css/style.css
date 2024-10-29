@@ -1,0 +1,165 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"); 
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;1,800&family=Poetsen+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;1,800&family=Freeman&family=Poetsen+One&display=swap');
+
+
+*{
+    margin: 0;
+    padding: 0;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-family: "Poppins" sans-serif;
+}
+
+body{
+    background: #1b396a;
+}
+
+img{
+    width: 100%;
+}
+
+nav {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    background: #ffffff;
+    width: 90px;
+    overflow: hidden;
+    transition: width 0.2s linear;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+    z-index: 2; /* Ajusta este valor según sea necesario */
+    font-family: "Poetsen One", sans-serif;
+}
+
+
+
+
+.logo{
+    text-align: center;
+    display: flex;
+    transition: all 0.5s ease;
+    margin: 10px 0 0 10px;
+}
+
+.logo img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.logo span{
+    font-weight: bold;
+    padding-left: 15px;
+    font-size: 30px;
+    text-transform: uppercase;
+    
+    
+}
+
+a{
+    position: relative;
+    color: rgb(0, 0, 0);
+    font-size: 30px;
+    display: table;
+    width: 300px;
+    padding: 10px;
+
+}
+
+
+a:hover{
+    color: #1b396a;
+}
+
+.material-symbols-outlined{
+    
+    position: relative;
+    width: 70px;
+    height: 50px;
+    top: 14px;
+    font-size: 70px;
+    text-align: center;
+    color: #000000;
+}
+
+.material-symbols-outlined:hover{
+    color: #1b396a;
+}
+
+.fas{
+    position: relative;
+    width: 70px;
+    height: 50px;
+    top: 14px;
+    font-size: 35px;
+    text-align: center;
+    color: #000000;
+}
+
+.fas:hover{
+    color: #1b396a;
+}
+
+.nav-item{
+    position: relative;
+    top: 12px;
+    margin-left: 10px;
+}
+
+a:hover{
+    background: #eee;
+}
+
+nav:hover{
+    width: 300px;
+    transition: all 0.5s ease;
+}
+
+.logout{
+    position: absolute;
+    bottom: 0;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+    margin-left: 80px;
+    position: relative;
+    z-index: 1; /* Ajusta este valor según sea necesario */
+}
+
+/* Estilos para la tabla */
+table {
+    border-collapse: collapse;
+    width: 30%;
+}
+
+th, td {
+    border: 1px solid #949494;
+    
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+td {
+    color: #242424;
+    text-align: left;
+}
+
+

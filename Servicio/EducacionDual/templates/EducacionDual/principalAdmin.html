@@ -1,0 +1,57 @@
+{% extends "EducacionDual/baseAdministrador.html" %}
+
+{% block additional_styles %}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;1,800&family=Poetsen+One&display=swap');
+        .bien {
+            width: 800px;
+            height: 600px;
+            margin-top: 100px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0px 0px 10px  rgb(105, 105, 105);
+            border-radius: 10px;
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .credencial {
+            border: 2px solid #3498db;
+            padding: 10px;
+            margin-bottom: 20px;
+            margin-top: 70px;
+        }
+
+        h1 {
+            color: #3498db;
+            font-family: "Freeman", sans-serif;
+            font-size: 55px;
+            color: rgb(0, 0, 0);
+        }
+
+        p {
+            color: black;
+            font-size: large;
+            font-family: 'Nunito', sans-serif;
+            font-size: 30px;
+            text-align: justify;
+            
+
+        }
+    </style>
+{% endblock additional_styles %}
+
+{% block content %}
+    <div class="bien">
+        <div class="credencial">
+            <h1>¡Bienvenido {{ nombre_usuario }} a GreenTec!</h1>
+            <p>
+                
+                <br>
+                Nos complace darle la bienvenida al panel de administración. Como administrador, 
+                usted tiene el control total sobre la gestión de empleados y usuarios </p>
+        </div>
+        <!-- Otros elementos de bienvenida si los tienes -->
+    </div>
+{% endblock content %}

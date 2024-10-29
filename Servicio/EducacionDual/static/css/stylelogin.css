@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;1,800&family=Freeman&family=Poetsen+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;800&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;1,800&family=Poetsen+One&display=swap');
+.logins {
+        display: flex;
+        gap: 10px; /* Espacio entre botones */
+        justify-content: center; /* Centrar los botones horizontalmente */
+        margin-top: 20px; /* Espacio superior */
+    }
+
+.login-button {
+    display: inline-block;
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 18px; /* Tamaño de fuente */
+    color: #ffffff; /* Color del texto */
+    background-color: #1b396a; /* Color de fondo */
+    border: none; /* Sin borde */
+    border-radius: 15px; /* Bordes redondeados */
+    text-decoration: none; /* Sin subrayado */
+    transition: background-color 0.3s, transform 0.3s; /* Transiciones para hover y clic */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
+    font-family: "Poetsen One", sans-serif;
+
+}
+            
+.login-buttonU{
+        display: inline-block;
+        padding: 10px 20px; /* Espaciado interno */
+        font-size: 18px; /* Tamaño de fuente */
+        color: #ffffff; /* Color del texto */
+        background-color: #1b396a; /* Color de fondo */
+        border: none; /* Sin borde */
+        border-radius: 15px; /* Bordes redondeados */
+        text-decoration: none; /* Sin subrayado */
+        transition: background-color 0.3s, transform 0.3s; /* Transiciones para hover y clic */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
+        font-family: "Poetsen One", sans-serif;
+        transform: translateY(-2px);
+    }
+        
+.login-button:hover {
+        background-color: #142a4f; /* Color de fondo en hover */
+        transform: translateY(-2px); /* Mover hacia arriba en hover */
+    }
+    
+.login-button:active {
+    background-color: #142a4f; /* Color de fondo en clic */
+    transform: translateY(0); /* Reset transform en clic */
+}
+
+.form-label{
+    font-family: 'Nunito', sans-serif;
+}
+
+
+.Iniciar{
+    font-family: "Freeman", sans-serif;
+    font-size: 35px;
+    text-align: center;
+}
+
+            /* Estilos generales (para pantallas grandes) */
+.d-flex {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Mantener el contenido alineado a la izquierda por defecto */
+}
+            
+img {
+    max-width: 100%; /* Asegura que la imagen sea responsiva */
+}
+
+/* Media query para pantallas pequeñas */
+@media (max-width: 767px) {
+    .d-flex {
+        justify-content: center; /* Centrar el contenido en pantallas pequeñas */
+        flex-direction: column; /* Cambiar la dirección para que los elementos se apilen verticalmente */
+        
+    }
+
+    img {
+        margin-left: 0; /* Eliminar cualquier margen a la izquierda para centrar la imagen */
+        justify-content: center; /* Centrar el contenido en pantallas pequeñas */
+        flex-direction: column; /* Cambiar la dirección para que los elementos se apilen verticalmente */
+    }
+
+    .fas {
+        margin-bottom: 10px; /* Añadir espacio entre el ícono y la imagen si es necesario */
+    }
+}
+
+/* Ajustes de las columnas en pantallas pequeñas */
+@media (max-width: 767px) {
+    .col-md-6 {
+        width: 100%;
+        padding: 10px 20px;
+    }
+
+    .col-md-6 img {
+        max-width: 100%; /* Asegura que las imágenes sean completamente responsivas */
+    }
+}
+
+            

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styleindex.css'%}">
+    {% block additional_styles %}
+    <style></style>
+    {% endblock additional_styles %}
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="{% url 'index' %}">
+                <img src="{% static 'img/Logo.png' %}" alt="logo">
+            </a>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="{% url "QueEs" %}">¿Qué es?</a></li>
+                <li><a href="{% url "Empresas" %}">Empresas</a></li>
+                <li><a href="{% url "Normatividad" %}">Normatividad</a></li>
+                <li><a href="{% url "Convocatorias" %}">Convocatorias</a></li>
+                <li><a href="{% url "Galeria" %}">Galeria</a></li>
+            </ul>
+        </nav>
+        
+        <a class="btn" href="{% url "login" %}"><button>Iniciar Sesión</button></a>
+        
+        <div class="menu-icon" onclick="toggleMenu()">
+            &#9776;
+        </div>
+
+        <div class="logo1">
+            <a href="{% url 'index' %}">
+                <img src="{% static 'img/imagen1.png' %}" alt="logo">
+            </a>
+        </div>
+    </header>
+    <main>
+        {% block content %}{% endblock content %}
+    </main>
+
+    <script>
+        function toggleMenu() {
+            var navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+
+</body>
+</html>

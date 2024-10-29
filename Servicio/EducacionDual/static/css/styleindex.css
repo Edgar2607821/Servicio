@@ -1,0 +1,227 @@
+/* Estilos base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #ffffff;
+}
+
+.header {
+    background-color: #1b396a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 125px;
+    padding: 5px 10%;
+    font-size: 20px;
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    position: relative; /* O fijo si es necesario */
+    z-index: 1000; /* Asegura que el menú quede por encima */
+}
+
+.header .logo {
+    cursor: pointer;
+}
+
+.header .logo img {
+    height: 70px;
+    width: auto;
+    transition: all 0.3s;
+}
+
+.header .logo img:hover {
+    transform: scale(1.2);
+}
+
+.header .logo1 {
+    cursor: pointer;
+}
+
+.header .logo1 img {
+    height: 70px;
+    width: auto;
+    transition: all 0.3s;
+}
+
+.header .logo1 img:hover {
+    transform: scale(1.2);
+}
+
+.header .nav-links {
+    list-style: none;
+    display: flex;
+}
+
+.header .nav-links li {
+    display: inline-block;
+    padding: 0 20px;
+}
+
+.header .nav-links a {
+    font-size: 20px;
+    color: #ffffff;
+    text-decoration: none;
+    transition: all 0.3s ease 0s;
+}
+
+.header .nav-links a:hover {
+    color: #b4b3b3;
+    transform: scale(1.1);
+}
+
+.header .btn button {
+    font-weight: 700;
+    color: #1b3039;
+    padding: 9px 25px;
+    background: #ffffff;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s ease 0s;
+}
+
+.header .btn button:hover {
+    background-color: #e2f1f8;
+    color: #1b396a;
+    transform: scale(1.1);
+}
+
+.menu-icon {
+    display: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+/* Contenedor que agrupa el párrafo e imagen */
+.contenedor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 20px;
+
+}
+
+/* Parrafo a la izquierda */
+.parrafo {
+    width: 48%; /* Ocupa el 48% para dejar espacio entre el párrafo y la imagen */
+    
+}
+
+.parrafo h1 {
+    font-family: "Freeman", sans-serif;
+    font-size: 2.5em;
+    color: #000000;
+}
+
+.parrafo p {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.5em;
+    text-align: justify;
+    color: #000000;
+}
+
+/* Imagen a la derecha */
+.imagen {
+    width: 48%;
+}
+
+.imagen img {
+    width: 80%;
+    height: auto;
+    display: block;
+}
+
+/* Estilos responsivos */
+@media (max-width: 1024px) {
+    .contenedor {
+        flex-direction: column;
+    }
+
+    .parrafo, .imagen {
+        width: 100%;
+        margin: 20px 0;
+    }
+
+    .parrafo h1 {
+        font-size: 2em;
+    }
+
+    .parrafo p {
+        font-size: 1em;
+    }
+
+    .header .nav-links {
+        display: none; /* Ocultar el menú de navegación por defecto en pantallas pequeñas */
+        flex-direction: column;
+        background-color: #1b396a;
+        position: absolute;
+        top: 100px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .header .nav-links.active {
+        display: flex; /* Mostrar el menú al hacer clic en el ícono */
+    }
+
+    .menu-icon {
+        display: block;
+    }
+    .header .logo1 {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .parrafo h1 {
+        font-size: 1.8em;
+    }
+
+    .parrafo p {
+        font-size: 0.9em;
+    }
+    
+    .header .btn button {
+        font-size: 16px; /* Reduce el tamaño del texto */
+        padding: 8px 20px; /* Ajusta el padding para mantener el balance */
+    }
+    .header .logo1 {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .parrafo h1 {
+        font-size: 1.6em;
+    }
+
+    .header .logo1 {
+        display: none;
+    }
+
+    .parrafo p {
+        font-size: 0.8em;
+    }
+
+    .header .btn button {
+        font-size: 14px; /* Tamaño del texto aún más pequeño en pantallas pequeñas */
+        padding: 7px 15px; /* Reduce el padding para ajustarse mejor al ancho de pantalla */
+    }
+    .imagen img {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+
+
