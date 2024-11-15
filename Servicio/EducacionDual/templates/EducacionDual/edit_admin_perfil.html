@@ -1,0 +1,199 @@
+{% extends "EducacionDual/baseAdministrador.html" %}
+
+{% block additional_styles %}
+    <style>
+        /* Contenedor principal */
+        .container {
+            max-width: 900px; /* Mayor ancho para acomodar dos columnas */
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 5px;
+        }
+        
+        /* Título principal */
+        .container h2 {
+            color: #1b396a;
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        /* Subtítulos */
+        .container h4 {
+            color: #1b396a;
+            font-size: 20px;
+            font-weight: bold;
+            
+            margin-bottom: 15px;
+        }
+        
+        /* Contenedor del formulario en dos columnas */
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        /* Campos del formulario en columnas */
+        .form-column {
+            flex: 1 1 45%; /* Toma 45% del espacio para permitir un gap entre columnas */
+            min-width: 250px; /* Ancho mínimo para ajustar en pantallas pequeñas */
+        }
+        
+        /* Estilos de los campos de entrada */
+        .container form input[type="text"],
+        .container form input[type="email"],
+        .container form input[type="password"],
+        .container form select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #d1d1d1;
+            border-radius: 6px;
+            box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .container form input[type="text"]:focus,
+        .container form input[type="email"]:focus,
+        .container form input[type="password"]:focus,
+        .container form select:focus {
+            border-color: #1b396a;
+            box-shadow: 0px 0px 8px rgba(27, 57, 106, 0.2);
+            outline: none;
+        }
+        
+        /* Botones */
+        .container form .btn-success {
+            background-color: #1b396a;
+            color: #ffffff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0px 4px 10px rgba(27, 57, 106, 0.2);
+            margin-top: 5px;
+        }
+        
+        .container form .btn-success:hover {
+            background-color: #2d4d87;
+        }
+        
+        .container form .btn-secondary {
+            background-color: #6c757d;
+            color: #ffffff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 5px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .container form .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        /* Etiquetas */
+        .container form label {
+            font-weight: bold;
+            color: #1b396a;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        /* Mensajes de error */
+        .form-error {
+            color: #d9534f;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        /* Responsive: una columna en pantallas pequeñas */
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+            .form-column {
+                flex: 1 1 100%;
+            }
+        }
+        
+        /* Contenedor de botones alineados */
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Espaciado entre los botones */
+        }
+
+        .button-row .btn-success,
+        .button-row .btn-secondary {
+            width: auto; /* Asegura que los botones no se expandan a todo el ancho */
+            flex: 1; /* Opcional: para que ambos botones tengan el mismo tamaño */
+        }
+
+    </style>
+{% endblock additional_styles %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center">Editar Perfil</h2>
+    <form method="post">
+        {% csrf_token %}
+        
+        <!-- Contenedor de datos de perfil -->
+        <h4>Datos de Perfil</h4>
+        <div class="form-row">
+            <div class="form-column">
+                <label for="first_name">Nombre</label>
+                {{ profile_form.first_name }}
+            </div>
+            <div class="form-column">
+                <label for="last_name">Apellido</label>
+                {{ profile_form.last_name }}
+            </div>
+            <div class="form-column">
+                <label for="email">Correo Electrónico</label>
+                {{ profile_form.email }}
+            </div>
+        </div>
+
+        <!-- Contenedor de cambio de contraseña -->
+        <h4>Cambiar Contraseña</h4>
+        <div class="form-row">
+            <div class="form-column">
+                <label for="old_password">Contraseña Actual</label>
+                {{ password_form.old_password }}
+            </div>
+            <div class="form-column">
+                <label for="new_password1">Nueva Contraseña</label>
+                {{ password_form.new_password1 }}
+            </div>
+            <div class="form-column">
+                <label for="new_password2">Confirmar Nueva Contraseña</label>
+                {{ password_form.new_password2 }}
+            </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="text-center mt-4 button-row">
+            <button type="submit" class="btn btn-success">Guardar Cambios</button>
+            <a href="{% url 'admin_profile' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+        
+    </form>
+</div>
+
+{% endblock content %}

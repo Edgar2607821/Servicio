@@ -1,0 +1,186 @@
+{% extends "EducacionDual/baseAdministrador.html" %}
+
+{% block additional_styles %}
+<style>
+/* Contenedor principal */
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Título */
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1b396a;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Estilos de la tabla */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.table thead {
+    background-color: #1b396a;
+    color: #ffffff;
+    font-size: 18px;
+}
+
+.table th, .table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
+}
+
+.table tbody tr {
+    transition: background-color 0.3s;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+    background-color: #e6f0ff;
+}
+
+/* Estilo del mensaje "No hay documentos registrados" */
+.table-empty {
+    text-align: center;
+    color: #888888;
+    font-style: italic;
+    padding: 20px;
+}
+
+/* Botón Crear */
+.btn-primary {
+    background-color: #1b396a;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.btn-primary:hover {
+    background-color: #2d4d87;
+    text-decoration: none;
+}
+
+/* Botón Editar */
+/* Botón Editar */
+.btn-warning {
+    background-color: #ffc107;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+    width: auto; /* Ajusta el ancho al contenido */
+    text-align: center;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    transform: scale(1.05);
+    text-decoration: none;
+    color: #ffffff;
+}
+
+/* Botón Eliminar */
+.btn-danger {
+    background-color: #dc3545;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+    width: auto; /* Ajusta el ancho al contenido */
+    text-align: center;
+    margin-top: 5px;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+    text-decoration: none;
+}
+
+/* Estilos para el botón "Ver Detalles" */
+.btn-info {
+    background-color: #28a745; /* Verde */
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+    width: auto; /* Ajusta el ancho al contenido */
+    text-align: center;
+}
+
+.btn-info:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+    text-decoration: none;
+    color: #ffffff;
+}
+</style>
+{% endblock additional_styles %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Lista de Documentos</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Archivo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for documento in documentos %}
+            <tr>
+                <td>{{ documento.id }}</td>
+                <td>{{ documento.titulo }}</td>
+                <td><a href="{{ documento.archivo.url }}" target="_blank" class="btn btn-info btn-sm">Ver Archivo</a></td>
+                <td>
+                    <a href="{% url 'editar_documento' documento.id %}" class="btn btn-warning btn-sm">Editar</a>
+
+                    <a href="{% url 'eliminar_documento' documento.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="table-empty">No hay documentos registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'crear_documento' %}" class="btn btn-primary">Crear Nuevo Documento</a>
+</div>
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends "EducacionDual/baseAdministrador.html" %}
+
+{% block additional_styles %}
+<style>
+/* Contenedor del formulario */
+.container {
+    max-width: 600px;
+    margin: 10px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Título del formulario */
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1b396a;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Estilos de los campos de formulario */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Estilo para textarea */
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Efecto al hacer foco en los campos */
+.form-group input[type="text"]:focus,
+.form-group textarea:focus,
+.form-group input[type="file"]:focus {
+    border-color: #1b396a;
+    box-shadow: 0px 0px 5px rgba(27, 57, 106, 0.3);
+}
+
+/* Contenedor de botones alineados */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Estilos del botón Guardar Cambios */
+.btn-primary {
+    background-color: #1b396a;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    width: 48%; /* Para que ambos botones tengan el mismo ancho */
+    text-align: center;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #2d4d87;
+    cursor: pointer;
+}
+
+/* Estilos del botón Cancelar */
+.btn-secondary {
+    background-color: #6c757d;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    width: 48%; /* Para que ambos botones tengan el mismo ancho */
+    text-align: center;
+    border: none;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    cursor: pointer;
+}
+</style>
+{% endblock additional_styles %}
+
+{% block content %}
+<div class="container">
+    <h2>Editar Empresa: {{ empresa.Nombre }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.Nombre.label_tag }}
+            {{ form.Nombre }}
+        </div>
+        <div class="form-group">
+            {{ form.Descripcion.label_tag }}
+            {{ form.Descripcion }}
+        </div>
+        <div class="form-group">
+            {{ form.Logotipo.label_tag }}
+            {{ form.Logotipo }}
+        </div>
+        
+        <!-- Contenedor para alinear los botones en una fila -->
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            <a href="{% url 'lista_empresas' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}

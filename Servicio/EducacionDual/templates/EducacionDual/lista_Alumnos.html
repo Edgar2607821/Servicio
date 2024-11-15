@@ -1,0 +1,207 @@
+{% extends "EducacionDual/baseAdministrador.html" %}
+
+{% block additional_styles %}
+<style>
+/* Contenedor de la página */
+.container {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Título */
+h2.text-center {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1b396a;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Contenedor con scroll para la tabla */
+.table-container {
+    max-height: 850px;
+    overflow-y: auto;
+    margin-top: 20px;
+    border-radius: 10px;
+    border: 1px solid #dddddd;
+}
+
+.table-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1b396a;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.table thead {
+    background-color: #1b396a;
+    color: #ffffff;
+    font-size: 18px;
+    text-align: left;
+}
+
+.table th, .table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.table thead th {
+    position: relative;
+}
+
+.table .filter-input {
+    width: 90%;
+    margin-top: 8px;
+    padding: 6px 8px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.table .filter-input:focus {
+    border-color: #1b396a;
+    box-shadow: 0px 0px 5px rgba(27, 57, 106, 0.3);
+}
+
+.table tbody tr {
+    transition: background-color 0.3s;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+    background-color: #e6f0ff;
+}
+
+.table tbody td {
+    color: #333333;
+    font-size: 16px;
+}
+
+.table-empty {
+    text-align: center;
+    color: #888888;
+    font-style: italic;
+    padding: 20px;
+}
+
+/* Estilos para el botón "Ver Detalles" */
+.btn-info {
+    background-color: #28a745; /* Verde */
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+    width: auto; /* Ajusta el ancho al contenido */
+    text-align: center;
+}
+
+.btn-info:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+    text-decoration: none;
+    color: #ffffff;
+}
+
+/* Botón de retorno al perfil */
+
+
+.btn-primary {
+    background-color: #1b396a;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #2d4d87;
+    color: #ffffff;
+}
+
+</style>
+
+{% endblock additional_styles %}
+
+{% block content %}
+
+
+
+<div class="container mt-5">
+    <h2 class="text-center">Lista de Alumnos Registrados</h2>
+    <div class="table-container">   
+    <table class="table" id="TableAlum">
+        <thead>
+            <tr>
+                <th>ID<br><input type="text" class="filter-input" placeholder="Filtrar por ID"></th>
+                <th>Numero de Control<br><input type="text" class="filter-input" placeholder="Filtrar por Número de Control"></th>
+                <th>Fecha de Creación<br><input type="text" class="filter-input" placeholder="Filtrar por Fecha de Creación"></th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.date_joined|date:"d-m-Y" }}</td>
+                <td style="text-align: center;">
+                    <a href="{% url 'Alumno_perfil_detalle' user.id %}" class="btn btn-info btn-sm">Ver Detalles</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="table-empty">No hay usuarios registrados</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const filterInputs = document.querySelectorAll('.filter-input');
+        filterInputs.forEach((input, index) => {
+            input.addEventListener('keyup', function () {
+                const filter = input.value.toLowerCase();
+                const table = document.getElementById('TableAlum');
+                const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+                Array.from(rows).forEach(row => {
+                    const cell = row.getElementsByTagName('td')[index];
+                    if (cell) {
+                        const cellText = cell.textContent || cell.innerText;
+                        row.style.display = cellText.toLowerCase().includes(filter) ? '' : 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>
+{% endblock content %}

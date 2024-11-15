@@ -1,0 +1,157 @@
+{% extends "EducacionDual/baseAdministrador.html" %}
+
+{% block additional_styles %}
+<style>
+    .profile-container {
+        max-width: 700px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        text-align: left;
+    }
+    
+    .profile-header {
+        text-align: center;
+        color: #1b396a;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 30px;
+        position: relative;
+    }
+    
+    .profile-header::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 4px;
+        background-color: #3062b2;
+        margin: 8px auto 0;
+        border-radius: 2px;
+    }
+    
+    .profile-info {
+        list-style: none;
+        padding: 0;
+        font-size: 18px;
+        line-height: 1.6;
+    }
+    
+    .profile-info li {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .profile-info label {
+        font-weight: bold;
+        color: #1b396a;
+        min-width: 150px;
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .profile-info label i {
+        font-size: 20px;
+        margin-right: 8px;
+        color: #3062b2;
+    }
+    
+    .profile-info span {
+        color: #333;
+    }
+    
+    .text-center {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 30px;
+    }
+    
+    .btn-primary, .btn-warning {
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+    }
+    
+    .btn-primary {
+        background-color: #1b396a;
+        color: #ffffff;
+        border: none;
+    }
+    
+    .btn-primary:hover {
+        background-color: #2d4d87;
+    }
+    
+    .btn-warning {
+        background-color: #ffb600;
+        color: #ffffff;
+        border: none;
+    }
+    
+    .btn-warning:hover {
+        background-color: #e0a200;
+    }
+    
+    @media (max-width: 768px) {
+        .profile-container {
+            padding: 20px;
+        }
+    
+        .profile-info li {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    
+        .profile-info label {
+            margin-bottom: 5px;
+        }
+    }
+
+    .Perfil i{
+        color: #3062b2;
+    }
+    
+    .Perfil {
+        color: #3062b2;
+    }
+    
+</style>
+
+{% endblock additional_styles %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">Perfil del Administrador</div>
+    <ul class="profile-info">
+        <li>
+            <label><i class="fas fa-user"></i> Nombre de Usuario:</label> <span>{{ admin_user.username }}</span>
+        </li>
+        <li>
+            <label><i class="fas fa-user-tie"></i> Nombre Completo:</label> <span>{{ admin_user.get_full_name }}</span>
+        </li>
+        <li>
+            <label><i class="fas fa-envelope"></i> Correo Electrónico:</label> <span>{{ admin_user.email }}</span>
+        </li>
+        <li>
+            <label><i class="fas fa-calendar-alt"></i> Fecha de Creación:</label> <span>{{ admin_user.date_joined|date:"d-m-Y" }}</span>
+        </li>
+        <li>
+            <label><i class="fas fa-sign-in-alt"></i> Último Inicio de Sesión:</label> <span>{{ admin_user.last_login|date:"d-m-Y H:i" }}</span>
+        </li>
+    </ul>
+    <div class="text-center mt-4">
+        
+        <a href="{% url 'edit_admin_profile' %}" class="btn btn-warning">Editar Perfil</a>
+    </div>
+</div>
+
+{% endblock content %}
+

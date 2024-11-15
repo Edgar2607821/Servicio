@@ -1,0 +1,139 @@
+{% extends "EducacionDual/baseAdministrador.html" %}
+
+{% block additional_styles %}
+<style>
+    /* Contenedor principal del perfil */
+    .profile-container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        text-align: left;
+    }
+
+    /* Encabezado del perfil */
+    .profile-header {
+        text-align: center;
+        color: #1b396a;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+    .profile-header::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 4px;
+        background-color: #3062b2;
+        margin: 8px auto 0;
+        border-radius: 2px;
+    }
+
+    /* Información del perfil en dos columnas */
+    .profile-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        list-style: none;
+        padding: 0;
+        font-size: 18px;
+        color: #333;
+    }
+
+    .profile-info li {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .profile-info label {
+        font-weight: bold;
+        color: #1b396a;
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    .profile-info label i {
+        font-size: 18px;
+        margin-right: 8px;
+        color: #3062b2;
+    }
+
+    .profile-info span {
+        color: #333;
+    }
+
+    /* Botón de editar perfil */
+    .text-center .btn-primary {
+        background-color: #1b396a;
+        color: #ffffff;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 20px;
+        box-shadow: 0px 4px 10px rgba(27, 57, 106, 0.2);
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+    }
+
+    .btn-primary, .btn-warning {
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+    }
+    
+    .btn-warning {
+        background-color: #ffb600;
+        color: #ffffff;
+        border: none;
+    }
+    
+    .btn-warning:hover {
+        background-color: #e0a200;
+    }
+
+    .text-center .btn-primary:hover {
+        background-color: #2d4d87;
+    }
+
+    /* Responsivo: una columna en pantallas pequeñas */
+    @media (max-width: 768px) {
+        .profile-info {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock additional_styles %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">Detalles del Perfil</div>
+    <ul class="profile-info">
+        <li><label><i class="fas fa-user"></i>Numero de Control:</label> {{ profile.NoControl.username }}</li>
+        <li><label><i class="fas fa-user-tie"></i> Nombre Completo:</label> {{ profile.Nombre }} {{ profile.Apellidos }}</li>
+        <li><label><i class="fas fa-envelope"></i> Correo Electrónico:</label> {{ profile.Correo_inst }}</li>
+        <li><label><i class="fas fa-graduation-cap"></i> Carrera:</label> {{ profile.get_Carrera_display }}</li>
+        <li><label><i class="fas fa-calendar"></i> Fecha de Nacimiento:</label> {{ profile.Fecha_nacimiento|date:"d-m-Y" }}</li>
+        <li><label><i class="fas fa-venus-mars"></i> Género:</label> {{ profile.get_Genero_display }}</li>
+        <li><label><i class="fas fa-phone"></i> Teléfono:</label> {{ profile.Telefono }}</li>
+        <li><label><i class="fas fa-layer-group"></i> Semestre:</label> {{ profile.get_Semestre_display }}</li>
+        <li><label><i class="fas fa-calendar-check"></i> Fecha de Creación de la Cuenta:</label> {{ profile.NoControl.date_joined|date:"d-m-Y" }}</li>
+        <li><label><i class="fas fa-sign-in-alt"></i> Último Inicio de Sesión:</label> {{ profile.NoControl.last_login|date:"d-m-Y H:i" }}</li>
+    </ul>
+    <div class="text-center mt-4">
+        <a href="{% url 'lista_Alumnos' %}" class="btn btn-primary">Regresar a la Lista de Usuarios</a>
+    </div>
+</div>
+{% endblock content %}

@@ -1,22 +1,231 @@
 {% extends "EducacionDual/index.html" %}
 {% load static %}
-{% block content %}
-<div class="contenedor">
-    <div class="parrafo">
-        <h1>Normatividad</h1>
-    <br>
-    <p>
-        La educación dual en el Tecnológico Nacional de México (TecNM) 
-        es un modelo que integra la enseñanza académica con la formación práctica en empresas, 
-        permitiendo a los estudiantes aplicar los conocimientos adquiridos en el aula directamente 
-        en el entorno laboral. Este enfoque formativo responde a las necesidades actuales de la 
-        industria y fortalece el perfil profesional de los estudiantes, preparándolos para enfrentar 
-        los retos del mundo real.
 
-    </p>
+{% block additional_styles %}
+<style>
+    /* Estilos de mini-posts */
+
+    .content-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1em;
+        padding: 1em;
+    }
+
+    .mini-posts {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 2em;
+        padding: 1em 3em;
+        flex: 2;
+        /* Ocupa dos tercios del espacio en el contenedor */
+    }
+
+    .mini-post a {
+        text-decoration: none;
+        /* Quita el subrayado */
+        color: inherit;
+        /* Usa el color de texto heredado del contenedor */
+    }
+
+    /* Cambia el color al pasar el cursor sobre el enlace */
+    .mini-post a:hover {
+        color: #3498db;
+        /* Color personalizado para el estado hover */
+    }
+
+
+    .mini-post {
+        background: #fff;
+        border: none;
+        margin: 1.5em 0;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
+        width: calc(50% - 1em);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .mini-post:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .mini-post h3 {
+        font-size: 1.4em;
+        margin-bottom: 0.8em;
+        color: #2c3e50;
+    }
+
+    .mini-post .image {
+        position: relative;
+        display: inline-block;
+        text-align: center;
+    }
+
+    /* Ajuste del tamaño de la imagen */
+    .mini-post .image img {
+        width: 80%;
+        /* Ajusta el tamaño según lo deseado */
+        height: auto;
+        transition: transform 0.3s ease-in-out;
+        display: block;
+        margin: 0 auto;
+    }
+
+    /* Efecto de hover en la imagen */
+    .mini-post .image:hover img {
+        transform: scale(1.05);
+    }
+
+    /* Estilo para el texto "Mostrar PDF" */
+    .mini-post .image .link-text {
+        position: absolute;
+        bottom: 10px;
+        /* Posición en la parte inferior de la imagen */
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.6);
+        /* Fondo semitransparente */
+        color: #fff;
+        /* Color de texto */
+        padding: 0.4em 0.8em;
+        border-radius: 5px;
+        font-size: 0.9em;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Efecto hover en el texto */
+    .mini-post .image:hover .link-text {
+        background-color: rgba(0, 0, 0, 0.8);
+        /* Fondo más oscuro al hacer hover */
+    }
+
+    .normativity-text {
+        margin: 1.8em 0;
+        flex: 1;
+        background-color: #f9f9f9;
+        padding: 1em;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: justify;
+        
+    }
+
+    .normativity-text h2 {
+        color: #2c3e50;
+        margin-bottom: 1em;
+    }
+
+    .mini-post header {
+        padding: 1.2em;
+        min-height: 4em;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #ecf0f1;
+    }
+
+    .mini-post .read-more {
+        display: inline-block;
+        padding: 0.4em 1.2em;
+        margin: 1em 0;
+        font-size: 0.9em;
+        color: #fff;
+        background-color: #2980b9;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .mini-post .read-more:hover {
+        background-color: #3498db;
+    }
+
+    /* Estilos del cuerpo principal */
+    #main {
+        flex-grow: 1;
+        padding: 2em;
+        background-color: #f4f4f4;
+    }
+
+    /* Media Queries */
+    @media screen and (max-width: 768px) {
+        .mini-posts {
+            margin-top: 6em;
+        }
+
+        .mini-post {
+            width: calc(45% - 2em);
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .mini-posts {
+            margin-top: 6em;
+        }
+
+        .mini-post {
+            width: 100%;
+        }
+
+        .normativity-text {
+            display: none;
+        }
+        
+    }
+</style>
+{% endblock additional_styles %}
+
+{% block content %}
+
+
+
+<section class="content-wrapper">
+    <div class="mini-posts">
+        {% for item in portadas %}
+        <!-- Mini Post -->
+        <article class="mini-post">
+            <header>
+                <h3><a href="{% url 'mostrar_pdf' item.documento_id %}" target="_blank">{{ item.titulo }}</a></h3>
+
+            </header>
+            <a href="{% url 'mostrar_pdf' item.documento_id %}" target="_blank" class="image">
+                <img src="{{ item.portada_url }}" alt="Portada del PDF {{ item.titulo }}" />
+                <span class="link-text">Mostrar PDF</span>
+            </a>
+
+        </article>
+        <!-- Fin del Mini Post -->
+        {% empty %}
+        {% endfor %}
     </div>
-    <div class="imagen">
-        <img src="{% static 'img/logoanimado2.gif' %}">
+    <div class="normativity-text">
+        <h2>Normativa y Propósito del Modelo de Educación Dual del TecNM</h2>
+        <p>
+            El Modelo de Educación Dual del Tecnológico Nacional de México (MEDTecNM) está fundamentado en un conjunto
+            de lineamientos destinados a mejorar la formación académica y profesional de los estudiantes. Este modelo
+            promueve una estrategia educativa innovadora que combina el aprendizaje teórico en las aulas con
+            experiencias prácticas en unidades económicas, permitiendo a los estudiantes desarrollar competencias
+            profesionales en contextos reales de trabajo.
+        </p>
+        <p>
+            El MEDTecNM, actualizado en 2022, está regulado por la normativa de la Secretaría de Educación Pública y
+            alineado con el Artículo 3º de la Constitución Política de los Estados Unidos Mexicanos y la Ley General de
+            Educación Superior. Estas leyes aseguran que todos los institutos del TecNM implementen y gestionen el
+            modelo dual de manera estandarizada y eficiente, brindando una estructura formal y certificada que fomente
+            la colaboración entre las instituciones educativas y el sector productivo.
+        </p>
+        <p>
+            Además, este modelo cuenta con un marco normativo que facilita la participación de estudiantes en proyectos
+            de formación dual, promoviendo la vinculación con el entorno laboral y la adquisición de habilidades
+            prácticas necesarias para la vida profesional.
+        </p>
     </div>
-</div>
+
+
+</section>
+
 {% endblock content %}

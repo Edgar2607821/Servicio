@@ -56,7 +56,7 @@ nav {
 .logo span{
     font-weight: bold;
     padding-left: 15px;
-    font-size: 30px;
+    font-size: 25px;
     text-transform: uppercase;
     
     
@@ -65,7 +65,7 @@ nav {
 a{
     position: relative;
     color: rgb(0, 0, 0);
-    font-size: 30px;
+    font-size: 20px;
     display: table;
     width: 300px;
     padding: 10px;
@@ -74,7 +74,7 @@ a{
 
 
 a:hover{
-    color: #1b396a;
+    color: #3062b2;
 }
 
 .material-symbols-outlined{
@@ -89,21 +89,21 @@ a:hover{
 }
 
 .material-symbols-outlined:hover{
-    color: #1b396a;
+    color: #3062b2;
 }
 
 .fas{
     position: relative;
     width: 70px;
-    height: 50px;
+    height: 40px;
     top: 14px;
-    font-size: 35px;
+    font-size: 30px;
     text-align: center;
     color: #000000;
 }
 
 .fas:hover{
-    color: #1b396a;
+    color: #3062b2;
 }
 
 .nav-item{
@@ -163,3 +163,4 @@ td {
 }
 
 
+ 
