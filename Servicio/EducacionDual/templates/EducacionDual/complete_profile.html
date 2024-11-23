@@ -134,8 +134,22 @@
         </div>
 
         <div class="button-row">
-            <button type="submit" class="btn btn-success">Guardar Perfil</button>
+            <button type="submit" class="btn btn-success" disabled>Guardar Perfil</button>
         </div>
     </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('form'); // Selecciona el formulario
+        const button = document.querySelector('button[type="submit"]'); // Selecciona el botón de envío
+
+        // Escucha eventos de cambio en el formulario
+        form.addEventListener('input', function () {
+            // Verifica si el formulario es válido
+            const isValid = form.checkValidity();
+            button.disabled = !isValid; // Habilita/deshabilita el botón según la validez
+        });
+    });
+</script>
 {% endblock content %}

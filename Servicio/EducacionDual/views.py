@@ -63,7 +63,13 @@ def Convocatorias(request):
     return render(request, 'EducacionDual/Convocatorias.html')
 
 def Empresas_Prin(request): 
-    return render(request, 'EducacionDual/Empresas.html')
+    empresas = Empresas.objects.all()
+    return render(request, 'EducacionDual/Empresas.html', {'empresas': empresas})
+
+def Empresa_Detalle(request, empresa_id):
+    empresa = get_object_or_404(Empresas, id=empresa_id)
+    return render(request, 'EducacionDual/EmpresasDetalle.html', {'empresa': empresa})
+
 
 def Galeria(request): 
     return render(request, 'EducacionDual/Galeria.html')
@@ -141,6 +147,11 @@ def complete_profile(request):
 
     return render(request, 'EducacionDual/complete_profile.html', {'form': form})
 
+@login_required
+def principalAlumno(request):
+    nombre_usuario = request.user.username
+    return render(request, 'EducacionDual/principalAlumno.html', {'nombre_usuario': nombre_usuario})
+
 
 
 
@@ -167,7 +178,7 @@ def login_admin_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('login')  # Redirige a la página de inicio de sesión después de cerrar sesión
+    return redirect('QueEs')  # Redirige a la página de inicio de sesión después de cerrar sesión
 
 @user_passes_test(lambda u: u.is_superuser)
 def principalAdmin(request):
@@ -194,19 +205,24 @@ def edit_admin_profile_view(request):
         password_form = PasswordChangeForm(user=request.user, data=request.POST)
 
         if profile_form.is_valid() and password_form.is_valid():
+            # Guarda los cambios en el perfil
             profile_form.save()
+            # Guarda el cambio de contraseña
             password_form.save()
-            update_session_auth_hash(request, password_form.user)  # Mantiene la sesión activa tras el cambio de contraseña
+            # Mantiene la sesión activa tras el cambio de contraseña
+            update_session_auth_hash(request, password_form.user)
             return redirect('admin_profile')  # Redirige al perfil después de guardar
+        else:
+            print(profile_form.errors)  # Depuración: muestra errores del formulario de perfil
+            print(password_form.errors)  # Depuración: muestra errores del formulario de contraseña
     else:
         profile_form = AdminProfileForm(instance=request.user)
         password_form = PasswordChangeForm(user=request.user)
-    
+
     return render(request, 'EducacionDual/edit_admin_perfil.html', {
         'profile_form': profile_form,
         'password_form': password_form,
     })
-
 @login_required
 def lista_Alumnos_view(request):
     users = User.objects.filter(is_superuser=False)  # Obtiene todos los usuarios

@@ -144,6 +144,24 @@
             flex: 1; /* Opcional: para que ambos botones tengan el mismo tamaño */
         }
 
+        /* Estilos para la lista de errores */
+.text-danger {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    list-style: none;
+    /* Elimina los puntos de lista */
+    padding: 0;
+    background-color: #ffe6e6;
+    /* Fondo rojo claro */
+    border: 1px solid #ffcccc;
+    /* Borde rojo claro */
+    padding: 5px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+
     </style>
 {% endblock additional_styles %}
 
@@ -159,34 +177,58 @@
             <div class="form-column">
                 <label for="first_name">Nombre</label>
                 {{ profile_form.first_name }}
+                <!-- Mostrar errores del campo first_name -->
+                {% for error in profile_form.first_name.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
             </div>
             <div class="form-column">
                 <label for="last_name">Apellido</label>
                 {{ profile_form.last_name }}
+                <!-- Mostrar errores del campo last_name -->
+                {% for error in profile_form.last_name.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
             </div>
             <div class="form-column">
                 <label for="email">Correo Electrónico</label>
                 {{ profile_form.email }}
+                <!-- Mostrar errores del campo email -->
+                {% for error in profile_form.email.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
             </div>
         </div>
-
+        <br>
         <!-- Contenedor de cambio de contraseña -->
         <h4>Cambiar Contraseña</h4>
         <div class="form-row">
             <div class="form-column">
                 <label for="old_password">Contraseña Actual</label>
                 {{ password_form.old_password }}
+                <!-- Mostrar errores del campo old_password -->
+                {% for error in password_form.old_password.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
             </div>
             <div class="form-column">
                 <label for="new_password1">Nueva Contraseña</label>
                 {{ password_form.new_password1 }}
+                <!-- Mostrar errores del campo new_password1 -->
+                {% for error in password_form.new_password1.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
             </div>
             <div class="form-column">
                 <label for="new_password2">Confirmar Nueva Contraseña</label>
                 {{ password_form.new_password2 }}
+                <!-- Mostrar errores del campo new_password2 -->
+                {% for error in password_form.new_password2.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
             </div>
         </div>
-
+        <br>
         <!-- Botones -->
         <div class="text-center mt-4 button-row">
             <button type="submit" class="btn btn-success">Guardar Cambios</button>

@@ -4,7 +4,7 @@ from .views import (index, login_view, QueEs, Convocatorias, Normatividad,
                     register_user_view, principalAlumno,admin_profile_view, edit_admin_profile_view, lista_Alumnos_view,
                     Alumno_perfil_detalle_view, edit_Alumno_profile_view, Alumno_perfil_view, empresas_detalle_view, crear_empresa,
                     editar_empresa_view,lista_documentos_view, crear_documento_view, editar_documento_view, eliminar_documento_view,
-                    complete_profile, eliminar_empresa_view)
+                    complete_profile, eliminar_empresa_view,Empresa_Detalle)
 
 urlpatterns = [
     path('', QueEs, name='QueEs'),
@@ -14,6 +14,7 @@ urlpatterns = [
     path('Normatividad/', Normatividad, name='Normatividad'),
     path('Galeria/', Galeria, name='Galeria'),
     path('Empresas/', Empresas_Prin, name='Empresas'),
+    path('empresas/<int:empresa_id>/', Empresa_Detalle, name='empresa_detalle'),
     path('baseAdmin/', baseAdmin, name='baseAdmin'),  # Dashboard de admin
     path('principalAdmin/', principalAdmin, name='principalAdmin'),
     path('logout/', logout_view, name='logout'),

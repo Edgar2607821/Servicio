@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Servicio',
-    'EducacionDual.apps.EducaciondualConfig',
+    'EducacionDual.apps.EducaciondualConfig', 
 ]
 
 MIDDLEWARE = [
@@ -53,6 +53,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'Servicio.urls'
+
 
 TEMPLATES = [
     {
@@ -72,7 +73,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Servicio.wsgi.application'
 
-CSRF_TRUSTED_ORIGINS = ['https://3d63-38-156-189-43.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://9611-2806-370-614c-88-794f-4c44-5df6-5958.ngrok-free.app']
 
 # settings.py
 
@@ -117,9 +118,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Mexico_City'
 
 USE_I18N = True
 
@@ -131,10 +132,12 @@ LOGIN_REDIRECT_URL = '/principalAdmin/'  # O cualquier otra ruta que desees redi
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'Sericio/EducacionDual/static/'
+
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'Sericio/EducacionDual/static/'),
+    os.path.join(BASE_DIR, 'EducacionDual/static'),
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 

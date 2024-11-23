@@ -5,7 +5,7 @@
 /* Contenedor del formulario */
 .container {
     max-width: 600px;
-    margin: 50px auto;
+    margin: 30px auto;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 10px;
@@ -100,7 +100,7 @@ h2 {
 {% endblock additional_styles %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container ">
     <h2>Crear Empresa</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -111,6 +111,10 @@ h2 {
         <div class="form-group">
             {{ form.Descripcion.label_tag }}
             {{ form.Descripcion }}
+        </div>
+        <div class="form-group">
+            {{ form.Portada.label_tag }}
+            {{ form.Portada }}
         </div>
         <div class="form-group">
             {{ form.Logotipo.label_tag }}

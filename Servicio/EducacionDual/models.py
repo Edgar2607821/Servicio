@@ -50,6 +50,7 @@ class UserProfile(models.Model):
 class Empresas(models.Model):
     Nombre = models.CharField(max_length=50)
     Descripcion = models.TextField()
+    Portada = models.ImageField()
     Logotipo = models.ImageField()
 
 class Documento(models.Model):

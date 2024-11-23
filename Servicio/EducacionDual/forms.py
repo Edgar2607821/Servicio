@@ -45,10 +45,11 @@ class UserProfileForm(forms.ModelForm):
 class EmpresasForm(forms.ModelForm):
     class Meta:
         model = Empresas
-        fields = ['Nombre', 'Descripcion', 'Logotipo']
+        fields = ['Nombre', 'Descripcion', 'Logotipo', 'Portada']
         widgets = {
             'Nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre de la empresa'}),
             'Descripcion': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción de la empresa'}),
+            'Portada': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
             'Logotipo': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
         }
 

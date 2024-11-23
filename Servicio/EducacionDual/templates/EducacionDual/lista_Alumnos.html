@@ -159,7 +159,7 @@ h2.text-center {
             <tr>
                 <th>ID<br><input type="text" class="filter-input" placeholder="Filtrar por ID"></th>
                 <th>Numero de Control<br><input type="text" class="filter-input" placeholder="Filtrar por Número de Control"></th>
-                <th>Fecha de Creación<br><input type="text" class="filter-input" placeholder="Filtrar por Fecha de Creación"></th>
+                <th>Ultimo Inicio de Sesion<br><input type="text" class="filter-input" placeholder="Filtrar por Ultimo Inicio de Sesion"></th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -168,7 +168,7 @@ h2.text-center {
             <tr>
                 <td>{{ user.id }}</td>
                 <td>{{ user.username }}</td>
-                <td>{{ user.date_joined|date:"d-m-Y" }}</td>
+                <td>{{ user.last_login|date:"d-m-Y H:i" }}</td>
                 <td style="text-align: center;">
                     <a href="{% url 'Alumno_perfil_detalle' user.id %}" class="btn btn-info btn-sm">Ver Detalles</a>
                 </td>

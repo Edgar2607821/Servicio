@@ -3,177 +3,171 @@
 
 {% block additional_styles %}
 <style>
+ .content-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1em;
+        padding: 1em;
+        font-family: Arial, sans-serif;
+    }
+
     /* Estilos de mini-posts */
-.mini-posts {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start; /* Alinea los posts uno al lado del otro */
-    gap: 2em;
-    padding: 1em 3em; /* Separación de la orilla solo en los posts */
-    
-}
-
-.mini-post {
-    background: #fff;
-    border: none;
-    margin: 1.5em 0;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.3s ease-in-out;
-    width: calc(30% - 2em); /* Ajustar tamaño para asegurar que se alineen */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.mini-post:hover {
-    transform: scale(1.02);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-}
-
-.mini-post h3 {
-    font-size: 1.4em; /* Ajustar tamaño de fuente */
-    margin-bottom: 0.8em;
-    color: #2c3e50;
-}
-
-.mini-post .image img {
-    width: 100%;
-    height: auto;
-    transition: transform 0.3s ease-in-out;
-}
-
-.mini-post .image:hover img {
-    transform: scale(1.08);
-}
-
-.mini-post header {
-    padding: 1.2em; /* Ajustar padding para hacerlo más compacto */
-    min-height: 4em;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #ecf0f1;
-}
-
-.mini-post header .author img {
-    width: 45px; /* Ajustar tamaño del autor */
-    border-radius: 50%;
-    margin-bottom: 1em;
-}
-
-.mini-post header h3 {
-    font-size: 1.4em;
-    margin-bottom: 0.5em;
-}
-
-.mini-post .read-more {
-    display: inline-block;
-    padding: 0.4em 1.2em;
-    margin: 1em 0;
-    font-size: 0.9em;
-    color: #fff;
-    background-color: #2980b9;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.mini-post .read-more:hover {
-    background-color: #3498db;
-}
-
-/* Estilos del cuerpo principal */
-#main {
-    flex-grow: 1;
-    padding: 2em;
-    background-color: #f4f4f4;
-}
-
-/* Media Queries */
-@media screen and (max-width: 768px) {
     .mini-posts {
-        margin-top: 6em; /* Incrementar margen para pantallas más pequeñas */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 2em;
+        padding: 1em 3em;
     }
 
     .mini-post {
-        width: calc(45% - 2em); /* Ajustar tamaño en pantallas medianas */
+        background: #fff;
+        border: none;
+        margin: 1.5em 0;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
+        width: calc(30% - 2em);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
-}
 
-@media screen and (max-width: 480px) {
-    .mini-posts {
-        margin-top: 6em; /* Asegurar espacio en pantallas pequeñas */
+    .mini-post:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     }
 
-    .mini-post {
-        width: 100%; /* En pantallas pequeñas se colocarán uno debajo del otro */
+    .mini-post h3 {
+        font-size: 1.4em;
+        margin-bottom: 0.8em;
+        color: #2c3e50;
     }
-}
 
+    .mini-post a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    /* Imagen y botón */
+    .mini-post .image {
+        position: relative;
+        display: block;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 12px;
+    }
+
+    .mini-post .image img {
+        width: 100%;
+        height: auto;
+        transition: transform 0.3s ease-in-out;
+        border-radius: inherit;
+    }
+
+    .mini-post .image:hover img {
+        transform: scale(1.08);
+    }
+
+    .mini-post .image .link-text {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        padding: 0.4em 0.8em;
+        border-radius: 5px;
+        font-size: 0.9em;
+        transition: background-color 0.3s ease;
+        text-align: center;
+        max-width: 90%;
+        word-wrap: break-word;
+    }
+
+    .mini-post .image:hover .link-text {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    /* Header */
+    .mini-post header {
+        padding: 1.2em;
+        min-height: 4em;
+        background-color: #ecf0f1;
+        text-align: center;
+    }
+
+    .mini-post header h3 {
+        font-size: 1.4em;
+        margin-bottom: 0.5em;
+    }
+
+    .mini-post header p {
+        font-size: 1em;
+        color: #7f8c8d;
+    }
+    .mini-post header .author img {
+        width: 65px;
+        /* Ajustar tamaño del autor */
+        border-radius: 50%;
+        margin-bottom: 1em;
+    }
+
+
+    /* Media Queries */
+    @media screen and (max-width: 768px) {
+        .mini-posts {
+            flex-direction: column;
+            gap: 1.5em;
+            padding: 1em;
+        }
+
+        .mini-post {
+            width: 100%;
+        }
+
+        .mini-post header h3 {
+            font-size: 1.2em;
+        }
+
+        .mini-post header p {
+            font-size: 0.9em;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .mini-post header h3 {
+            font-size: 1.1em;
+        }
+
+        .mini-post header p {
+            font-size: 0.8em;
+        }
+
+        .mini-post .image .link-text {
+            font-size: 0.8em;
+        }
+    }
 </style>
 {% endblock additional_styles %}
 
 {% block content %}
-    <section>
-        <div class="mini-posts">
-            <!-- Mini Post 1 -->
-            <article class="mini-post">
-                <header>
-                    <h3><a href="# ">CEMEX</a></h3>
-                    <a href="#" class="author"><img src={% static 'img/CEMEX.png' %} /></a>
-                </header>
-                <a href="#" class="image"><img src={% static 'img/CEMEX.png' %} />Breve Descripcion de la empresa</a>
-            </article>
-            <!-- Mini Post 2 -->
-            <article class="mini-post">
-                <header>
-                    <h3><a href="# ">Punto Singular</a></h3>
-                    <a href="#" class="author"><img src={% static 'img/puntosingular.png' %} /></a>
-                </header>
-                <a href="#" class="image"><img src={% static 'img/puntosingular.png' %} />Breve Descripcion de la empresa</a>
-            </article>
-            <article class="mini-post">
-                <header>
-                    <h3><a href="# ">CEMEX</a></h3>
-                    <a href="#" class="author"><img src={% static 'img/CEMEX.png' %} /></a>
-                </header>
-                <a href="#" class="image"><img src={% static 'img/CEMEX.png' %} />Breve Descripcion de la empresa</a>
-            </article>
-            <article class="mini-post">
-                <header>
-                    <h3><a href="# ">CEMEX</a></h3>
-                    <a href="#" class="author"><img src={% static 'img/CEMEX.png' %} /></a>
-                </header>
-                <a href="#" class="image"><img src={% static 'img/CEMEX.png' %} />Breve Descripcion de la empresa</a>
-            </article>
-            <article class="mini-post">
-                <header>
-                    <h3><a href="# ">CEMEX</a></h3>
-                    <a href="#" class="author"><img src={% static 'img/CEMEX.png' %} /></a>
-                </header>
-                <a href="#" class="image"><img src={% static 'img/CEMEX.png' %} />Breve Descripcion de la empresa</a>
-            </article>
-            <article class="mini-post">
-                <header>
-                    <h3><a href="# ">CEMEX</a></h3>
-                    <a href="#" class="author"><img src={% static 'img/CEMEX.png' %} /></a>
-                </header>
-                <a href="#" class="image"><img src={% static 'img/CEMEX.png' %} />Breve Descripcion de la empresa</a>
-            </article>
-            <article class="mini-post">
-                <header>
-                    <h3><a href="# ">CEMEX</a></h3>
-                    <a href="#" class="author"><img src={% static 'img/CEMEX.png' %} /></a>
-                </header>
-                <a href="#" class="image"><img src={% static 'img/CEMEX.png' %} />Breve Descripcion de la empresa</a>
-            </article>
-            <article class="mini-post">
-                <header>
-                    <h3><a href="# ">CEMEX</a></h3>
-                    <a href="#" class="author"><img src={% static 'img/CEMEX.png' %} /></a>
-                </header>
-                <a href="#" class="image"><img src={% static 'img/CEMEX.png' %} />Breve Descripcion de la empresa</a>
-            </article>
-            
-        </div>
-    </section>
+<section class="content-wrapper">
+    <div class="mini-posts">
+        <!-- Mini Post 1 -->
+        {% for empresa in empresas %}
+        <article class="mini-post">
+            <header>
+                <h3><a href="{% url 'empresa_detalle' empresa.id %}">{{empresa.Nombre}}</a></h3>
+                <a href="{% url 'empresa_detalle' empresa.id %}" class="author">
+                    <img src="{{ empresa.Logotipo.url }}" alt="{{ empresa.Nombre }}" />
+                </a>
+            </header>
+            <a href="{% url 'empresa_detalle' empresa.id %}" class="image">
+                <img src="{{ empresa.Portada.url }}" alt="{{ empresa.Nombre }}" />
+                <span class="link-text">Más Detalles</span>
+            </a>
+        </article>
+        {% endfor %}
+    </div>
+</section>
 {% endblock content %}
