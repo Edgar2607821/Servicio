@@ -1,0 +1,239 @@
+{% extends "EducacionDual/baseAlumno.html" %}
+{% load static %}
+{% load markdown_deux_tags %}
+
+{% block additional_styles %}
+<style>
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    max-height: 87vh;
+    overflow-y: auto;
+}
+
+h2 {
+    color: #1b396a;
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+h4 {
+    color: #34495e;
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+.empresa-img {
+    width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.btn-secondary:hover{
+    background-color: #545c62;
+    color:white;
+}
+
+.alert {
+    padding: 15px;
+    background-color: #dff0d8;
+    color: #3c763d;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Markdown content */
+.markdown-content {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 16.5px;
+    line-height: 1.7;
+    color: #24292e;
+}
+
+/* Títulos */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+    border-bottom: 1px solid #eaecef;
+    padding-bottom: 0.3em;
+    margin-top: 1.2em;
+    margin-bottom: 16px;
+    font-weight: 700;
+    color: #1b396a;
+}
+
+.markdown-content h1 {
+    font-size: 24px;
+}
+.markdown-content h2 {
+    font-size: 22px;
+}
+.markdown-content h3 {
+    font-size: 20px;
+}
+
+/* Listas */
+.markdown-content ul {
+    padding-left: 1.5em;
+}
+
+.markdown-content li {
+    margin-bottom: 8px;
+}
+
+/* Negritas y cursivas */
+.markdown-content strong {
+    font-weight: bold;
+}
+.markdown-content em {
+    font-style: italic;
+}
+
+/* Bloques de código */
+.markdown-content pre {
+    background-color: #f6f8fa;
+    padding: 10px;
+    border-radius: 4px;
+    overflow: auto;
+}
+
+/* Enlaces */
+.markdown-content a {
+    color: #0366d6;
+    text-decoration: none;
+}
+.markdown-content a:hover {
+    text-decoration: underline;
+}
+
+/* Citas */
+.markdown-content blockquote {
+    padding: 0 1em;
+    color: #6a737d;
+    border-left: 0.25em solid #dfe2e5;
+    margin-bottom: 1em;
+}
+
+/* Mejoras para emojis */
+.markdown-content p::before {
+    margin-right: 4px;
+}
+
+.markdown-content p {
+    margin-bottom: 1.2em;
+}
+
+.botones-container {
+    display: flex;
+    gap: 10px; /* Espacio entre los botones */
+    flex-wrap: wrap; /* Por si en móvil no caben, que bajen en lugar de desbordarse */
+}
+
+
+/* Responsive ajustes */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    h2 {
+        font-size: 24px;
+    }
+    .btn-success,
+    .btn-secondary {
+        width: 100%;
+        display: block;
+        text-align: center;
+    }
+}   
+.ingenierias-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.ingenierias-list li::before {
+    content: "✔️ "; /* Puedes cambiar por ➜, 🚀, 🎯, etc. */
+    color: #1b396a;
+    font-weight: bold;
+    margin-right: 8px;
+}
+</style>
+{% endblock additional_styles %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ convocatoria.titulo }}</h2>
+    <p><strong>Empresa:</strong> {{ convocatoria.empresa.Nombre }}</p>
+    <br>
+    {% if convocatoria.empresa.Portada %}
+        <img src="{{ convocatoria.empresa.Portada.url }}" alt="{{ convocatoria.empresa.Nombre }}" class="empresa-img">
+    {% endif %}
+
+    <h4>Puesto:</h4>
+    <p>{{ convocatoria.puesto }}</p>
+
+    <h4>Fecha de Apertura:</h4>
+    <p>{{ convocatoria.fecha_apertura }}</p>
+
+    <h4>Fecha de Cierre:</h4>
+    <p>{{ convocatoria.fecha_cierre }}</p>
+
+    <h4>Ingenierías Dirigidas:</h4>
+    <ul class="ingenierias-list">
+        {% for ing in convocatoria.ingenierias %}
+            <li>{{ ing }}</li>
+        {% empty %}
+            <li>No especificado</li>
+        {% endfor %}
+    </ul>
+
+    <h4>Descripción:</h4>
+    <div class="markdown-content">
+        {{ convocatoria.descripcion|markdown:"default" }}
+
+    </div>
+
+    <hr>
+<div class="botones-container">
+    {% if ya_postulado %}
+        <div class="alert">
+            Ya estás postulado en esta convocatoria.
+        </div>
+    {% else %}
+        <a href="{% url 'postularse' convocatoria.id %}" class="btn-success">Postularme</a>
+    {% endif %}
+
+    
+    <a href="{% url 'convocatorias_alumno' %}" class="btn-secondary">Volver a las convocatorias</a>
+</div>    
+</div>
+{% endblock content %}

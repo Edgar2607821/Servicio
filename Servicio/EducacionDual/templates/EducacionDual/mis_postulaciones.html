@@ -1,0 +1,201 @@
+{% extends "EducacionDual/baseAlumno.html" %}
+
+{% block additional_styles %}
+<style>
+.container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #1b396a;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.table-container {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 20px;
+    border-radius: 10px;
+    border: 1px solid #dddddd;
+}
+
+/* Estilos de la tabla */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: #1b396a;
+    color: #ffffff;
+    font-size: 18px;
+}
+
+.table th, .table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
+}
+
+.table tbody tr {
+    transition: background-color 0.3s;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+    background-color: #e6f0ff;
+}
+
+/* Estilo de mensaje "No hay empresas registradas" */
+.table-empty {
+    text-align: center;
+    color: #888888;
+    font-style: italic;
+    padding: 20px;
+}
+
+
+.estado-Pendiente {
+    background-color: #ffc107;
+    color: #212529;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.estado-Aceptado {
+    background-color: #28a745;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.estado-Rechazado {
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.btn-detalle {
+    background-color: #ffc107;
+    color: #212529;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.btn-detalle:hover {
+    background-color:rgb(226, 171, 6);
+    color: #212529;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* Estilo para el fondo oscuro */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Estilo para el contenido del modal */
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Botón de cerrar */
+.modal-close {
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+}
+
+</style>
+{% endblock additional_styles %}
+
+{% block content %}
+<div class="container">
+    <h2>Mis Postulaciones</h2>
+
+    {% if postulaciones %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Convocatoria</th>
+                <th>Puesto</th>
+                <th>Estado</th>
+                <th>Observaciones</th>
+                <th>Fecha de Postulación</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for postulacion in postulaciones %}
+            <tr>
+                <td>{{ postulacion.convocatoria.titulo }}</td>
+                <td>{{ postulacion.convocatoria.puesto }}</td>
+                <td>
+                    <span class="estado-{{ postulacion.estado }}">{{ postulacion.estado }}</span>
+                </td>
+                <td>
+                    <button type="button" onclick="abrirModal('{{ postulacion.observaciones|default:"Sin observaciones"|escapejs }}')"
+                    class="btn-detalle">Ver detalles</button>
+                </td>
+                <td>{{ postulacion.fecha_postulacion|date:"d/m/Y H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No tienes postulaciones registradas.</p>
+    {% endif %}
+</div>
+
+<div id="miModal" class="modal-overlay">
+    <div class="modal-content">
+        <span class="modal-close" onclick="cerrarModal()">&times;</span>
+        <div id="contenidoModal"></div>
+    </div>
+</div>
+
+<script>
+function abrirModal(texto) {
+    document.getElementById('contenidoModal').innerText = texto || 'Sin observaciones';
+    document.getElementById('miModal').style.display = 'flex';
+}
+
+function cerrarModal() {
+    document.getElementById('miModal').style.display = 'none';
+}
+</script>
+
+{% endblock %}

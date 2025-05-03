@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Servicio',
     'EducacionDual.apps.EducaciondualConfig', 
+    'markdownify',
+    'markdown_deux',
 ]
 
 MIDDLEWARE = [

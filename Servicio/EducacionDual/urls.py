@@ -4,7 +4,10 @@ from .views import (index, login_view, QueEs, Convocatorias, Normatividad,
                     register_user_view, principalAlumno,admin_profile_view, edit_admin_profile_view, lista_Alumnos_view,
                     Alumno_perfil_detalle_view, edit_Alumno_profile_view, Alumno_perfil_view, empresas_detalle_view, crear_empresa,
                     editar_empresa_view,lista_documentos_view, crear_documento_view, editar_documento_view, eliminar_documento_view,
-                    complete_profile, eliminar_empresa_view,Empresa_Detalle)
+                    complete_profile, eliminar_empresa_view,Empresa_Detalle, ConvocatoriaListView, ConvocatoriaDetailView,
+                    ConvocatoriaCreateView, ConvocatoriaUpdateView, ConvocatoriaDeleteView, convocatoria_detalle_alumno, convocatorias_alumno,
+                    postularse, todas_las_postulaciones, postulacion_detalle, mis_postulaciones, eliminar_postulacion, eliminar_alumno,
+                    detalle_convocatoria)
 
 urlpatterns = [
     path('', QueEs, name='QueEs'),
@@ -36,4 +39,21 @@ urlpatterns = [
     path('documentos/crear/', crear_documento_view, name='crear_documento'),
     path('documentos/<int:documento_id>/editar/', editar_documento_view, name='editar_documento'),
     path('documentos/<int:documento_id>/eliminar/', eliminar_documento_view, name='eliminar_documento'),
+    path('convocatoriasAdmin/', ConvocatoriaListView.as_view(), name='convocatoria_list'),
+    path('convocatoriasAdmin/<int:pk>/', ConvocatoriaDetailView.as_view(), name='convocatoria_detail'),
+    path('convocatoriasAdmin/nueva/', ConvocatoriaCreateView.as_view(), name='convocatoria_create'),
+    path('convocatoriasAdmin/<int:pk>/editar/', ConvocatoriaUpdateView.as_view(), name='convocatoria_update'),
+    path('convocatoriasAdmin/<int:pk>/eliminar/', ConvocatoriaDeleteView.as_view(), name='convocatoria_delete'),
+    path('convocatorias/', convocatorias_alumno, name='convocatorias_alumno'),
+    path('convocatoria/<int:convocatoria_id>/', convocatoria_detalle_alumno, name='convocatoria_detalle_alumno'),
+    path('postularse/<int:convocatoria_id>/', postularse, name='postularse'),
+    path('postulacionAdmin/', todas_las_postulaciones, name='todas_las_postulaciones'),
+    path('postulacionAdmin/<int:postulacion_id>/', postulacion_detalle, name='postulacion_detalle'),
+    path('mis_postulaciones/', mis_postulaciones, name='mis_postulaciones'),
+    path('postulacion/eliminar/<int:postulacion_id>/', eliminar_postulacion, name='eliminar_postulacion'),
+    path('alumno/eliminar/<int:alumno_id>/', eliminar_alumno, name='eliminar_alumno'),
+    path('convocatoria/publica/<int:convocatoria_id>/', detalle_convocatoria, name='detalle_convocatoria'),
+
+
+
 ]

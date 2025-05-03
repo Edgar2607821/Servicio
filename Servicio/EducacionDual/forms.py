@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
-from .models import UserProfile, Empresas, Documento
+from .models import UserProfile, Empresas, Documento, Convocatoria
 
 
 class LoginForm(AuthenticationForm):
@@ -57,3 +57,44 @@ class DocumentoForm(forms.ModelForm):
     class Meta:
         model = Documento
         fields = ['titulo', 'archivo']
+
+class ConvocatoriaForm(forms.ModelForm):
+    class Meta:
+        model = Convocatoria
+        fields = [
+            'titulo',
+            'descripcion',
+            'ingenierias',
+            'empresa',
+            'fecha_apertura',
+            'fecha_cierre',
+            'estado',
+            'puesto'
+        ]
+        widgets = {
+            'descripcion': forms.Textarea(attrs={
+                'id': 'id_descripcion',
+                'rows': 10,
+                'placeholder': 'Escribe la descripción usando Markdown...'
+            }),
+            'fecha_apertura': forms.DateInput(attrs={'type': 'date'}),
+            'fecha_cierre': forms.DateInput(attrs={'type': 'date'}),
+            'ingenierias': forms.CheckboxSelectMultiple(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Quitar el required del HTML (para que no falle con EasyMDE)
+        self.fields['descripcion'].required = False
+
+    def clean(self):
+        cleaned_data = super().clean()
+        descripcion = cleaned_data.get('descripcion')
+
+        # Validar en el servidor que no esté vacío
+        if not descripcion or descripcion.strip() == "":
+            self.add_error('descripcion', 'La descripción no puede estar vacía.')
+
+        return cleaned_data
+    
+    

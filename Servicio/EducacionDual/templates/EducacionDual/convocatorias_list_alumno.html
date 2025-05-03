@@ -1,4 +1,4 @@
-{% extends "EducacionDual/index.html" %}
+{% extends "EducacionDual/baseAlumno.html" %}
 {% load static %}
 
 {% block additional_styles %}
@@ -186,21 +186,25 @@
 </style>
 {% endblock additional_styles %}
 
-
 {% block content %}
+<div class="container">
+    <div class="profile-header">Convocatorias disponibles para prácticas y estadías</div>
+    
+
+
 <section class="content-wrapper">
     <div class="mini-posts">
         {% for convocatoria in convocatorias %}
         <article class="mini-post">
             <header>
                 <h3>
-                    <a href="{% url 'detalle_convocatoria' convocatoria.id %}">
+                    <a href="{% url 'convocatoria_detalle_alumno' convocatoria.id %}">
                         {{ convocatoria.titulo }}
                     </a>
                 </h3>
                 <p>{{ convocatoria.empresa.Nombre }}</p>
             </header>
-            <a href="{% url 'detalle_convocatoria' convocatoria.id %}" class="image">
+            <a href="{% url 'convocatoria_detalle_alumno' convocatoria.id %}" class="image">
                 {% if convocatoria.empresa.Portada %}
                     <img src="{{ convocatoria.empresa.Portada.url }}" alt="{{ convocatoria.empresa.Nombre }}">
                 {% else %}
@@ -214,4 +218,5 @@
         {% endfor %}
     </div>
 </section>
+</div>
 {% endblock content %}

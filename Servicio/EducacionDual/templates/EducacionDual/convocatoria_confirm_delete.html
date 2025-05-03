@@ -4,60 +4,28 @@
 <style>
 /* Contenedor del formulario */
 .container {
-    max-width: 1000px;
+    max-width: 600px;
     margin: 50px auto;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 /* Título del formulario */
 h2 {
     font-size: 24px;
     font-weight: bold;
-    color: #1b396a;
-    text-align: center;
+    color: #dc3545; /* Color rojo para enfatizar la acción de eliminación */
     margin-bottom: 20px;
 }
 
-/* Estilos de los campos de formulario */
-form .form-group {
-    margin-bottom: 20px;
-}
-
-form label {
-    font-size: 16px;
-    font-weight: bold;
+/* Texto de confirmación */
+p {
+    font-size: 20px;
     color: #333333;
-    margin-bottom: 5px;
-    display: block;
-}
-
-form input[type="text"],
-form input[type="file"],
-form textarea {
-    width: 100%;
-    padding: 10px;
-    font-size: 15px;
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Estilo para textarea */
-form textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-/* Efecto al hacer foco en los campos */
-form input[type="text"]:focus,
-form input[type="file"]:focus,
-form textarea:focus {
-    border-color: #1b396a;
-    box-shadow: 0px 0px 5px rgba(27, 57, 106, 0.3);
+    margin-bottom: 30px;
 }
 
 /* Contenedor de botones alineados */
@@ -67,23 +35,24 @@ form textarea:focus {
     margin-top: 20px;
 }
 
-/* Botón Guardar Documento */
-.btn-primary {
-    background-color: #1b396a;
+/* Botón Eliminar */
+.btn-danger {
+    background-color: #dc3545;
     color: #ffffff;
     padding: 10px 20px;
     border-radius: 8px;
     font-size: 16px;
     font-weight: bold;
     text-decoration: none;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
     width: 48%;
     text-align: center;
     border: none;
 }
 
-.btn-primary:hover {
-    background-color: #2d4d87;
+.btn-danger:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
     cursor: pointer;
 }
 
@@ -112,15 +81,13 @@ form textarea:focus {
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Crear Documento</h2>
-    <form method="post" enctype="multipart/form-data">
+    <h2>Eliminar Convocatoria</h2>
+    <p>¿Estás seguro de que deseas eliminar la convocatoria <b>"{{ convocatoria.titulo }}"</b> de la empresa <b>"{{ convocatoria.empresa.Nombre }}"</b>?</p>
+    <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        
-        <!-- Contenedor para alinear los botones en una fila -->
         <div class="button-group">
-            <button type="submit" class="btn btn-primary">Guardar Documento</button>
-            <a href="{% url 'lista_documentos' %}" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <a href="{% url 'convocatoria_list' %}" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </div>

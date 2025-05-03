@@ -1,13 +1,19 @@
+from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
-from .forms import LoginForm, AuthenticationForm, CustomUserCreationForm, AdminProfileForm, UserProfileForm, EmpresasForm, DocumentoForm
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from .forms import (LoginForm, AuthenticationForm, CustomUserCreationForm, 
+                    AdminProfileForm, UserProfileForm, EmpresasForm, DocumentoForm, ConvocatoriaForm)
+
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash  # Evita que el usuario sea desconectado al cambiar la contraseña
 from django.http import FileResponse, Http404
-from .models import Documento, UserProfile, Empresas
+from .models import Documento, UserProfile, Empresas, Convocatoria, Postulacion
 from pdf2image import convert_from_path
 from django.conf import settings
 import os
@@ -60,7 +66,12 @@ def Normatividad(request):
     return render(request, 'EducacionDual/Normatividad.html', {'portadas': portadas})
 
 def Convocatorias(request): 
-    return render(request, 'EducacionDual/Convocatorias.html')
+    convocatorias = Convocatoria.objects.filter(estado='Habilitada')  # O el estado que uses para "disponible"
+    return render(request, 'EducacionDual/Convocatorias.html', {'convocatorias': convocatorias})
+
+def detalle_convocatoria(request, convocatoria_id):
+    convocatoria = get_object_or_404(Convocatoria, id=convocatoria_id)
+    return render(request, 'EducacionDual/detalle_convocatoria.html', {'convocatoria': convocatoria})
 
 def Empresas_Prin(request): 
     empresas = Empresas.objects.all()
@@ -74,6 +85,7 @@ def Empresa_Detalle(request, empresa_id):
 def Galeria(request): 
     return render(request, 'EducacionDual/Galeria.html')
 
+#Alumno
 
 @login_required
 def principalAlumno(request):
@@ -149,12 +161,81 @@ def complete_profile(request):
 
 @login_required
 def principalAlumno(request):
-    nombre_usuario = request.user.username
-    return render(request, 'EducacionDual/principalAlumno.html', {'nombre_usuario': nombre_usuario})
+    perfil = request.user.userprofile
+    nombre_completo = f"{perfil.Nombre}"
+    return render(request, 'EducacionDual/principalAlumno.html', {'nombre_completo': nombre_completo})
+
+def convocatorias_alumno(request):
+    alumno = request.user.userprofile
+    carrera = alumno.Carrera  # Debe coincidir con las opciones del campo ingenierias de la convocatoria
+
+    convocatorias = Convocatoria.objects.filter(
+        estado="Habilitada",
+        ingenierias__contains=carrera
+    )
+    return render(request, 'EducacionDual/convocatorias_list_alumno.html', {'convocatorias': convocatorias})
+
+
+def convocatoria_detalle_alumno(request, convocatoria_id):
+    convocatoria = get_object_or_404(Convocatoria, id=convocatoria_id)
+    alumno = request.user.userprofile
+
+    ya_postulado = Postulacion.objects.filter(convocatoria=convocatoria, alumno=alumno).exists()
+    
+    
+
+    return render(request, 'EducacionDual/convocatoria_detail_alumno.html', {
+        'convocatoria': convocatoria,
+        'ya_postulado': ya_postulado
+    })
+
+def postularse(request, convocatoria_id):
+    if not request.user.is_authenticated:
+        messages.error(request, "Debes iniciar sesión para postularte.")
+        return redirect('login')
+
+    alumno = get_object_or_404(UserProfile, NoControl=request.user)
+    convocatoria = get_object_or_404(Convocatoria, pk=convocatoria_id)
+
+    if Postulacion.objects.filter(alumno=alumno, convocatoria=convocatoria).exists():
+        messages.warning(request, "Ya te has postulado a esta convocatoria.")
+    else:
+        Postulacion.objects.create(alumno=alumno, convocatoria=convocatoria)
+        messages.success(request, "Te has postulado exitosamente.")
+
+    return redirect('convocatoria_detalle_alumno', convocatoria_id=convocatoria_id)
+
+
+def todas_las_postulaciones(request):
+    postulaciones = Postulacion.objects.select_related('alumno', 'convocatoria').all()
+    return render(request, 'EducacionDual/postulacion_list_todas.html', {'postulaciones': postulaciones})
 
 
 
+def postulacion_detalle(request, postulacion_id):
+    postulacion = get_object_or_404(Postulacion, id=postulacion_id)
 
+    if request.method == 'POST':
+        nuevo_estado = request.POST.get('estado')
+        nuevas_observaciones = request.POST.get('observaciones', '')
+        if nuevo_estado in ['Pendiente', 'Aceptado', 'Rechazado']:
+            postulacion.estado = nuevo_estado
+            postulacion.observaciones = nuevas_observaciones
+            postulacion.save()
+            messages.success(request, 'Estado actualizado correctamente.')
+            return redirect('todas_las_postulaciones')
+
+    return render(request, 'EducacionDual/postulacion_detail.html', {
+        'postulacion': postulacion
+    })
+
+@login_required
+def mis_postulaciones(request):
+    alumno = request.user.userprofile
+    postulaciones = Postulacion.objects.filter(alumno=alumno).select_related('convocatoria').order_by('-fecha_postulacion')
+    return render(request, 'EducacionDual/mis_postulaciones.html', {'postulaciones': postulaciones})
+
+#Administrador/Profesor
 @user_passes_test(lambda u: u.is_superuser)
 def baseAdmin(request):  # Vista de dashboard del administrador
     return render(request, 'EducacionDual/baseAdministrador.html')
@@ -233,7 +314,14 @@ def Alumno_perfil_detalle_view(request, user_id):
     profile = get_object_or_404(UserProfile, NoControl__id=user_id)
     return render(request, 'EducacionDual/Alumno_perfil_detalle.html', {'profile': profile})
 
+def eliminar_alumno(request, alumno_id):
+    alumno = get_object_or_404(UserProfile, id=alumno_id)
+    if request.method == 'POST':
+        alumno.delete()
+        messages.success(request, "El alumno ha sido eliminado correctamente.")
+        return redirect('lista_Alumnos')  # Cambia al nombre correcto de tu lista de alumnos
 
+    return render(request, 'EducacionDual/alumno_confirm_delete.html', {'alumno': alumno})
 
 @login_required
 def empresas_detalle_view(request):
@@ -318,5 +406,45 @@ def mostrar_pdf(request, documento_id):
     except Documento.DoesNotExist:
         raise Http404("Documento no encontrado")
     
+# Lista de convocatorias
+class ConvocatoriaListView(ListView):
+    model = Convocatoria
+    template_name = 'EducacionDual/convocatoria_list.html'
+    context_object_name = 'convocatorias'
 
+# Detalle de una convocatoria
+class ConvocatoriaDetailView(DetailView):
+    model = Convocatoria
+    template_name = 'EducacionDual/convocatoria_detail.html'
 
+# Crear convocatoria
+class ConvocatoriaCreateView(CreateView):
+    model = Convocatoria
+    form_class = ConvocatoriaForm
+    template_name = 'EducacionDual/convocatoria_form.html'
+    success_url = reverse_lazy('convocatoria_list')
+
+# Actualizar convocatoria
+class ConvocatoriaUpdateView(UpdateView):
+    model = Convocatoria
+    form_class = ConvocatoriaForm
+    template_name = 'EducacionDual/convocatoria_form.html'
+    success_url = reverse_lazy('convocatoria_list')
+
+# Eliminar convocatoria
+class ConvocatoriaDeleteView(DeleteView):
+    model = Convocatoria
+    template_name = 'EducacionDual/convocatoria_confirm_delete.html'
+    success_url = reverse_lazy('convocatoria_list')
+    
+def eliminar_postulacion(request, postulacion_id):
+    postulacion = get_object_or_404(Postulacion, id=postulacion_id)
+
+    if request.method == 'POST':
+        postulacion.delete()
+        messages.success(request, 'La postulación ha sido eliminada correctamente.')
+        return redirect('todas_las_postulaciones')
+
+    return render(request, 'EducacionDual/eliminar_postulacion.html', {
+        'postulacion': postulacion
+    })

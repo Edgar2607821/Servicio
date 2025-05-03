@@ -14,6 +14,8 @@
     {% endblock additional_styles %}
 </head>
 
+
+
 <body>
     <nav>
         <ul>
@@ -32,7 +34,7 @@
                 <i class="fas fa-users"></i>
                 <span class="nav-item">Alumnos</span>
             </a></li>
-            <li><a href="#" class="Postulados">
+            <li><a href="{% url "todas_las_postulaciones" %}" class="Postulados">
                 <i class="fas fa-address-card"></i>
                 <span class="nav-item">Postulados</span>
             </a></li>
@@ -44,9 +46,9 @@
                 <i class="fas fa-book"></i>
                 <span class="nav-item">Normatividad</span>
             </a></li>
-            <li><a href="#" class="Convocatorias">
+            <li><a href="{% url "convocatoria_list" %}" class="Convocatorias">
                 <i class="fas fa-bullhorn"></i>
-                <span class="nav-item">Concocatorias</span>
+                <span class="nav-item">Convocatorias</span>
             </a></li>
             <li><a href="#" class="Galeria">
                 <i class="fas fa-images"></i>
@@ -67,6 +69,14 @@
     <main>
         {% block content %}{% endblock content %}
     </main>
+
+    <!-- EasyMDE JS -->
+<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+<!-- marked.js -->
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.1/marked.min.js"></script>
+
+    {% block additional_scripts %}{% endblock %}
+
 </body>
 
 </html>

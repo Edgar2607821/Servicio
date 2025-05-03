@@ -1,0 +1,271 @@
+{% extends "EducacionDual/baseAdministrador.html" %}
+{% block additional_styles %}
+<style>
+/* Contenedor de la página */
+.container {
+    max-width: 1400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    max-height: 87vh;
+    overflow-y: auto;  /* Scroll vertical si es necesario */
+}
+
+.profile-header {
+        text-align: center;
+        color: #1b396a;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+
+/* Título */
+h2.text-center {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1b396a;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Contenedor con scroll para la tabla */
+.table-container {
+    max-height: 850px;
+    overflow-y: auto;
+    margin-top: 20px;
+    border-radius: 10px;
+    border: 1px solid #dddddd;
+}
+
+.table-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1b396a;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.table thead {
+    background-color: #1b396a;
+    color: #ffffff;
+    font-size: 18px;
+    text-align: left;
+}
+
+.table th, .table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.table thead th {
+    position: relative;
+}
+
+.table .filter-input {
+    width: 90%;
+    margin-top: 8px;
+    padding: 6px 8px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.table .filter-input:focus {
+    border-color: #1b396a;
+    box-shadow: 0px 0px 5px rgba(27, 57, 106, 0.3);
+}
+
+.table tbody tr {
+    transition: background-color 0.3s;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+    background-color: #e6f0ff;
+}
+
+.table tbody td {
+    color: #333333;
+    font-size: 16px;
+}
+
+.table-empty {
+    text-align: center;
+    color: #888888;
+    font-style: italic;
+    padding: 20px;
+}
+
+/* Estilos para el botón "Ver Detalles" */
+.btn-info {
+    background-color: #28a745; /* Verde */
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+    width: auto; /* Ajusta el ancho al contenido */
+    text-align: center;
+}
+
+.btn-info:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+    text-decoration: none;
+    color: #ffffff;
+}
+
+/* Botón de retorno al perfil */
+
+
+.btn-primary {
+    background-color: #1b396a;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #2d4d87;
+    color: #ffffff;
+}
+
+/* Estados de convocatoria */
+.estado-Aceptado {
+    background-color: #28a745; /* Verde */
+    color:rgb(255, 255, 255) !important;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+    width: auto; /* Ajusta el ancho al contenido */
+    text-align: center;
+}
+
+.estado-pendiente {
+    background-color: #ffc107; /* Amarillo */
+    color: #212529;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    width: auto; /* Ajusta el ancho al contenido */
+    text-align: center;
+}
+
+.estado-rechazado {
+    background-color:rgb(255, 0, 0); /* Amarillo */
+    color:rgb(255, 255, 255) !important;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    width: auto; /* Ajusta el ancho al contenido */
+    text-align: center;
+}
+
+</style>
+
+{% endblock additional_styles %}
+
+{% block content %}
+<div class="container mt-5">
+    
+    <div class="profile-header">Todas las Postulaciones</div>
+
+    <table class="table table-bordered" id="TablePostulaciones">
+        <thead>
+            <tr>
+                <th>Alumno<br><input type="text" class="filter-input" placeholder="Filtrar por Alumno"></th>
+                <th>No. Control<br><input type="text" class="filter-input" placeholder="Filtrar por No. Control"></th>
+                <th>Correo<br><input type="text" class="filter-input" placeholder="Filtrar por Correo"></th>
+                <th>Convocatoria<br><input type="text" class="filter-input" placeholder="Filtrar por Convocatoria"></th>
+                <th>Estado<br><input type="text" class="filter-input" placeholder="Filtrar por Estado"></th>
+                <th>Fecha de Postulación<br><input type="text" class="filter-input" placeholder="Filtrar por Fecha"></th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for postulacion in postulaciones %}
+                <tr>
+                    <td>{{ postulacion.alumno.Nombre }} {{ postulacion.alumno.Apellidos }}</td>
+                    <td>{{ postulacion.alumno.NoControl }}</td>
+                    <td>{{ postulacion.alumno.Correo_inst }}</td>
+                    <td>{{ postulacion.convocatoria.titulo }}</td>
+                    <td>
+                        {% if postulacion.estado == "Pendiente" %}
+                            <span class="estado-pendiente">{{ postulacion.estado }}</span>
+                        {% elif postulacion.estado == "Aceptado" %}
+                            <span class="estado-Aceptado">{{ postulacion.estado }}</span>
+                        {% elif postulacion.estado == "Rechazado" %}
+                            <span class="estado-rechazado">{{ postulacion.estado }}</span>
+                        {% else %}
+                            <span>{{ postulacion.estado }}</span>
+                        {% endif %}
+                    </td>
+                    
+                    <td>{{ postulacion.fecha_postulacion }}</td>
+                    <td>
+                        <a href="{% url 'postulacion_detalle' postulacion.id %}" class="btn btn-info btn-sm">Revisar</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="7">No hay postulaciones registradas.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const filterInputs = document.querySelectorAll('.filter-input');
+        filterInputs.forEach((input, index) => {
+            input.addEventListener('keyup', function () {
+                const filter = input.value.toLowerCase();
+                const table = document.getElementById('TablePostulaciones');
+                const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+                Array.from(rows).forEach(row => {
+                    const cell = row.getElementsByTagName('td')[index];
+                    if (cell) {
+                        const cellText = cell.textContent || cell.innerText;
+                        row.style.display = cellText.toLowerCase().includes(filter) ? '' : 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

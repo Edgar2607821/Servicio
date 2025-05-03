@@ -1,0 +1,185 @@
+{% extends "EducacionDual/baseAdministrador.html" %}
+
+{% block additional_styles %}
+<style>
+    .profile-container {
+        max-width: 1300px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        margin-top: 30px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        max-height: 84vh;
+        overflow-y: auto;  /* Scroll vertical si es necesario */
+    }
+
+    .profile-header {
+        text-align: center;
+        color: #1b396a;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+    .profile-header::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 4px;
+        background-color: #3062b2;
+        margin: 8px auto 0;
+        border-radius: 2px;
+    }
+
+    .profile-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        list-style: none;
+        padding: 0;
+        font-size: 18px;
+        color: #333;
+    }
+
+    .profile-info li {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .profile-info label {
+        font-weight: bold;
+        color: #1b396a;
+        margin-right: 10px;
+    }
+
+    .profile-info span {
+        color: #333;
+    }
+
+    .form-section {
+        margin-top: 30px;
+    }
+
+    .form-section h4 {
+        color: #1b396a;
+        margin-bottom: 10px;
+    }
+
+    select, textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+    }
+
+    .btn-primary, .btn-secondary, .btn-danger {
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        flex: 1;
+        text-align: center;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: #ffffff;
+    }
+    
+    .btn-danger:hover {
+        background-color: #c82333;
+        color: #ffffff;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .btn-primary {
+        background-color: #28a745;
+        color: #ffffff;
+    }
+
+    .btn-primary:hover {
+        background-color:rgb(31, 129, 54);
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #ffffff;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        color: #ffffff;
+    }
+
+    .Guardar {
+        background-color: #28a745;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    @media (max-width: 768px) {
+        .profile-info {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock additional_styles %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">Detalle de Postulación</div>
+    <ul class="profile-info">
+        <li><label>Alumno:</label> <span>{{ postulacion.alumno.Nombre }} {{ postulacion.alumno.Apellidos }}</span></li>
+        <li><label>No. Control:</label> <span>{{ postulacion.alumno.NoControl }}</span></li>
+        <li><label>Correo:</label> <span>{{ postulacion.alumno.Correo_inst }}</span></li>
+        <li><label>Carrera:</label> <span>{{ postulacion.alumno.get_Carrera_display }}</span></li>
+        <li><label>Semestre:</label> <span>{{ postulacion.alumno.get_Semestre_display }}</span></li>
+        <li><label>Teléfono:</label> <span>{{ postulacion.alumno.Telefono }}</span></li>
+        <li><label>Convocatoria:</label> <span>{{ postulacion.convocatoria.titulo }}</span></li>
+        <li><label>Puesto:</label> <span>{{ postulacion.convocatoria.puesto }}</span></li>
+        <li><label>Fecha de Apertura:</label> <span>{{ postulacion.convocatoria.fecha_apertura }}</span></li>
+        <li><label>Fecha de Cierre:</label> <span>{{ postulacion.convocatoria.fecha_cierre }}</span></li>
+        <li><label>Fecha de Postulacion:</label> <span>{{ postulacion.fecha_postulacion }}</span></li>
+    </ul>
+
+    <div class="form-section">
+        <form method="post">
+            {% csrf_token %}
+            <h4>Estado de la Postulación:</h4>
+            <select name="estado" required>
+                <option value="Pendiente" {% if postulacion.estado == "Pendiente" %}selected{% endif %}>Pendiente</option>
+                <option value="Aceptado" {% if postulacion.estado == "Aceptado" %}selected{% endif %}>Aceptado</option>
+                <option value="Rechazado" {% if postulacion.estado == "Rechazado" %}selected{% endif %}>Rechazado</option>
+            </select>
+
+            <h4 style="margin-top: 20px;">Observaciones:</h4>
+            <textarea name="observaciones" rows="4">{{ postulacion.observaciones }}</textarea>
+
+            <br>
+            <div class="button-group">
+                <button type="submit" class="btn-primary">Guardar Cambios</button>
+                <a href="{% url 'todas_las_postulaciones' %}" class="btn-secondary">Volver a la lista</a>
+                <a href="{% url 'eliminar_postulacion' postulacion.id %}" class="btn-danger">Eliminar Postulación</a>
+
+            </div>
+        
+        </form>
+    </div>
+</div>
+{% endblock content %}

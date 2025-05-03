@@ -1,0 +1,182 @@
+{% extends "EducacionDual/index.html" %}
+{% load static %}
+{% load markdown_deux_tags %}
+
+{% block additional_styles %}
+<style>
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+]
+}
+
+h2 {
+    color: #1b396a;
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+h4 {
+    color: #34495e;
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+.empresa-img {
+    width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+
+.btn-primary,
+.btn-secondary {
+    background-color: #1b396a;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    flex: 1;
+    text-align: center;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+}
+
+.btn-primary:hover {
+    color: #ffffff;
+    background-color: #2d4d87;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    color: #ffffff;
+}
+
+
+.alert {
+    padding: 15px;
+    background-color: #dff0d8;
+    color: #3c763d;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Markdown content */
+.markdown-content {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 16.5px;
+    line-height: 1.7;
+    color: #24292e;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+    border-bottom: 1px solid #eaecef;
+    padding-bottom: 0.3em;
+    margin-top: 1.2em;
+    margin-bottom: 16px;
+    font-weight: 700;
+    color: #1b396a;
+}
+
+.markdown-content ul {
+    padding-left: 1.5em;
+}
+
+.markdown-content li {
+    margin-bottom: 8px;
+}
+
+.botones-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    h2 {
+        font-size: 24px;
+    }
+    .btn-secondary {
+        width: 100%;
+        display: block;
+        text-align: center;
+    }
+}
+
+.ingenierias-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.ingenierias-list li::before {
+    content: "✔️ ";
+    color: #1b396a;
+    font-weight: bold;
+    margin-right: 8px;
+}
+</style>
+{% endblock additional_styles %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ convocatoria.titulo }}</h2>
+    <p><strong>Empresa:</strong> {{ convocatoria.empresa.Nombre }}</p>
+    <br>
+    {% if convocatoria.empresa.Portada %}
+        <img src="{{ convocatoria.empresa.Portada.url }}" alt="{{ convocatoria.empresa.Nombre }}" class="empresa-img">
+    {% endif %}
+
+    <h4>Puesto:</h4>
+    <p>{{ convocatoria.puesto }}</p>
+
+    <h4>Fecha de Apertura:</h4>
+    <p>{{ convocatoria.fecha_apertura }}</p>
+
+    <h4>Fecha de Cierre:</h4>
+    <p>{{ convocatoria.fecha_cierre }}</p>
+
+    <h4>Ingenierías Dirigidas:</h4>
+    <ul class="ingenierias-list">
+        {% for ing in convocatoria.ingenierias %}
+            <li>{{ ing }}</li>
+        {% empty %}
+            <li>No especificado</li>
+        {% endfor %}
+    </ul>
+
+    <h4>Descripción:</h4>
+    <div class="markdown-content">
+        {{ convocatoria.descripcion|markdown:"default" }}
+    </div>
+
+    <hr>
+    <div class="button-group">
+        <a  href="{% url "login" %}" class="btn-primary">Iniciar Sesión</a>
+        <a href="{% url 'Convocatorias' %}" class="btn-secondary">Volver a las convocatorias</a>
+    </div>
+</div>
+{% endblock content %}

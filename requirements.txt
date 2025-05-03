@@ -2,3 +2,8 @@ Django == 5.1.2
 psycopg2 == 2.9.10
 Pillow 
 pdf2image
+Markdown == 3.8
+django-markdownx == 4.0.9
+django-multiselectfield
+markdownify
+django-markdown-deux
