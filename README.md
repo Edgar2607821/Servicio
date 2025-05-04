@@ -92,6 +92,71 @@ Accede a `http://127.0.0.1:8000` para ver la aplicación.
 
 Las contribuciones son bienvenidas. Puedes abrir issues para reportar problemas o sugerir mejoras. Para contribuir directamente, haz un fork del repositorio y crea un Pull Request.
 
+Si deseas contribuir, sigue estos pasos:
+
+1. **Abrir un Issue**
+   - Si detectas un problema o tienes una sugerencia de mejora, abre un *issue* describiendo el problema o la propuesta.
+   - Usa un título claro y proporciona toda la información necesaria para reproducir el problema (si aplica).
+
+2. **Hacer un fork del repositorio**
+   - Entra al repositorio principal y haz clic en el botón "Fork".
+   - Esto creará una copia del proyecto en tu propia cuenta de GitHub.
+
+3. **Clonar tu fork**
+   ```bash
+   git clone https://github.com/TU_USUARIO/TU_FORK.git
+   cd NOMBRE_DEL_REPOSITORIO
+
+
+4. **Crear una nueva rama para tu contribución**
+
+   ```bash
+   git checkout -b nombre-de-tu-rama
+   ```
+
+   Ejemplo:
+
+   ```bash
+   git checkout -b feature/estadisticas
+   ```
+
+5. **Realizar los cambios**
+
+   * Haz los cambios necesarios en tu rama.
+   * Asegúrate de seguir el mismo estilo de código que el resto del proyecto.
+   * Prueba tus cambios localmente.
+
+6. **Guardar y subir los cambios**
+
+   ```bash
+   git add .
+   git commit -m "Descripción breve de los cambios"
+   git push origin nombre-de-tu-rama
+   ```
+
+7. **Crear un Pull Request (PR)**
+
+   * Ve a tu repositorio en GitHub.
+   * Haz clic en "Compare & Pull Request".
+   * Llena el formulario describiendo qué cambios realizaste y por qué.
+   * Envía el Pull Request.
+
+8. **Revisión**
+
+   * El equipo de mantenimiento revisará tu PR.
+   * Puede que te hagan comentarios o sugerencias antes de aceptar los cambios.
+
+### 📝 Reglas básicas para contribuir
+
+* Sigue las buenas prácticas de codificación (usa el mismo estilo del proyecto).
+* Escribe commits claros y descriptivos.
+* Si tienes dudas, pregunta antes de hacer cambios mayores.
+* Sé respetuoso en la comunicación.
+
+**¡No te preocupes si es tu primera vez contribuyendo!**
+Puedes preguntar cualquier duda y te ayudaremos en el proceso.
+
+
 ## 📄 Licencia
 
 Este proyecto está licenciado bajo los términos definidos por el autor. Por favor, contacta al responsable del proyecto para más detalles.
@@ -101,4 +166,3 @@ Este proyecto está licenciado bajo los términos definidos por el autor. Por fa
 **Desarrollado por:** Ing. Edgar Balleza Hernández y Ing. Erick Daniel Herbert Rodríguez.
 
 **Contacto:** *(Correo Personal (Edgar Balleza): edgarballeza87@gmail.com, Correo Institucional (Edgar Balleza): 21690104@tecvalles.mx, Correo Personal (Erick Daniel): erick45her@gmail.com, Correo Institucional (Erick Daniel): 21690100@tecvalles.mx)*.
-
