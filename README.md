@@ -68,19 +68,50 @@ Servicio/
    pip install -r requirements.txt
    ```
 
-3. **Aplicar migraciones**
+3. **Configurar la base de datos PostgreSQL**
+
+   * Instala PostgreSQL en tu sistema si no lo tienes.
+   * Crea una base de datos y un usuario con permisos.
+
+   Ejemplo usando `psql`:
+
+   ```sql
+   CREATE DATABASE servicio_db;
+   CREATE USER servicio_user WITH PASSWORD 'tu_contraseña_segura';
+   ALTER ROLE servicio_user SET client_encoding TO 'utf8';
+   ALTER ROLE servicio_user SET default_transaction_isolation TO 'read committed';
+   ALTER ROLE servicio_user SET timezone TO 'UTC';
+   GRANT ALL PRIVILEGES ON DATABASE servicio_db TO servicio_user;
+   ```
+
+   * Luego, configura el archivo `settings.py` de Django con esos datos:
+
+   ```python
+   DATABASES = {
+       'default': {
+           'ENGINE': 'django.db.backends.postgresql',
+           'NAME': 'servicio_db',
+           'USER': 'servicio_user',
+           'PASSWORD': 'tu_contraseña_segura',
+           'HOST': 'localhost',
+           'PORT': '5432',
+       }
+   }
+   ```
+
+4. **Aplicar migraciones**
 
    ```bash
    python manage.py migrate
    ```
 
-4. **Crear superusuario**
+5. **Crear superusuario**
 
    ```bash
    python manage.py createsuperuser
    ```
 
-5. **Ejecutar el servidor**
+6. **Ejecutar el servidor**
 
    ```bash
    python manage.py runserver
@@ -106,6 +137,7 @@ Si deseas contribuir, sigue estos pasos:
    ```bash
    git clone https://github.com/TU_USUARIO/TU_FORK.git
    cd NOMBRE_DEL_REPOSITORIO
+
 
 
 4. **Crear una nueva rama para tu contribución**
