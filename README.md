@@ -1,6 +1,6 @@
 # Plataforma Para La Gestión y Administración De Educación Dual
 
-![Django](https://img.shields.io/badge/Django-4.x-green)
+![Django](https://img.shields.io/badge/Django-5.1.2-green)
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![License](https://img.shields.io/badge/License-Propietaria-lightgrey)
 ![Estado](https://img.shields.io/badge/Estado-En%20Desarrollo-orange)
