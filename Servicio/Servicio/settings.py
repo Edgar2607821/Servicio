@@ -75,9 +75,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Servicio.wsgi.application'
 
-CSRF_TRUSTED_ORIGINS = ['https://9611-2806-370-614c-88-794f-4c44-5df6-5958.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://ab07-45-188-125-101.ngrok-free.app']
 
 # settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'edgarballeza87@gmail.com'  # <-- Tu correo Gmail
+EMAIL_HOST_PASSWORD = 'fuwg znzc jqcn dfcq'  # <-- Contraseña de aplicación (importante)
+DEFAULT_FROM_EMAIL = 'edgarballeza87@gmail.com'
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

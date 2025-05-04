@@ -8,11 +8,22 @@ from .views import (index, login_view, QueEs, Convocatorias, Normatividad,
                     ConvocatoriaCreateView, ConvocatoriaUpdateView, ConvocatoriaDeleteView, convocatoria_detalle_alumno, convocatorias_alumno,
                     postularse, todas_las_postulaciones, postulacion_detalle, mis_postulaciones, eliminar_postulacion, eliminar_alumno,
                     detalle_convocatoria)
+from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
     path('', QueEs, name='QueEs'),
     path('login/', login_view, name='login'),  # URL para login de alumnos
     path('login_admin_view/', login_admin_view, name='login_admin'),
+    path('password_reset/', auth_views.PasswordResetView.as_view(template_name='EducacionDual/password_reset_form.html'), name='password_reset'),
+
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='EducacionDual/password_reset_done.html'), name='password_reset_done'),
+
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='EducacionDual/password_reset_confirm.html'), name='password_reset_confirm'),
+
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(
+        template_name='EducacionDual/password_reset_complete.html'
+    ), name='password_reset_complete'),
     path('Convocatorias/', Convocatorias, name='Convocatorias'),
     path('Normatividad/', Normatividad, name='Normatividad'),
     path('Galeria/', Galeria, name='Galeria'),

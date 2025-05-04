@@ -18,7 +18,7 @@
 </head>
 
 <body>
-    <section class="vh-100 " style="background-color: #1b396a;">
+    <section class="vh-96 " style="background-color: #1b396a;">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col col-xl-10">
@@ -67,7 +67,7 @@
                                             <button class="login-button" type="submit">Iniciar Sesión</button>
                                             <a href="{% url 'Registrate' %}" class="login-button">Registrarse</a>
                                         </div>
-                                        <a class="small text-muted" href="#">¿Olvidaste tu contraseña?</a>
+                                        <a class="small text-muted" href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
                                         <br>
                                         <a href="#!" class="small text-muted">Términos de uso.</a>
                                         <a href="#!" class="small text-muted">Política de privacidad</a>

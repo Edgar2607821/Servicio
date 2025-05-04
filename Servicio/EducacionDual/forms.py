@@ -12,9 +12,10 @@ class LoginForm(AuthenticationForm):
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('username', 'password1', 'password2')
+        fields = ('username', 'email', 'password1', 'password2')
         labels = {
             'username': 'Número de Control',
+            'email': 'Correo Electrónico',
             'password1': 'Contraseña',
             'password2': 'Confirmación de Contraseña',
         }
@@ -27,14 +28,14 @@ class AdminProfileForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['Nombre', 'Apellidos', 'Correo_inst', 'Carrera', 'Fecha_nacimiento', 'Genero', 'Telefono', 'Semestre']
+        fields = ['Nombre', 'Apellidos', 'Carrera', 'Fecha_nacimiento', 'Genero', 'Telefono', 'Semestre']
         widgets = {
             'Fecha_nacimiento': forms.DateInput(attrs={'type': 'date'}),
         }
         labels = {
             'Nombre': 'Nombre',
             'Apellidos': 'Apellidos',
-            'Correo_inst': 'Correo Institucional',
+            
             'Carrera': 'Carrera',
             'Fecha_nacimiento': 'Fecha de Nacimiento',
             'Genero': 'Género',

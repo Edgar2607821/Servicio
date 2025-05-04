@@ -39,7 +39,6 @@ class UserProfile(models.Model):
     # Campos adicionales para el perfil de alumno
     Nombre = models.CharField(max_length=70, blank=True, null=True)
     Apellidos = models.CharField(max_length=70, blank=True, null=True)
-    Correo_inst = models.EmailField(max_length=70, blank=True, null=True)
     Carrera = models.CharField(max_length=50, blank=True, null=True, choices=CARRERA_CHOICES)
     Fecha_nacimiento = models.DateField(null=True, blank=True)
     Genero = models.CharField(max_length=10, blank=True, null=True, choices=SEXO_CHOICES)

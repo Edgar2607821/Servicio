@@ -12,6 +12,9 @@
         border-radius: 10px;
         box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
         text-align: left;
+        max-height: 84vh;
+        overflow-y: auto;
+        margin-top: 10px;
     }
 
     /* Encabezado del perfil */
@@ -117,6 +120,22 @@
             grid-template-columns: 1fr;
         }
     }
+
+    @media (max-width: 768px) {
+        .profile-container {
+            padding: 20px;
+        }
+    
+        .profile-info li {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    
+        .profile-info label {
+            margin-bottom: 5px;
+        }
+    }
+
 </style>
 {% endblock additional_styles %}
 
@@ -126,7 +145,7 @@
     <ul class="profile-info">
         <li><label><i class="fas fa-user"></i> Nombre de Usuario:</label> <span>{{ profile.NoControl.username }}</span></li>
         <li><label><i class="fas fa-user-tie"></i> Nombre Completo:</label> <span>{{ profile.Nombre }} {{ profile.Apellidos }}</span></li>
-        <li><label><i class="fas fa-envelope"></i> Correo Electrónico:</label> <span>{{ profile.Correo_inst }}</span></li>
+        <li><label><i class="fas fa-envelope"></i> Correo Electrónico:</label> <span>{{ profile.NoControl.email }}</span></li>
         <li><label><i class="fas fa-graduation-cap"></i> Carrera:</label> <span>{{ profile.get_Carrera_display }}</span></li>
         <li><label><i class="fas fa-calendar"></i> Fecha de Nacimiento:</label> <span>{{ profile.Fecha_nacimiento|date:"d-m-Y" }}</span></li>
         <li><label><i class="fas fa-venus-mars"></i> Género:</label> <span>{{ profile.get_Genero_display }}</span></li>
