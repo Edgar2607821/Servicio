@@ -115,3 +115,35 @@ class Postulacion(models.Model):
     def __str__(self):
         return f"{self.alumno} - {self.convocatoria} ({self.estado})"
 
+class IngenieriaGaleria(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(blank=True, null=True)
+    imagen_portada = models.ImageField(upload_to='ingenierias_portadas/', blank=True, null=True)
+    imagen_logo = models.ImageField(upload_to='ingenierias_logo/', blank=True, null=True)
+
+    def __str__(self):
+        return self.nombre
+
+
+class Proyecto(models.Model):
+    empresa = models.ForeignKey(Empresas, on_delete=models.CASCADE)
+    ingenieria = models.ForeignKey(IngenieriaGaleria, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.empresa.Nombre} - {self.ingenieria.nombre} - {self.nombre}"
+
+
+class Evidencia(models.Model):
+    proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, related_name='evidencias')
+    titulo = models.CharField(max_length=100)
+    descripcion = models.TextField(blank=True, null=True)
+    imagen = models.ImageField(upload_to='evidencias/')
+    fecha_subida = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.titulo
+    
+
+

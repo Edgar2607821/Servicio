@@ -152,27 +152,23 @@
 {% endblock additional_styles %}
 
 {% block content %}
-
-<h2>Consulta las empresas participantes donde los alumnos han desarrollado proyectos y colaborado durante su 
-    estancia en el modelo de educación dual. Cada empresa cuenta con información general y las ingenierías 
-    involucradas en sus programas.</h2>
-
 <section class="content-wrapper">
     <div class="mini-posts">
         <!-- Mini Post 1 -->
-        {% for empresa in empresas %}
+        {% for ingenieria in ingenierias %}
         <article class="mini-post">
             <header>
-                <h3><a href="{% url 'galeria_empresa_detalle' empresa.id %}">{{empresa.Nombre}}</a></h3>
-                <a href="{% url 'galeria_empresa_detalle' empresa.id %}" class="author">
-                    <img src="{{ empresa.Logotipo.url }}" alt="{{ empresa.Nombre }}" />
+                <h3><a href="{% url 'galeria_empresa_ingenieria_detalle' empresa.id ingenieria.id %}">{{ ingenieria.nombre }}</a></h3>
+                <a href="{% url 'galeria_empresa_ingenieria_detalle' empresa.id ingenieria.id %}" class="author">
+                    <img src="{{ ingenieria.imagen_portada.url }}" alt="{{ ingenieria.nombre }}" />
                 </a>
             </header>
-            <a href="{% url 'galeria_empresa_detalle' empresa.id %}" class="image">
-                <img src="{{ empresa.Portada.url }}" alt="{{ empresa.Nombre }}" />
-                <span class="link-text">Más Detalles</span>
+            <a href="{% url 'galeria_empresa_ingenieria_detalle' empresa.id ingenieria.id %}" class="image">
+                <img src="{{ ingenieria.imagen_portada.url }}" alt="{{ ingenieria.nombre }}" />
+                <span class="link-text">Ver proyectos</span>
             </a>
         </article>
+
         {% empty %}
         <p style="text-align: center;">No hay Empresas disponibles en este momento.</p>
         {% endfor %}

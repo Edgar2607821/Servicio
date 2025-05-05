@@ -1,0 +1,121 @@
+{% extends "EducacionDual/index.html" %}
+{% load static %}
+
+{% block additional_styles %}
+<style>
+    .content-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 1em;
+        padding: 1em;
+        font-family: Arial, sans-serif;
+    }
+
+    .header-info {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .header-info h2 {
+        color: #1b396a;
+    }
+
+    .mini-posts {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2em;
+        padding: 1em 3em;
+        width: 100%;
+    }
+
+    .mini-post {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
+        width: calc(30% - 2em);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .mini-post:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .mini-post header {
+        padding: 0.8em;
+        background-color: #ecf0f1;
+        text-align: center;
+    }
+
+    .mini-post header h3 {
+        font-size: 1.3em;
+        color: #2c3e50;
+    }
+
+    .mini-post .image {
+        position: relative;
+        display: block;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .mini-post .image img {
+        width: 100%;
+        height: auto;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .mini-post .image:hover img {
+        transform: scale(1.08);
+    }
+
+    .mini-post .description {
+        padding: 0.8em;
+        color: #555;
+        font-size: 0.95em;
+    }
+
+    @media screen and (max-width: 992px) {
+        .mini-post {
+            width: 45%;
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        .mini-post {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock additional_styles %}
+
+{% block content %}
+<section class="content-wrapper">
+    <div class="header-info">
+        <h2>Evidencias - {{ empresa.Nombre }} / {{ ingenieria.nombre }}</h2>
+        <p>Selecciona una imagen para verla en detalle.</p>
+    </div>
+
+    <div class="mini-posts">
+        {% for evidencia in evidencias %}
+            <article class="mini-post">
+                <header>
+                    <h3>{{ evidencia.titulo }}</h3>
+                </header>
+                <a href="{{ evidencia.imagen.url }}" target="_blank" class="image">
+                    <img src="{{ evidencia.imagen.url }}" alt="{{ evidencia.titulo }}">
+                </a>
+                <div class="description">
+                    {{ evidencia.descripcion }}
+                </div>
+            </article>
+        {% empty %}
+            <p style="text-align: center;">No hay evidencias registradas para esta ingeniería.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock content %}

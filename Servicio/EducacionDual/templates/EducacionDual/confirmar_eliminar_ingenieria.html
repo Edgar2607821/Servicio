@@ -1,0 +1,94 @@
+{% extends "EducacionDual/baseAdministrador.html" %}
+
+{% block additional_styles %}
+<style>
+/* Contenedor del formulario */
+.container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Título del formulario */
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #dc3545; /* Rojo para eliminar */
+    margin-bottom: 20px;
+}
+
+/* Texto de confirmación */
+p {
+    font-size: 20px;
+    color: #333333;
+    margin-bottom: 30px;
+}
+
+/* Contenedor de botones */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* Botón Eliminar */
+.btn-danger {
+    background-color: #dc3545;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 48%;
+    text-align: center;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+/* Botón Cancelar */
+.btn-secondary {
+    background-color: #6c757d;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    width: 48%;
+    text-align: center;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    color: #ffffff;
+    cursor: pointer;
+}
+</style>
+{% endblock additional_styles %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Eliminar Ingeniería</h2>
+    <p>¿Estás seguro de que deseas eliminar la ingeniería <b>"{{ ingenieria.nombre }}"</b>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="button-group">
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <a href="{% url 'lista_ingenierias' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

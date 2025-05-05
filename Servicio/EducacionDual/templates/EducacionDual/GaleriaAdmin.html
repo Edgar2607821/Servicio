@@ -1,0 +1,110 @@
+{% extends "EducacionDual/baseAdministrador.html" %}
+
+{% block additional_styles %}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;1,800&family=Poetsen+One&display=swap');
+        
+        /* Contenedor principal */
+        .bien {
+            width: 80%;
+            height: auto;
+            margin-top: 60px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0px 0px 10px rgb(105, 105, 105);
+            border-radius: 10px;
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            max-height: 84vh;
+            overflow-y: auto;
+        }
+
+        /* Título */
+        .bien h1 {
+            color: #1b396a;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 30px;
+        }
+
+        /* Contenedor de enlaces en cuadrícula */
+        .button-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        /* Estilos de botones */
+        .button-grid a {
+            flex: 1 1 45%; /* Dos columnas en pantallas más grandes */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background-color: #1b396a;
+            color: #fff;
+            text-decoration: none;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 20px;
+            font-family: 'Poetsen One', sans-serif;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .button-grid a:hover {
+            background-color: #2d4d87;
+        }
+
+        /* Iconos */
+        .button-grid a i {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        /* Responsive para pantallas más pequeñas */
+        @media (max-width: 768px) {
+            .button-grid a {
+                flex: 1 1 100%; /* Coloca un botón por fila en pantallas pequeñas */
+            }
+        }
+
+        .Principal i{
+            color: #3062b2;
+        }
+
+        .Principal {
+            color: #3062b2;
+        }
+    </style>
+{% endblock additional_styles %}
+
+{% block content %}
+    <div class="bien">
+        <div class="credencial">
+            <h2>Selecciona una categoría para administrar las evidencias de los alumnos.</h2>
+            <h2>Puedes crear nuevas entradas o editar las existentes.</h2>
+            <br>
+            <div class="button-grid">
+                <a href="{% url "lista_ingenierias" %}">
+                    <i class="fas fa-tools"></i>
+                    <span>Ingenierias</span>
+                </a>
+                <a href="{% url "lista_proyectos" %}">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Proyectos</span>
+                </a>
+                <a href="{% url "lista_evidencias" %}">
+                    <i class="fas fa-images"></i>
+                    <span>Evidencias</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

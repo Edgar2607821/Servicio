@@ -1,0 +1,204 @@
+{% extends "EducacionDual/baseAdministrador.html" %}
+
+{% block additional_styles %}
+<style>
+/* Usamos los mismos estilos que tu ejemplo */
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    max-height: 87vh;
+    overflow-y: auto;
+}
+
+.profile-header {
+    text-align: center;
+    color: #1b396a;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+h2.text-center {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1b396a;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.table-container {
+    max-height: 850px;
+    overflow-y: auto;
+    margin-top: 20px;
+    border-radius: 10px;
+    border: 1px solid #dddddd;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.table thead {
+    background-color: #1b396a;
+    color: #ffffff;
+    font-size: 18px;
+    text-align: left;
+}
+
+.table th, .table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.table .filter-input {
+    width: 90%;
+    margin-top: 8px;
+    padding: 6px 8px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.btn-info {
+    background-color: #1b396a;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn-info:hover {
+    background-color: #2d4d87;
+}
+
+
+/* Botón Crear */
+.btn-primary {
+    background-color: #1b396a;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.btn-primary:hover {
+    background-color: #2d4d87;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+
+/* Botón Editar */
+.btn-warning {
+    background-color: #ffc107;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+    width: auto; /* Ajusta el ancho al contenido */
+    text-align: center;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    transform: scale(1.05);
+    text-decoration: none;
+    color: #ffffff;
+}
+
+/* Botón Eliminar */
+.btn-danger {
+    background-color: #dc3545;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+    width: auto; /* Ajusta el ancho al contenido */
+    text-align: center;
+    margin-top: 5px;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    color: #ffffff;
+    transform: scale(1.05);
+    text-decoration: none;
+}
+
+
+
+</style>
+{% endblock additional_styles %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="profile-header">Lista de Ingenierías</div>
+
+    <table class="table" id="TableIngenierias">
+        <thead>
+            <tr>
+                <th>Nombre de la Ingeniería<br><input type="text" class="filter-input" placeholder="Filtrar por Nombre"></th>
+
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ingenieria in ingenierias %}
+                <tr>
+                    <td>{{ ingenieria.nombre }}</td>
+                    
+                    <td>
+                        <a href="{% url 'editar_ingenieria' ingenieria.id %}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{% url 'eliminar_ingenieria' ingenieria.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">No hay ingenierías registradas.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'crear_ingenieria' %}" class="btn btn-primary">Crear Nueva Ingeniería </a>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const filterInputs = document.querySelectorAll('.filter-input');
+        filterInputs.forEach((input, index) => {
+            input.addEventListener('keyup', function () {
+                const filter = input.value.toLowerCase();
+                const table = document.getElementById('TableIngenierias');
+                const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+                Array.from(rows).forEach(row => {
+                    const cell = row.getElementsByTagName('td')[index];
+                    if (cell) {
+                        const cellText = cell.textContent || cell.innerText;
+                        row.style.display = cellText.toLowerCase().includes(filter) ? '' : 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

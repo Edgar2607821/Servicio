@@ -7,13 +7,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .forms import (LoginForm, AuthenticationForm, CustomUserCreationForm, 
-                    AdminProfileForm, UserProfileForm, EmpresasForm, DocumentoForm, ConvocatoriaForm)
+from .forms import (EvidenciaForm, LoginForm, AuthenticationForm, CustomUserCreationForm, 
+                    AdminProfileForm, ProyectoForm, UserProfileForm, EmpresasForm, DocumentoForm, ConvocatoriaForm, IngenieriaGaleriaForm)
 
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash  # Evita que el usuario sea desconectado al cambiar la contraseña
 from django.http import FileResponse, Http404
-from .models import Documento, UserProfile, Empresas, Convocatoria, Postulacion
+from .models import Documento, UserProfile, Empresas, Convocatoria, Postulacion, IngenieriaGaleria, Proyecto, Evidencia
 from pdf2image import convert_from_path
 from django.conf import settings
 import os
@@ -83,9 +83,26 @@ def Empresa_Detalle(request, empresa_id):
 
 
 def Galeria(request): 
-    return render(request, 'EducacionDual/Galeria.html')
+    empresas = Empresas.objects.all()
+    return render(request, 'EducacionDual/Galeria.html', {'empresas': empresas})
 
-#Alumno
+def Galeria_ingenierias(request, empresa_id):
+    empresa = get_object_or_404(Empresas, id=empresa_id)
+    proyectos = Proyecto.objects.filter(empresa=empresa)
+    ingenierias = IngenieriaGaleria.objects.filter(id__in=proyectos.values_list('ingenieria_id', flat=True).distinct())
+    return render(request, 'EducacionDual/galeria_ingenierias.html', {'empresa': empresa, 'ingenierias': ingenierias})
+
+def Galeria_evidencias(request, empresa_id, ingenieria_id):
+    empresa = get_object_or_404(Empresas, id=empresa_id)
+    ingenieria = get_object_or_404(IngenieriaGaleria, id=ingenieria_id)
+    proyectos = Proyecto.objects.filter(empresa=empresa, ingenieria=ingenieria)
+    evidencias = Evidencia.objects.filter(proyecto__in=proyectos)
+    return render(request, 'EducacionDual/galeria_evidencias.html', {
+        'empresa': empresa, 
+        'ingenieria': ingenieria, 
+        'evidencias': evidencias
+    })
+
 
 @login_required
 def principalAlumno(request):
@@ -316,8 +333,10 @@ def Alumno_perfil_detalle_view(request, user_id):
 
 def eliminar_alumno(request, alumno_id):
     alumno = get_object_or_404(UserProfile, id=alumno_id)
+    usuario = alumno.NoControl  # El User asociado
     if request.method == 'POST':
         alumno.delete()
+        usuario.delete()   # Elimina el usuario (auth_user)
         messages.success(request, "El alumno ha sido eliminado correctamente.")
         return redirect('lista_Alumnos')  # Cambia al nombre correcto de tu lista de alumnos
 
@@ -448,3 +467,138 @@ def eliminar_postulacion(request, postulacion_id):
     return render(request, 'EducacionDual/eliminar_postulacion.html', {
         'postulacion': postulacion
     })
+
+# Lista de ingenierías
+@login_required
+def lista_ingenierias(request):
+    ingenierias = IngenieriaGaleria.objects.all()
+    return render(request, 'EducacionDual/lista_ingenierias.html', {'ingenierias': ingenierias})
+
+# Crear nueva ingeniería
+@login_required
+def crear_ingenieria(request):
+    if request.method == 'POST':
+        form = IngenieriaGaleriaForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Ingeniería creada exitosamente.')
+            return redirect('lista_ingenierias')
+    else:
+        form = IngenieriaGaleriaForm()
+    return render(request, 'EducacionDual/form_ingenieria.html', {'form': form, 'titulo': 'Crear Ingeniería'})
+
+# Editar ingeniería
+@login_required
+def editar_ingenieria(request, pk):
+    ingenieria = get_object_or_404(IngenieriaGaleria, pk=pk)
+    if request.method == 'POST':
+        form = IngenieriaGaleriaForm(request.POST, request.FILES, instance=ingenieria)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Ingeniería actualizada exitosamente.')
+            return redirect('lista_ingenierias')
+    else:
+        form = IngenieriaGaleriaForm(instance=ingenieria)
+    return render(request, 'EducacionDual/form_ingenieria.html', {'form': form, 'titulo': 'Editar Ingeniería'})
+
+# Eliminar ingeniería
+@login_required
+def eliminar_ingenieria(request, pk):
+    ingenieria = get_object_or_404(IngenieriaGaleria, pk=pk)
+    if request.method == 'POST':
+        ingenieria.delete()
+        messages.success(request, 'Ingeniería eliminada exitosamente.')
+        return redirect('lista_ingenierias')
+    return render(request, 'EducacionDual/confirmar_eliminar_ingenieria.html', {'ingenieria': ingenieria})
+
+
+
+# Lista de proyectos
+@login_required
+def lista_proyectos(request):
+    proyectos = Proyecto.objects.all()
+    return render(request, 'EducacionDual/lista_proyectos.html', {'proyectos': proyectos})
+
+# Crear nuevo proyecto
+@login_required
+def crear_proyecto(request):
+    if request.method == 'POST':
+        form = ProyectoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Proyecto creado exitosamente.')
+            return redirect('lista_proyectos')
+    else:
+        form = ProyectoForm()
+    return render(request, 'EducacionDual/form_proyecto.html', {'form': form, 'titulo': 'Crear Proyecto'})
+
+# Editar proyecto
+@login_required
+def editar_proyecto(request, pk):
+    proyecto = get_object_or_404(Proyecto, pk=pk)
+    if request.method == 'POST':
+        form = ProyectoForm(request.POST, instance=proyecto)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Proyecto actualizado exitosamente.')
+            return redirect('lista_proyectos')
+    else:
+        form = ProyectoForm(instance=proyecto)
+    return render(request, 'EducacionDual/form_proyecto.html', {'form': form, 'titulo': 'Editar Proyecto'})
+
+# Eliminar proyecto
+@login_required
+def eliminar_proyecto(request, pk):
+    proyecto = get_object_or_404(Proyecto, pk=pk)
+    if request.method == 'POST':
+        proyecto.delete()
+        messages.success(request, 'Proyecto eliminado exitosamente.')
+        return redirect('lista_proyectos')
+    return render(request, 'EducacionDual/confirmar_eliminar_proyecto.html', {'proyecto': proyecto})
+
+# Lista de evidencias
+@login_required
+def lista_evidencias(request):
+    evidencias = Evidencia.objects.all()
+    return render(request, 'EducacionDual/lista_evidencias.html', {'evidencias': evidencias})
+
+# Crear nueva evidencia
+@login_required
+def crear_evidencia(request):
+    if request.method == 'POST':
+        form = EvidenciaForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Evidencia agregada exitosamente.')
+            return redirect('lista_evidencias')
+    else:
+        form = EvidenciaForm()
+    return render(request, 'EducacionDual/form_evidencia.html', {'form': form, 'titulo': 'Agregar Evidencia'})
+
+# Editar evidencia
+@login_required
+def editar_evidencia(request, pk):
+    evidencia = get_object_or_404(Evidencia, pk=pk)
+    if request.method == 'POST':
+        form = EvidenciaForm(request.POST, request.FILES, instance=evidencia)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Evidencia actualizada exitosamente.')
+            return redirect('lista_evidencias')
+    else:
+        form = EvidenciaForm(instance=evidencia)
+    return render(request, 'EducacionDual/form_evidencia.html', {'form': form, 'titulo': 'Editar Evidencia'})
+
+# Eliminar evidencia
+@login_required
+def eliminar_evidencia(request, pk):
+    evidencia = get_object_or_404(Evidencia, pk=pk)
+    if request.method == 'POST':
+        evidencia.delete()
+        messages.success(request, 'Evidencia eliminada exitosamente.')
+        return redirect('lista_evidencias')
+    return render(request, 'EducacionDual/confirmar_eliminar_evidencia.html', {'evidencia': evidencia})
+
+
+def GaleriaAdmin(request): 
+    return render(request, 'EducacionDual/GaleriaAdmin.html')

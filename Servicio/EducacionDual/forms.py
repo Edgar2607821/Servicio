@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
-from .models import UserProfile, Empresas, Documento, Convocatoria
+from .models import UserProfile, Empresas, Documento, Convocatoria, Proyecto, Evidencia, IngenieriaGaleria
 
 
 class LoginForm(AuthenticationForm):
@@ -98,4 +98,24 @@ class ConvocatoriaForm(forms.ModelForm):
 
         return cleaned_data
     
-    
+class IngenieriaGaleriaForm(forms.ModelForm):
+    class Meta:
+        model = IngenieriaGaleria
+        fields = ['nombre', 'descripcion', 'imagen_portada', 'imagen_logo']
+
+        labels = {
+            'nombre': 'Nombre de la Ingeniería',
+            'descripcion': 'Descripción',
+            'imagen_portada': 'Imagen de Portada',
+            'imagen_logo': 'Imagen de Logotipo',
+        }
+
+class ProyectoForm(forms.ModelForm):
+    class Meta:
+        model = Proyecto
+        fields = ['empresa', 'ingenieria', 'nombre', 'descripcion']
+
+class EvidenciaForm(forms.ModelForm):
+    class Meta:
+        model = Evidencia
+        fields = ['proyecto', 'titulo', 'descripcion', 'imagen']
