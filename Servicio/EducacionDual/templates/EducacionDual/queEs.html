@@ -1,24 +1,126 @@
 {% extends "EducacionDual/index.html" %}
 {% load static %}
 {% block additional_styles %}
+<style>
+    /* Estilo general de la sección */
+    .hero-educacion-dual {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 3em 2em;
+        background: linear-gradient(135deg, #f8f9fa, #e9eff5);
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        gap: 2em;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    /* ::before para un efecto visual */
+    .hero-educacion-dual::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        background: rgba(27, 57, 106, 0.1);
+        border-radius: 50%;
+        z-index: 0;
+    }
+    
+    .hero-educacion-dual .texto {
+        flex: 1;
+        z-index: 1;
+        max-width: 600px;
+    }
+    
+    .hero-educacion-dual .texto h1 {
+        font-size: 2.6em;
+        font-weight: 800;
+        color: #1b396a;
+        margin-bottom: 0.5em;
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    .hero-educacion-dual .texto p {
+        font-size: 1.2em;
+        line-height: 1.8;
+        color: #333;
+        font-family: 'Roboto', sans-serif;
+        text-align: justify;
+    }
+    
+    /* Imagen con efecto "glass" */
+    .hero-educacion-dual .imagen {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+    }
+    
+    .hero-educacion-dual .imagen img {
+        max-width: 400px;
+        width: 90%;
+        border-radius: 15px;
+        backdrop-filter: blur(5px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Responsive */
+    @media (max-width: 992px) {
+        .hero-educacion-dual {
+            flex-direction: column;
+            text-align: center;
+        }
+    
+        .hero-educacion-dual .texto h1 {
+            font-size: 2em;
+        }
+    
+        .hero-educacion-dual .texto p {
+            font-size: 1.1em;
+        }
+    
+        .hero-educacion-dual .imagen img {
+            max-width: 80%;
+        }
+    }
+    
+</style>
 {% endblock additional_styles %}
 {% block content %}
-<div class="contenedor">
-    <div class="parrafo">
-        <h1>¿Qué es la educación dual?</h1>
-    <br>
-    <p>
-        La educación dual en el Tecnológico Nacional de México (TecNM) 
-        es un modelo que integra la enseñanza académica con la formación práctica en empresas, 
-        permitiendo a los estudiantes aplicar los conocimientos adquiridos en el aula directamente 
-        en el entorno laboral. Este enfoque formativo responde a las necesidades actuales de la 
-        industria y fortalece el perfil profesional de los estudiantes, preparándolos para enfrentar 
-        los retos del mundo real.
 
-    </p>
+<div class="hero-educacion-dual">
+    <div class="texto">
+        <h1>¿Qué es la educación dual?</h1>
+        <p>
+            La educación dual en el Tecnológico Nacional de México (TecNM) es un modelo que integra la enseñanza académica con la formación práctica en empresas, permitiendo a los estudiantes aplicar los conocimientos adquiridos en el aula directamente en el entorno laboral.
+        </p>
+        <p>
+            Este enfoque formativo responde a las necesidades actuales de la industria y fortalece el perfil profesional de los estudiantes, preparándolos para enfrentar los retos del mundo real.
+        </p>
     </div>
     <div class="imagen">
-        <img src="{% static 'img/logoanimado2.gif' %}">
+        <img src="{% static 'img/logoanimado2.gif' %}" alt="Logo TecNM">
     </div>
 </div>
 {% endblock content %}
+
+{% block additional_script %}
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        const hero = document.querySelector('.hero-educacion-dual');
+        hero.style.opacity = 0;
+        hero.style.transform = "translateY(20px)";
+        setTimeout(() => {
+            hero.style.transition = "all 1s ease";
+            hero.style.opacity = 1;
+            hero.style.transform = "translateY(0)";
+        }, 300);
+    });
+</script>
+
+{% endblock additional_script%}    

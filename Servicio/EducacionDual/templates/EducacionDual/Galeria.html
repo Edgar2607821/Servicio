@@ -8,6 +8,29 @@
         font-family: 'Poppins', sans-serif;
     }
 
+    .intro-galeria {
+        background: linear-gradient(90deg, #1b396a 0%, #4a69bd 100%);
+        padding: 30px 20px;
+        
+        text-align: center;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        margin-bottom: 30px;
+        color: #fff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .intro-galeria h2 {
+        font-size: 2em;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .intro-galeria p {
+        font-size: 1.1em;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
     .content-wrapper {
         display: flex;
         justify-content: space-between;
@@ -183,15 +206,29 @@
         .mini-post {
             width: 100%;
         }
+
+        .intro-galeria h2 {
+            font-size: 1.6em;
+        }
+
+        .intro-galeria p {
+            font-size: 1em;
+        }
+
     }
 </style>
 {% endblock additional_styles %}
 
 {% block content %}
-
-<h2>Consulta las empresas participantes donde los alumnos han desarrollado proyectos y colaborado durante su 
-    estancia en el modelo de educación dual. Cada empresa cuenta con información general y las ingenierías 
-    involucradas en sus programas.</h2>
+<br>
+<div class="intro-galeria">
+    <h2>Galería de Proyectos y Evidencias</h2>
+    <p>
+        Explora las evidencias de los proyectos desarrollados en colaboración con empresas líderes y estudiantes de diversas ingenierías. 
+        Descubre las soluciones innovadoras y el impacto positivo que generan las prácticas profesionales, residencias y educación dual en 
+        sectores clave de la industria y la sociedad.
+    </p>
+</div>
 
 <section class="content-wrapper">
     <div class="mini-posts">
@@ -223,13 +260,12 @@
     
 <script>
     // Animación entrada
-    window.addEventListener('scroll', function() {
+    window.addEventListener('DOMContentLoaded', function() {
         const posts = document.querySelectorAll('.mini-post');
-        posts.forEach(post => {
-            const rect = post.getBoundingClientRect();
-            if(rect.top < window.innerHeight - 50) {
+        posts.forEach((post, index) => {
+            setTimeout(() => {
                 post.classList.add('visible');
-            }
+            }, index * 500); // 150ms de diferencia entre cada post
         });
     });
 

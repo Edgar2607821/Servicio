@@ -5,6 +5,30 @@
 <style>
     /* Estilos de mini-posts */
 
+    .intro-normatividad {
+        background: linear-gradient(90deg, #1b396a 0%, #4a69bd 100%);
+        padding: 30px 20px;
+        
+        text-align: center;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        margin-bottom: 30px;
+        color: #fff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .intro-normatividad h2 {
+        font-size: 2em;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .intro-normatividad p {
+        font-size: 1.1em;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+
     .content-wrapper {
         display: flex;
         justify-content: space-between;
@@ -47,6 +71,15 @@
         transition: all 0.3s ease-in-out;
         width: calc(50% - 1em);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        /* Animación entrada */
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .mini-post.visible {
+        opacity: 1;
+        transform: translateY(0);
     }
 
     .mini-post:hover {
@@ -161,6 +194,15 @@
         .mini-post {
             width: calc(45% - 2em);
         }
+
+        .intro-normatividad h2 {
+            font-size: 1.5em;
+        }
+
+        .intro-normatividad p {
+            font-size: 1em;
+        }
+        
     }
 
     @media screen and (max-width: 480px) {
@@ -181,8 +223,17 @@
 {% endblock additional_styles %}
 
 {% block content %}
- 
 
+<br>
+
+<div class="intro-normatividad">
+    <h2>Normatividad y Documentos Oficiales</h2>
+    <p>
+        Consulta las normativas, reglamentos y lineamientos oficiales que rigen las actividades académicas y administrativas del 
+        Tecnológico Nacional de México. Mantente informado y cumple con los requisitos establecidos para el desarrollo de proyectos, 
+        prácticas profesionales y educación dual.
+    </p>
+</div>
 
 <section class="content-wrapper">
     <div class="mini-posts">
@@ -209,3 +260,21 @@
 </section>
 
 {% endblock content %}
+
+{% block additional_script %}
+    
+<script>
+    // Animación entrada
+    window.addEventListener('DOMContentLoaded', function() {
+        const posts = document.querySelectorAll('.mini-post');
+        posts.forEach((post, index) => {
+            setTimeout(() => {
+                post.classList.add('visible');
+            }, index * 500); // 150ms de diferencia entre cada post
+        });
+    });
+
+</script>
+
+
+{% endblock additional_script %}

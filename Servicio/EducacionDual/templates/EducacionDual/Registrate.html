@@ -11,8 +11,60 @@
 
     <link rel="stylesheet" href="{% static 'css/stylelogin.css'%}">
     {% block additional_styles %}
-    <style></style>
+    <style>
+
+        /* From Uiverse.io by alexruix */ 
+        .input-group {
+        position: relative;
+        width: 100%;    /* mejor que fijo */
+        max-width: 500px;
+        border-radius: 1rem;
+        overflow: visible;
+        }
+
+        .input {
+        border: solid 1.5px #9e9e9e;
+        border-radius: 1rem !important;
+        background: none;
+        padding: 1rem;
+        font-size: 1rem;
+        color:rgb(146, 146, 146);
+        transition: border 150ms cubic-bezier(0.4,0,0.2,1);
+        width: 100%;   /* que use todo el ancho disponible */
+        max-width: 100%; /* aquí estaba mal: antes solo decía 100 (faltaba el %) */
+        
+        }
+
+        .user-label {
+        position: absolute;
+        left: 15px;
+        color: rgb(146, 146, 146);
+        pointer-events: none;
+        transform: translateY(1rem);
+        transition: 150ms cubic-bezier(0.4,0,0.2,1);
+        border-radius: 1rem;
+        
+        }
+
+        .input:focus, input:valid {
+        outline: none;
+        border: 1.5px solid rgb(0, 87, 226);
+        color: rgb(66, 66, 66);
+        }
+
+        .input:focus ~ label, input:valid ~ label {
+        transform: translateY(-50%) scale(0.8);
+        background-color:rgb(255, 255, 255);
+        padding: 0 .2em;
+        color: rgb(0, 87, 226);
+        }
+        
+        
+
+    </style>
     {% endblock additional_styles %}
+
+
 
 </head>
 
@@ -40,35 +92,36 @@
                                                     <img src="{% static 'img/image.jpg' %}" style="width: 200px;">
                                                 </span>
                                             </div>
-    
+                                            <br>
                                             <h4 class="Iniciar" style="letter-spacing: 1px;">Registrarte</h4>
-    
+                                            <br>
                                             <!-- Número de Control -->
-                                            <div class="form-outline mb-4">
-                                                <label for="username">Número de Control:</label>
-                                                <input type="text" id="username" name="username" value="{{ form.username.value|default_if_none:'' }}" class="form-control form-control-lg" placeholder="Número de Control" required>
+                                            <div class="input-group">
+                                                <input type="text" id="username" name="username" value="{{ form.username.value|default_if_none:'' }}" class="input" required>
+                                                <label for="input" class="user-label">Número de Control:</label>
                                                 {{ form.username.errors }}
-                                            </div>
-                                            
-                                            <div class="form-outline mb-4">
-                                                <label for="email">Correo Institucional:</label>
-                                                <input type="email" id="email" name="email" value="{{ form.email.value|default_if_none:'' }}" class="form-control form-control-lg" placeholder="Correo Institucional" required>
+                                            </div>  
+                                            <br>
+                                            <div class="input-group">
+                                                <input type="email" id="email" name="email" value="{{ form.email.value|default_if_none:'' }}" class="input" required>
+                                                <label for="input" class="user-label">Correo Institucional:</label>
                                                 {{ form.email.errors }}
                                             </div>
-    
+                                            <br>
                                             <!-- Contraseña -->
-                                            <div class="form-outline mb-4">
-                                                <label for="password1">Contraseña:</label>
-                                                <input type="password" id="password1" name="password1" class="form-control form-control-lg" placeholder="Contraseña" required>
+                                            <div class="input-group">
+                                                <input type="password" id="password1" name="password1" class="input" required>
+                                                <label for="input" class="user-label">Contraseña:</label>
                                                 {{ form.password1.errors }}
                                             </div>
-    
+                                            <br>
                                             <!-- Confirmación de Contraseña -->
-                                            <div class="form-outline mb-4">
-                                                <label for="password2">Confirmar Contraseña:</label>
-                                                <input type="password" id="password2" name="password2" class="form-control form-control-lg" placeholder="Confirma tu contraseña" required>
+                                            <div class="input-group">
+                                                <input type="password" id="password2" name="password2" class="input" required>
+                                                <label for="input" class="user-label">Confirma tu contraseña:</label>
                                                 {{ form.password2.errors }}
                                             </div>
+                                            <br>
     
                                             <!-- Botón de Registro -->
                                             <button class="login-button" type="submit">Registrarse</button>

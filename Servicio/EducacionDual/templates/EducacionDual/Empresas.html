@@ -3,6 +3,30 @@
 
 {% block additional_styles %}
 <style>
+
+    .intro-empresas {
+        background: linear-gradient(90deg, rgb(208, 210, 213) 0%,rgb(255, 255, 255) 100%);
+        padding: 30px 20px;
+        text-align: center;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        margin-bottom: 30px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #1b396a;
+    }
+
+    .intro-empresas h2 {
+        font-size: 2em;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .intro-empresas p {
+        font-size: 1.1em;
+        color: #555;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
     .content-wrapper {
         display: flex;
         justify-content: space-between;
@@ -31,7 +55,17 @@
         transition: all 0.3s ease-in-out;
         width: calc(30% - 2em);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        /* Animación entrada */
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
     }
+
+    .mini-post.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
 
     .mini-post:hover {
         transform: scale(1.02);
@@ -133,6 +167,15 @@
         .mini-post header p {
             font-size: 0.9em;
         }
+
+        .intro-empresas h2 {
+            font-size: 1.5em;
+        }
+
+        .intro-empresas p {
+            font-size: 1em;
+        }
+
     }
 
     @media screen and (max-width: 480px) {
@@ -152,6 +195,16 @@
 {% endblock additional_styles %}
 
 {% block content %}
+<br>
+<div class="intro-empresas">
+    <h2>Conoce a Nuestras Empresas Asociadas</h2>
+    <p>
+        Aquí encontrarás las organizaciones que colaboran con nuestro programa de Educación Dual y Prácticas Profesionales.
+        Selecciona una empresa para ver sus detalles e información disponibles.
+    </p>
+</div>
+
+
 <section class="content-wrapper">
     <div class="mini-posts">
         <!-- Mini Post 1 -->
@@ -174,3 +227,20 @@
     </div>
 </section>
 {% endblock content %}
+{% block additional_script %}
+    
+<script>
+    // Animación entrada
+    window.addEventListener('DOMContentLoaded', function() {
+        const posts = document.querySelectorAll('.mini-post');
+        posts.forEach((post, index) => {
+            setTimeout(() => {
+                post.classList.add('visible');
+            }, index * 500); // 150ms de diferencia entre cada post
+        });
+    });
+
+</script>
+
+
+{% endblock additional_script %}
