@@ -17,6 +17,7 @@ from .models import Documento, UserProfile, Empresas, Convocatoria, Postulacion,
 from pdf2image import convert_from_path
 from django.conf import settings
 import os
+from django.db.models import Count
 # Colores Para el Diseño 
 # Azul 1b396a, rgb(27, 57, 106), hsl(217, 59%, 26%)
 # Blanco ffffff, rgb(255, 255, 255)
@@ -83,7 +84,9 @@ def Empresa_Detalle(request, empresa_id):
 
 
 def Galeria(request): 
-    empresas = Empresas.objects.all()
+    empresas = Empresas.objects.annotate(
+        num_proyectos=Count('proyecto')
+    )
     return render(request, 'EducacionDual/Galeria.html', {'empresas': empresas})
 
 def Galeria_ingenierias(request, empresa_id):
@@ -92,17 +95,27 @@ def Galeria_ingenierias(request, empresa_id):
     ingenierias = IngenieriaGaleria.objects.filter(id__in=proyectos.values_list('ingenieria_id', flat=True).distinct())
     return render(request, 'EducacionDual/galeria_ingenierias.html', {'empresa': empresa, 'ingenierias': ingenierias})
 
-def Galeria_evidencias(request, empresa_id, ingenieria_id):
+def Galeria_proyectos(request, empresa_id, ingenieria_id):
     empresa = get_object_or_404(Empresas, id=empresa_id)
     ingenieria = get_object_or_404(IngenieriaGaleria, id=ingenieria_id)
     proyectos = Proyecto.objects.filter(empresa=empresa, ingenieria=ingenieria)
-    evidencias = Evidencia.objects.filter(proyecto__in=proyectos)
-    return render(request, 'EducacionDual/galeria_evidencias.html', {
-        'empresa': empresa, 
-        'ingenieria': ingenieria, 
-        'evidencias': evidencias
+    return render(request, 'EducacionDual/galeria_proyectos.html', {
+        'empresa': empresa,
+        'ingenieria': ingenieria,
+        'proyectos': proyectos
     })
 
+def Galeria_evidencias(request, empresa_id, ingenieria_id, proyecto_id):
+    empresa = get_object_or_404(Empresas, id=empresa_id)
+    ingenieria = get_object_or_404(IngenieriaGaleria, id=ingenieria_id)
+    proyecto = get_object_or_404(Proyecto, id=proyecto_id, empresa=empresa, ingenieria=ingenieria)
+    evidencias = Evidencia.objects.filter(proyecto=proyecto)
+    return render(request, 'EducacionDual/galeria_evidencias.html', {
+        'empresa': empresa, 
+        'ingenieria': ingenieria,
+        'proyecto': proyecto,
+        'evidencias': evidencias
+    })
 
 @login_required
 def principalAlumno(request):

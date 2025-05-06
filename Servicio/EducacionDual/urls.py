@@ -66,6 +66,7 @@ urlpatterns = [
     path('galeriaAdmin/', views.GaleriaAdmin, name='galeria_Admin'),
     
     path('galeria/empresa/<int:empresa_id>/', views.Galeria_ingenierias , name='galeria_empresa_detalle'),
-    path('galeria/empresa/<int:empresa_id>/ingenieria/<int:ingenieria_id>/', views.Galeria_evidencias, name='galeria_empresa_ingenieria_detalle'),
+    path("galeria/empresa/<int:empresa_id>/ingenieria/<int:ingenieria_id>/", views.Galeria_proyectos, name="galeria_Proyetos_detalle"),
+    path('galeria/empresa/<int:empresa_id>/ingenieria/<int:ingenieria_id>/proyecto/<int:proyecto_id>/', views.Galeria_evidencias, name='galeria_empresa_ingenieria_detalle'),
 
 ]

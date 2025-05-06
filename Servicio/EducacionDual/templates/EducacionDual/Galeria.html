@@ -2,18 +2,20 @@
 {% load static %}
 
 {% block additional_styles %}
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 <style>
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+
     .content-wrapper {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
         gap: 1em;
         padding: 1em;
-        font-family: Arial, sans-serif;
     }
 
-    /* Estilos de mini-posts */
-    /* Estilos de mini-posts */
     .mini-posts {
         display: flex;
         flex-wrap: wrap;
@@ -28,18 +30,39 @@
         margin: 1.5em 0;
         border-radius: 12px;
         overflow: hidden;
+        position: relative;
         transition: all 0.3s ease-in-out;
         width: calc(30% - 2em);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+        /* Animación entrada */
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
+    .mini-post.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Hover profesional */
     .mini-post:hover {
-        transform: scale(1.02);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        transform: scale(1.03);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .mini-post:hover::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.02);
+        border-radius: inherit;
+        transition: background 0.3s ease;
     }
 
     .mini-post h3 {
-        font-size: 1.4em;
+        font-size: 0.8em
         margin-bottom: 0.8em;
         color: #2c3e50;
     }
@@ -49,7 +72,6 @@
         color: inherit;
     }
 
-    /* Imagen y botón */
     .mini-post .image {
         position: relative;
         display: block;
@@ -63,6 +85,7 @@
         height: auto;
         transition: transform 0.3s ease-in-out;
         border-radius: inherit;
+        cursor: pointer;
     }
 
     .mini-post .image:hover img {
@@ -89,7 +112,6 @@
         background-color: rgba(0, 0, 0, 0.8);
     }
 
-    /* Header */
     .mini-post header {
         padding: 1.2em;
         min-height: 4em;
@@ -106,15 +128,51 @@
         font-size: 1em;
         color: #7f8c8d;
     }
+
     .mini-post header .author img {
         width: 65px;
-        /* Ajustar tamaño del autor */
         border-radius: 50%;
         margin-bottom: 1em;
     }
 
+    /* Lightbox */
+    .lightbox {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1000;
+    }
 
-    /* Media Queries */
+    .lightbox img {
+        max-width: 90%;
+        max-height: 90%;
+        border-radius: 10px;
+    }
+
+    .lightbox.show {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .badge {
+        position: absolute;
+        top: 130px;
+        right: 10px;
+        background: #3498db;
+        color: white;
+        padding: 0.4em 0.8em;
+        border-radius: 12px;
+        font-size: 0.9em;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
     @media screen and (max-width: 768px) {
         .mini-posts {
             flex-direction: column;
@@ -124,28 +182,6 @@
 
         .mini-post {
             width: 100%;
-        }
-
-        .mini-post header h3 {
-            font-size: 1.2em;
-        }
-
-        .mini-post header p {
-            font-size: 0.9em;
-        }
-    }
-
-    @media screen and (max-width: 480px) {
-        .mini-post header h3 {
-            font-size: 1.1em;
-        }
-
-        .mini-post header p {
-            font-size: 0.8em;
-        }
-
-        .mini-post .image .link-text {
-            font-size: 0.8em;
         }
     }
 </style>
@@ -162,12 +198,14 @@
         <!-- Mini Post 1 -->
         {% for empresa in empresas %}
         <article class="mini-post">
+            
             <header>
                 <h3><a href="{% url 'galeria_empresa_detalle' empresa.id %}">{{empresa.Nombre}}</a></h3>
                 <a href="{% url 'galeria_empresa_detalle' empresa.id %}" class="author">
                     <img src="{{ empresa.Logotipo.url }}" alt="{{ empresa.Nombre }}" />
                 </a>
             </header>
+            <span class="badge">{{ empresa.num_proyectos }} proyectos</span>
             <a href="{% url 'galeria_empresa_detalle' empresa.id %}" class="image">
                 <img src="{{ empresa.Portada.url }}" alt="{{ empresa.Nombre }}" />
                 <span class="link-text">Más Detalles</span>
@@ -178,4 +216,24 @@
         {% endfor %}
     </div>
 </section>
+
 {% endblock content %}
+
+{% block additional_script %}
+    
+<script>
+    // Animación entrada
+    window.addEventListener('scroll', function() {
+        const posts = document.querySelectorAll('.mini-post');
+        posts.forEach(post => {
+            const rect = post.getBoundingClientRect();
+            if(rect.top < window.innerHeight - 50) {
+                post.classList.add('visible');
+            }
+        });
+    });
+
+</script>
+
+
+{% endblock additional_script %}

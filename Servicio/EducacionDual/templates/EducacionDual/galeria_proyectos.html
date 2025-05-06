@@ -12,8 +12,6 @@
         font-family: Arial, sans-serif;
     }
 
-    /* Estilos de mini-posts */
-    /* Estilos de mini-posts */
     .mini-posts {
         display: flex;
         flex-wrap: wrap;
@@ -49,7 +47,6 @@
         color: inherit;
     }
 
-    /* Imagen y botón */
     .mini-post .image {
         position: relative;
         display: block;
@@ -89,7 +86,6 @@
         background-color: rgba(0, 0, 0, 0.8);
     }
 
-    /* Header */
     .mini-post header {
         padding: 1.2em;
         min-height: 4em;
@@ -106,15 +102,7 @@
         font-size: 1em;
         color: #7f8c8d;
     }
-    .mini-post header .author img {
-        width: 65px;
-        /* Ajustar tamaño del autor */
-        border-radius: 50%;
-        margin-bottom: 1em;
-    }
 
-
-    /* Media Queries */
     @media screen and (max-width: 768px) {
         .mini-posts {
             flex-direction: column;
@@ -154,23 +142,23 @@
 {% block content %}
 <section class="content-wrapper">
     <div class="mini-posts">
-        <!-- Mini Post 1 -->
-        {% for ingenieria in ingenierias %}
+        {% for proyecto in proyectos %}
         <article class="mini-post">
             <header>
-                <h3><a href="{% url 'galeria_Proyetos_detalle' empresa.id ingenieria.id %}">{{ ingenieria.nombre }}</a></h3>
-                <a href="{% url 'galeria_Proyetos_detalle' empresa.id ingenieria.id %}" class="author">
-                    <img src="{{ ingenieria.imagen_logo.url }}" alt="{{ ingenieria.nombre }}" />
-                </a>
+                <h3><a href="{% url 'galeria_empresa_ingenieria_detalle' empresa.id ingenieria.id proyecto.id %}">{{ proyecto.nombre }}</a></h3>
+                <p>{{ proyecto.descripcion|truncatewords:12 }}</p>
             </header>
-            <a href="{% url 'galeria_Proyetos_detalle' empresa.id ingenieria.id %}" class="image">
-                <img src="{{ ingenieria.imagen_portada.url }}" alt="{{ ingenieria.nombre }}" />
-                <span class="link-text">Ver proyectos</span>
+            <a href="{% url 'galeria_empresa_ingenieria_detalle' empresa.id ingenieria.id proyecto.id %}" class="image">
+                {% if proyecto.ingenieria.imagen_portada %}
+                <img src="{{ proyecto.ingenieria.imagen_portada.url }}" alt="{{ proyecto.nombre }}">
+                {% else %}
+                <img src="{% static 'img/default_project.png' %}" alt="Proyecto sin imagen">
+                {% endif %}
+                <span class="link-text">Ver evidencias</span>
             </a>
         </article>
-
         {% empty %}
-        <p style="text-align: center;">No hay Empresas disponibles en este momento.</p>
+        <p style="text-align: center;">No hay proyectos disponibles en esta ingeniería para esta empresa.</p>
         {% endfor %}
     </div>
 </section>
