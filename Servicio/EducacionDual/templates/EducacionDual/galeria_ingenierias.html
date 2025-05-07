@@ -3,6 +3,44 @@
 
 {% block additional_styles %}
 <style>
+
+    .intro-empresa {
+        background: linear-gradient(90deg, rgb(208, 210, 213) 0%,rgb(255, 255, 255) 100%);
+        padding: 20px 30px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .intro-empresa h2 {
+        font-size: 2em;
+        color: #1b396a;
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+    
+    .intro-empresa p {
+        font-size: 1.1em;
+        color: #555;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: 0 auto 10px auto;
+    }
+
+    .intro-empresa {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.6s ease-in-out;
+    }
+    
+    .intro-empresa.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+
     .content-wrapper {
         display: flex;
         justify-content: space-between;
@@ -152,6 +190,18 @@
 {% endblock additional_styles %}
 
 {% block content %}
+<br>
+<div class="intro-empresa">
+    <h2>Formando Profesionales Competitivos</h2>
+    <p>
+        En colaboración con el <strong>Tecnológico Nacional de México (TecNM)</strong>, nuestra empresa ofrece a los estudiantes la oportunidad de desarrollar sus habilidades en un entorno real de trabajo. Creemos en el talento joven y apostamos por su crecimiento, brindando espacios donde puedan aplicar sus conocimientos y adquirir experiencia práctica.
+    </p>
+    <p>
+        Descubre las ingenierías que participan en esta alianza y conoce cómo juntos construimos el futuro de la industria.
+    </p>
+</div>
+
+
 <section class="content-wrapper">
     <div class="mini-posts">
         <!-- Mini Post 1 -->
@@ -170,8 +220,27 @@
         </article>
 
         {% empty %}
-        <p style="text-align: center;">No hay Empresas disponibles en este momento.</p>
+        <p style="text-align: center;">No hay Ingenierias disponibles en este momento.</p>
         {% endfor %}
     </div>
 </section>
 {% endblock content %}
+
+{% block additional_script %}
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('.intro-empresa').classList.add('visible');
+    });
+
+    window.addEventListener('DOMContentLoaded', function() {
+        const posts = document.querySelectorAll('.mini-post');
+        posts.forEach((post, index) => {
+            setTimeout(() => {
+                post.classList.add('visible');
+            }, index * 500); // 150ms de diferencia entre cada post
+        });
+    });
+    
+</script>
+    
+{% endblock additional_script %}

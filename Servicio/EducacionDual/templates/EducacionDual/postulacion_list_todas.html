@@ -221,7 +221,7 @@ h2.text-center {
                 <tr>
                     <td>{{ postulacion.alumno.Nombre }} {{ postulacion.alumno.Apellidos }}</td>
                     <td>{{ postulacion.alumno.NoControl }}</td>
-                    <td>{{ postulacion.alumno.Correo_inst }}</td>
+                    <td>{{ postulacion.alumno.NoControl.email }}</td>
                     <td>{{ postulacion.convocatoria.titulo }}</td>
                     <td>
                         {% if postulacion.estado == "Pendiente" %}

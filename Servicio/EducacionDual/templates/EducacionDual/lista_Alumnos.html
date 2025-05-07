@@ -157,7 +157,7 @@ h2.text-center {
     <table class="table" id="TableAlum">
         <thead>
             <tr>
-                <th>ID<br><input type="text" class="filter-input" placeholder="Filtrar por ID"></th>
+                <th>Nombre Completo<br><input type="text" class="filter-input" placeholder="Filtrar por Nombre"></th>
                 <th>Numero de Control<br><input type="text" class="filter-input" placeholder="Filtrar por Número de Control"></th>
                 <th>Ultimo Inicio de Sesion<br><input type="text" class="filter-input" placeholder="Filtrar por Ultimo Inicio de Sesion"></th>
                 <th>Acciones</th>
@@ -166,7 +166,7 @@ h2.text-center {
         <tbody>
             {% for user in users %}
             <tr>
-                <td>{{ user.id }}</td>
+                <td>{{ user.userprofile.Nombre }} {{user.userprofile.Apellidos}}</td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.last_login|date:"d-m-Y H:i" }}</td>
                 <td style="text-align: center;">

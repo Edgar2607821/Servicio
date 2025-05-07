@@ -2,7 +2,49 @@
 {% load static %}
 
 {% block additional_styles %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+
 <style>
+
+
+    .intro-proyectos {
+        background: linear-gradient(90deg, rgb(208, 210, 213) 0%,rgb(255, 255, 255) 100%);
+        padding: 20px 30px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .intro-proyectos h2 {
+        font-size: 2em;
+        color: #1b396a;
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+    
+    .intro-proyectos p {
+        font-size: 1.1em;
+        color: #555;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: 0 auto 10px auto;
+    }
+
+    .intro-proyectos {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.6s ease-in-out;
+    }
+    
+    .intro-proyectos.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+
+    
     .content-wrapper {
         display: flex;
         justify-content: space-between;
@@ -11,6 +53,21 @@
         padding: 1em;
         font-family: Arial, sans-serif;
     }
+
+    .swiper-container {
+        width: 100%;
+        height: 230px;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .swiper-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+    
 
     .mini-posts {
         display: flex;
@@ -140,6 +197,15 @@
 {% endblock additional_styles %}
 
 {% block content %}
+
+<div class="intro-proyectos">
+    <h2>Proyectos Destacados</h2>
+    <p>
+        Los proyectos presentados a continuación son el resultado del talento y dedicación de nuestros estudiantes, quienes aplican sus conocimientos para desarrollar soluciones innovadoras en colaboración con empresas del sector. Cada proyecto refleja el compromiso con la excelencia académica y la preparación para enfrentar los desafíos del mundo profesional.
+    </p>
+</div>
+
+
 <section class="content-wrapper">
     <div class="mini-posts">
         {% for proyecto in proyectos %}
@@ -148,14 +214,33 @@
                 <h3><a href="{% url 'galeria_empresa_ingenieria_detalle' empresa.id ingenieria.id proyecto.id %}">{{ proyecto.nombre }}</a></h3>
                 <p>{{ proyecto.descripcion|truncatewords:12 }}</p>
             </header>
-            <a href="{% url 'galeria_empresa_ingenieria_detalle' empresa.id ingenieria.id proyecto.id %}" class="image">
-                {% if proyecto.ingenieria.imagen_portada %}
-                <img src="{{ proyecto.ingenieria.imagen_portada.url }}" alt="{{ proyecto.nombre }}">
-                {% else %}
-                <img src="{% static 'img/default_project.png' %}" alt="Proyecto sin imagen">
-                {% endif %}
-                <span class="link-text">Ver evidencias</span>
-            </a>
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    {% for evidencia in proyecto.evidencias.all %}
+                        <div class="swiper-slide">
+                            <a href="{% url 'galeria_empresa_ingenieria_detalle' empresa.id ingenieria.id proyecto.id %}">
+                                <img src="{{ evidencia.imagen.url }}" alt="{{ evidencia.titulo }}">
+                            </a>
+                        </div>
+                    {% empty %}
+                        <div class="swiper-slide">
+                            <a href="{% url 'galeria_empresa_ingenieria_detalle' empresa.id ingenieria.id proyecto.id %}">
+                                {% if proyecto.ingenieria.imagen_portada %}
+                                <img src="{{ proyecto.ingenieria.imagen_portada.url }}" alt="{{ proyecto.nombre }}">
+                                {% else %}
+                                <img src="{% static 'img/default_project.png' %}" alt="Proyecto sin imagen">
+                                {% endif %}
+                                
+                            </a>
+                            
+                        </div>
+                    {% endfor %}
+                </div>
+
+                
+            </div>
+            
+            
         </article>
         {% empty %}
         <p style="text-align: center;">No hay proyectos disponibles en esta ingeniería para esta empresa.</p>
@@ -163,3 +248,44 @@
     </div>
 </section>
 {% endblock content %}
+
+{% block additional_script %}
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script>
+
+    window.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('.intro-proyectos').classList.add('visible');
+    });
+
+    window.addEventListener('DOMContentLoaded', function() {
+        const posts = document.querySelectorAll('.mini-post');
+        posts.forEach((post, index) => {
+            setTimeout(() => {
+                post.classList.add('visible');
+            }, index * 500); // 150ms de diferencia entre cada post
+        });
+    });
+
+    const swipers = document.querySelectorAll('.swiper-container');
+    swipers.forEach((container, index) => {
+        new Swiper(container, {
+            loop: true,
+            slidesPerView: 1,
+            spaceBetween: 10,
+            navigation: {
+                nextEl: container.querySelector('.swiper-button-next'),
+                prevEl: container.querySelector('.swiper-button-prev'),
+            },
+            pagination: {
+                el: container.querySelector('.swiper-pagination'),
+                clickable: true,
+            },
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+        });
+    });
+</script>
+
+{% endblock additional_script%}    

@@ -75,7 +75,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Servicio.wsgi.application'
 
-CSRF_TRUSTED_ORIGINS = ['https://e079-45-188-125-101.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://9955-45-188-125-101.ngrok-free.app']
 
 # settings.py
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

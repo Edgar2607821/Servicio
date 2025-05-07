@@ -148,7 +148,7 @@
     <ul class="profile-info">
         <li><label>Alumno:</label> <span>{{ postulacion.alumno.Nombre }} {{ postulacion.alumno.Apellidos }}</span></li>
         <li><label>No. Control:</label> <span>{{ postulacion.alumno.NoControl }}</span></li>
-        <li><label>Correo:</label> <span>{{ postulacion.alumno.Correo_inst }}</span></li>
+        <li><label>Correo:</label> <span>{{ postulacion.alumno.NoControl.email }}</span></li>
         <li><label>Carrera:</label> <span>{{ postulacion.alumno.get_Carrera_display }}</span></li>
         <li><label>Semestre:</label> <span>{{ postulacion.alumno.get_Semestre_display }}</span></li>
         <li><label>Teléfono:</label> <span>{{ postulacion.alumno.Telefono }}</span></li>
