@@ -147,3 +147,10 @@ class Evidencia(models.Model):
     
 
 
+class Index(models.Model):
+    Titulo = models.CharField(max_length=100)
+    Texto = models.TextField(blank=True, null=True)
+    Imagen = models.ImageField(upload_to="index/")
+
+    def __str__(self):
+        return self.Titulo

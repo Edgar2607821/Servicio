@@ -14,6 +14,7 @@
         max-height: 84vh;
         overflow-y: auto;
         margin-top: 10px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     }
 
     /* Encabezado del perfil */
@@ -71,44 +72,99 @@
     .profile-info span {
         color: #333;
     }
-    
+
     .button-group {
         display: flex;
-        justify-content: space-between;
+        gap: 20px;
         margin-top: 20px;
+        justify-content: center;
     }
-
-
-    .btn-primary, .btn-warning {
-        padding: 12px 20px;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: bold;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        transition: background-color 0.3s ease;
-        text-decoration: none;
-    }
-
-    .btn-primary{
-        background-color: #3062b2;
-        color: #ffffff;
-    }
-
-    .btn-primary:hover{
-        background-color: #1b396a;
-        color: #ffffff;
-    }
-
-    .btn-warning {
-        background-color:rgb(255, 0, 0);
-        color: #ffffff;
+    
+    /* Estilo base */
+    .btn {
+        width: 280px;
+        height: 50px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0 15px;
         border: none;
+        border-radius: 5px;
+        box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+        position: relative;
+        overflow: hidden;
+        transition: 200ms;
+    }
+    
+    .btn span {
+        transition: 200ms;
+    }
+    
+    .btn .text {
+        color: white;
+        font-weight: bold;
+        transform: translateX(35px);
+        z-index: 1;
+    }
+    
+    .btn .icon {
+        position: absolute;
+        border-left: 1px solid rgba(255, 255, 255, 0.3);
+        transform: translateX(110px);
+        height: 50px;
+        width: 50px;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+    }
+    
+    .btn svg {
+        width: 15px;
+        fill: #eee;
+    }
+    
+    /* Estilo para cada botón */
+    .btn-primary {
+        background: #3062b2;
+    }
+    
+    .btn-primary:hover {
+        background: #1b396a;
+    }
+    
+    .btn-warning {
+        background: #e62222;
     }
     
     .btn-warning:hover {
-        background-color:rgb(224, 0, 0);
-        color: #ffffff;
+        background: #ff3636;
     }
+    
+    /* Hover común */
+    .btn:hover .text {
+        color: transparent;
+    }
+    
+    .btn:hover .icon {
+        width: 100%;
+        border-left: none;
+        transform: translateX(0);
+        justify-content: center;
+    }
+    
+    .btn:focus {
+        outline: none;
+    }
+    
+    .btn:active .icon svg {
+        transform: scale(0.8);
+    }
+    
+
+
 
     .text-center .btn-primary:hover {
         background-color: #2d4d87;
@@ -120,16 +176,17 @@
             grid-template-columns: 1fr;
         }
     }
+
     @media (max-width: 768px) {
         .profile-container {
             padding: 20px;
         }
-    
+
         .profile-info li {
             flex-direction: column;
             align-items: flex-start;
         }
-    
+
         .profile-info label {
             margin-bottom: 5px;
         }
@@ -145,20 +202,44 @@
         <li><label><i class="fas fa-user-tie"></i> Nombre Completo:</label> {{ profile.Nombre }} {{ profile.Apellidos }}</li>
         <li><label><i class="fas fa-envelope"></i> Correo Electrónico:</label> {{ profile.NoControl.email }}</li>
         <li><label><i class="fas fa-graduation-cap"></i> Carrera:</label> {{ profile.get_Carrera_display }}</li>
-        <li><label><i class="fas fa-calendar"></i> Fecha de Nacimiento:</label> {{ profile.Fecha_nacimiento|date:"d-m-Y" }}</li>
+        <li><label><i class="fas fa-calendar"></i> Fecha de Nacimiento:</label> {{ profile.Fecha_nacimiento|date:"d-m-Y"}}</li>
         <li><label><i class="fas fa-venus-mars"></i> Género:</label> {{ profile.get_Genero_display }}</li>
         <li><label><i class="fas fa-phone"></i> Teléfono:</label> {{ profile.Telefono }}</li>
         <li><label><i class="fas fa-layer-group"></i> Semestre:</label> {{ profile.get_Semestre_display }}</li>
         <li><label><i class="fas fa-calendar-check"></i> Fecha de Creación de la Cuenta:</label> {{ profile.NoControl.date_joined|date:"d-m-Y" }}</li>
-        <li><label><i class="fas fa-sign-in-alt"></i> Último Inicio de Sesión:</label> {{ profile.NoControl.last_login|date:"d-m-Y H:i" }}</li>
+        <li><label><i class="fas fa-sign-in-alt"></i> Último Inicio de Sesión:</label> {{profile.NoControl.last_login|date:"d-m-Y H:i" }}</li>
     </ul>
 
     <div class="button-group">
-        <a href="{% url 'lista_Alumnos' %}" class="btn btn-primary">Regresar a la Lista de Usuarios</a>
-        <a href="{% url 'eliminar_alumno' profile.id %}" class="btn btn-warning">
-            Eliminar Alumno
-        </a>        
-    </a>
+        <a href="{% url 'lista_Alumnos' %}">
+            <button class="btn btn-primary">
+                <span class="text">Regresar a la Lista de Usuarios</span>
+                <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" 
+                        width="32" 
+                        height="32" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="white" 
+                        stroke-width="2.5" 
+                        stroke-linecap="round" 
+                        stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                </span>
+            </button>
+        </a>
+    
+        <a href="{% url 'eliminar_alumno' profile.id %}">
+            <button class="btn btn-warning">
+                <span class="text">Eliminar Alumno</span>
+                <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"/>
+                    </svg>
+                </span>
+            </button>
+        </a>
     </div>
 </div>
 {% endblock content %}

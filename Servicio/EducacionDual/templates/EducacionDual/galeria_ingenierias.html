@@ -4,6 +4,71 @@
 {% block additional_styles %}
 <style>
 
+    .btnV {
+        --color: #3d8bfd;
+        position: fixed;   /* CAMBIO CLAVE: para que sea flotante */
+        bottom: 20px;      /* Distancia desde abajo */
+        left: 30px;        /* Distancia desde la izquierda */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all .5s;
+        border: none;
+        background-color: transparent;
+        z-index: 1000;     /* Para que esté encima de otros elementos */
+      }
+      
+      .btnV div {
+        letter-spacing: 2px;
+        font-weight: bold;
+        background: var(--color);
+        border-radius: 2rem;
+        color: white;
+        padding: 1rem;
+      }
+      
+      .btnV::before {
+        content: '';
+        z-index: -1;
+        background-color: var(--color);
+        border: 2px solid white;
+        border-radius: 2rem;
+        width: 110%;
+        height: 100%;
+        position: absolute;
+        transform: rotate(10deg);
+        transition: .5s;
+        opacity: 0.2;
+      }
+      
+      .btnV:hover {
+        cursor: pointer;
+        filter: brightness(1.2);
+        transform: scale(1.1);
+      }
+      
+      .btnV:hover::before {
+        transform: rotate(0deg);
+        opacity: 1;
+      }
+      
+      .btnV svg {
+        transform: translateX(-200%);
+        transition: .5s;
+        width: 0;
+        opacity: 0;
+      }
+      
+      .btnV:hover svg {
+        width: 25px;
+        transform: translateX(0%);
+        opacity: 1;
+      }
+      
+      .btnV:active {
+        filter: brightness(1.4);
+      }
+    
     .intro-empresa {
         background: linear-gradient(90deg, rgb(208, 210, 213) 0%,rgb(255, 255, 255) 100%);
         padding: 20px 30px;
@@ -222,25 +287,43 @@
         {% empty %}
         <p style="text-align: center;">No hay Ingenierias disponibles en este momento.</p>
         {% endfor %}
+
     </div>
+    <button class="btnV" onclick="history.back()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+            <path d="M12.3199 9.38L9.7599 11.94L12.3199 14.5" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M20 11.9399H9.83" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M12 4C7.58 4 4 7 4 12C4 17 7.58 20 12 20" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <div>Regresar</div>
+    </button>
 </section>
+
+
 {% endblock content %}
 
 {% block additional_script %}
 <script>
-    window.addEventListener('DOMContentLoaded', () => {
-        document.querySelector('.intro-empresa').classList.add('visible');
-    });
-
-    window.addEventListener('DOMContentLoaded', function() {
+    function mostrarIntro() {
+        const intro = document.querySelector('.intro-empresa');
+        if (intro) {
+            intro.classList.add('visible');
+        }
+    }
+    
+    function animarMiniPosts() {
         const posts = document.querySelectorAll('.mini-post');
         posts.forEach((post, index) => {
             setTimeout(() => {
                 post.classList.add('visible');
-            }, index * 500); // 150ms de diferencia entre cada post
+            }, index * 500);
         });
-    });
+    }
     
+    window.addEventListener('DOMContentLoaded', () => {
+        mostrarIntro();
+        animarMiniPosts();
+    });
 </script>
     
 {% endblock additional_script %}

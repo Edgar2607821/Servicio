@@ -13,7 +13,7 @@
     /* Espacio superior */
 }
 
-.login-button {
+.login-buttonEs {
     display: inline-block;
     padding: 10px 20px;
     /* Espaciado interno */
@@ -21,7 +21,7 @@
     /* Tamaño de fuente */
     color: #ffffff;
     /* Color del texto */
-    background-color: #1b396a;
+    background-color: #275194;
     /* Color de fondo */
     border: none;
     /* Sin borde */
@@ -37,7 +37,7 @@
 
 }
 
-.login-buttonU {
+.login-buttonAd {
     display: inline-block;
     padding: 10px 20px;
     /* Espaciado interno */
@@ -45,7 +45,60 @@
     /* Tamaño de fuente */
     color: #ffffff;
     /* Color del texto */
-    background-color: #1b396a;
+    background-color: #275194;
+    /* Color de fondo */
+    border: none;
+    /* Sin borde */
+    border-radius: 15px;
+    /* Bordes redondeados */
+    text-decoration: none;
+    /* Sin subrayado */
+    transition: background-color 0.3s, transform 0.3s;
+    /* Transiciones para hover y clic */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Sombra */
+    font-family: "Poetsen One", sans-serif;
+    transform: translateY(-2px);
+}
+
+.login-buttonAd:hover {
+    background-color: #224884;
+    /* Color de fondo en hover */
+    transform: translateY(-2px);
+    /* Mover hacia arriba en hover */
+}
+
+.login-buttonAd:active {
+    background-color: #285296;
+    /* Color de fondo en clic */
+    transform: translateY(0);
+    /* Reset transform en clic */
+}
+
+.login-buttonEs:hover {
+    background-color: #224884;
+    /* Color de fondo en hover */
+    transform: translateY(-2px);
+    /* Mover hacia arriba en hover */
+}
+
+.login-buttonEs:active {
+    background-color: #285296;
+    /* Color de fondo en clic */
+    transform: translateY(0);
+    /* Reset transform en clic */
+}
+
+
+.login-button {
+    display: inline-block;
+    padding: 10px 20px;
+    /* Espaciado interno */
+    font-size: 18px;
+    /* Tamaño de fuente */
+    color: #ffffff;
+    /* Color del texto */
+    background-color: #275194;
     /* Color de fondo */
     border: none;
     /* Sin borde */
@@ -62,14 +115,14 @@
 }
 
 .login-button:hover {
-    background-color: #142a4f;
+    background-color: #224884;
     /* Color de fondo en hover */
     transform: translateY(-2px);
     /* Mover hacia arriba en hover */
 }
 
 .login-button:active {
-    background-color: #142a4f;
+    background-color: #285296;
     /* Color de fondo en clic */
     transform: translateY(0);
     /* Reset transform en clic */

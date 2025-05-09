@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -75,7 +76,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Servicio.wsgi.application'
 
-CSRF_TRUSTED_ORIGINS = ['https://9955-45-188-125-101.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://5c97-45-188-125-101.ngrok-free.app']
 
 # settings.py
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -88,6 +89,7 @@ DEFAULT_FROM_EMAIL = 'edgarballeza87@gmail.com'
 
 
 MEDIA_URL = '/media/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Database
@@ -137,7 +139,7 @@ USE_I18N = True
 USE_TZ = True
 
 LOGIN_REDIRECT_URL = '/principalAdmin/'  # O cualquier otra ruta que desees redirigir después del login
-
+LOGIN_URL = reverse_lazy('login')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/

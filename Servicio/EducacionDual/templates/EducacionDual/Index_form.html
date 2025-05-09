@@ -4,15 +4,14 @@
 <style>
 /* Contenedor del formulario */
 .container {
-    max-width: 900px;
+    max-width: 1100px;
     margin: 30px auto;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-    max-height: 89vh;
-    overflow-y: auto;
-    margin-top: 10px;
+    max-height: 90vh;
+    overflow-y: auto;  /* Scroll vertical si es necesario */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 }
 
@@ -153,13 +152,104 @@ h2 {
     color: inherit; /* hereda el color del botón */
 }
 
+/* Vista previa */
+.preview-container {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #dddddd;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.preview-container h2,
+.preview-container h3 {
+    color: #1b396a;
+    border-bottom: 1px solid #1b396a;
+    padding-bottom: 5px;
+}
+
+.preview-container ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.preview-container p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+/* Vista previa de EasyMDE (cuando haces clic en el ojo) */
+.editor-preview,
+.editor-preview-active {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    font-size: 16px;
+    line-height: 1.6;
+    color: #24292e;
+    background-color: #fff;
+    padding: 20px;
+    text-align: left;
+}
+
+/* Encabezados */
+.editor-preview h1,
+.editor-preview h2,
+.editor-preview h3,
+.editor-preview-active h1,
+.editor-preview-active h2,
+.editor-preview-active h3 {
+    border-bottom: 1px solid #eaecef;
+    padding-bottom: 0.3em;
+    margin-top: 1em;
+    margin-bottom: 16px;
+    font-weight: 600;
+    text-align: left;
+    color: #1b396a;
+}
+
+/* Listas */
+.editor-preview ul,
+.editor-preview-active ul {
+    padding-left: 2em;
+}
+
+.editor-preview li,
+.editor-preview-active li {
+    margin-bottom: 5px;
+}
+
+/* Negritas y cursivas */
+.editor-preview strong,
+.editor-preview-active strong {
+    font-weight: bold;
+}
+
+.editor-preview em,
+.editor-preview-active em {
+    font-style: italic;
+}
+
+/* Bloques de código */
+.editor-preview pre,
+.editor-preview-active pre {
+    background-color: #f6f8fa;
+    padding: 10px;
+    border-radius: 4px;
+    overflow: auto;
+}
+
+/* Enlaces */
+.editor-preview a,
+.editor-preview-active a {
+    color: #0366d6;
+    text-decoration: none;
+}
+
+.editor-preview a:hover,
+.editor-preview-active a:hover {
+    text-decoration: underline;
+}
+
 @media (max-width: 768px) {
-    .form-row {
-        flex-direction: column;
-    }
-    .form-column {
-        flex: 1 1 100%;
-    }
 
     .btn-primary i,
     .btn-secondary i,
@@ -180,47 +270,85 @@ h2 {
 }
 
 </style>
+
+<!-- EasyMDE CSS -->
+<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
 {% endblock additional_styles %}
 
 {% block content %}
-<div class="container ">
-    <h2>{{ titulo  }}</h2>
+<div class="container">
+    <h2>{% if form.instance.pk %}Editar{% else %}Crear{% endif %} Index</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
-            {{ form.proyecto.label_tag }}
-            {{ form.proyecto }}
+            {{ form.Titulo.label_tag }}
+            {{ form.Titulo }}
         </div>
         <div class="form-group">
-            {{ form.titulo.label_tag }}
-            {{ form.titulo }}
+        {{ form.Texto.label_tag }}
+            {{ form.Texto }}
         </div>
         <div class="form-group">
-            {{ form.descripcion.label_tag }}
-            {{ form.descripcion }}
+            {{ form.Imagen.label_tag }}
+            {{ form.Imagen }}
         </div>
-        <div class="form-group">
-            {{ form.imagen.label_tag }}
-            {{ form.imagen }}
-        </div>
+
 
 
         <div class="button-group">
             <button type="submit" class="btn-primary">
                 <span class="btn-content">
                     <i class="fas fa-save"></i>
-                    <span class="btn-label">Guardar Evidencia</span>
+                    <span class="btn-label">Guardar Index</span>
                 </span>
             </button>
         
-            <a href="{% url 'lista_evidencias' %}" class="btn-secondary">
+            <a href="{% url 'index_list' %}" class="btn-secondary">
                 <span class="btn-content">
                     <i class="fas fa-arrow-left"></i>
                     <span class="btn-label">Cancelar</span>
                 </span>
             </a>
-        </div>
 
+        </div>
     </form>
+
+    <!-- Vista previa en vivo -->
+    
 </div>
 {% endblock content %}
+
+{% block additional_scripts %}
+
+
+<script>
+    console.log("El script de EasyMDE se está ejecutando...");  // DEBUG
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var textarea = document.getElementById("id_descripcion");
+    
+        if (!textarea) {
+            console.error("No se encontró el campo descripcion con id_descripcion.");
+            return;
+        } else {
+            console.log("Textarea encontrado correctamente.");
+        }
+    
+        window.easyMDE = new EasyMDE({
+            element: textarea,
+            spellChecker: false,
+            placeholder: "Escribe la descripción usando Markdown...",
+            autoDownloadFontAwesome: false
+        });
+
+        // 👇 ESTE BLOQUE DEBE ESTAR DENTRO DEL DOMContentLoaded
+        var form = document.querySelector("form");
+        form.addEventListener("submit", function() {
+            console.log("Formulario enviado, actualizando textarea con el contenido del editor...");
+            easyMDE.codemirror.save();  // Copia el contenido del editor al textarea oculto
+        });
+
+    });  // Aquí cierra el DOMContentLoaded
+    </script>
+    
+{% endblock additional_scripts %}

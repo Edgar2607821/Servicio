@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
-from .models import UserProfile, Empresas, Documento, Convocatoria, Proyecto, Evidencia, IngenieriaGaleria
+from .models import UserProfile, Empresas, Documento, Convocatoria, Proyecto, Evidencia, IngenieriaGaleria, Index
 
 
 class LoginForm(AuthenticationForm):
@@ -119,3 +119,9 @@ class EvidenciaForm(forms.ModelForm):
     class Meta:
         model = Evidencia
         fields = ['proyecto', 'titulo', 'descripcion', 'imagen']
+
+
+class IndexForm(forms.ModelForm):
+    class Meta:
+        model = Index
+        fields = ['Titulo', 'Texto', 'Imagen']

@@ -12,6 +12,7 @@
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
     max-height: 87vh;
     overflow-y: auto;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 }
 
 .profile-header {
@@ -66,39 +67,6 @@ h2.text-center {
     font-size: 14px;
 }
 
-.btn-info {
-    background-color: #1b396a;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    text-decoration: none;
-}
-
-.btn-info:hover {
-    background-color: #2d4d87;
-}
-
-
-/* Botón Crear */
-.btn-primary {
-    background-color: #1b396a;
-    color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-    display: inline-block;
-    margin-top: 20px;
-}
-
-.btn-primary:hover {
-    background-color: #2d4d87;
-    color: #ffffff;
-    text-decoration: none;
-}
-
 
 /* Botón Editar */
 .btn-warning {
@@ -146,6 +114,104 @@ h2.text-center {
 }
 
 
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.btn-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+/* Estilo común de botones */
+.btn-primary,
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    
+    color: #ffffff;
+    line-height: 1.2;
+    flex: 1 1 0; /* ✅ ocupa el mismo espacio */
+    min-width: 0; /* ✅ evita desbordes por texto largo */
+}
+
+/* Colores específicos */
+.btn-primary {
+    background-color: #28a745;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: rgb(31, 129, 54);
+    color: #ffffff;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #ffffff;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    color: #ffffff;
+}
+
+
+
+/* Íconos */
+.btn-primary i,
+.btn-secondary i {
+    font-size: 18px;
+    color: inherit; /* hereda el color del botón */
+}
+
+.btn-primary i:hover {
+    font-size: 18px;
+    color: inherit; /* hereda el color del botón */
+}
+
+.btn-secondary i:hover {
+    font-size: 18px;
+    color: inherit; /* hereda el color del botón */
+}
+
+
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+    }
+    .form-column {
+        flex: 1 1 100%;
+    }
+
+    .btn-primary i,
+    .btn-secondary i {
+        font-size: 16px;
+        margin-right: 6px;
+    }
+    .btn-label {
+        display: none;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        padding: 10px; /* ajusta padding si el botón se ve muy ancho sin texto */
+        justify-content: center;
+    }
+}
 
 </style>
 {% endblock additional_styles %}
@@ -179,7 +245,22 @@ h2.text-center {
             {% endfor %}
         </tbody>
     </table>
-    <a href="{% url 'crear_ingenieria' %}" class="btn btn-primary">Crear Nueva Ingeniería </a>
+
+    <div class="button-group">
+        <a href="{% url 'crear_ingenieria' %}" class="btn-primary">
+            <span class="btn-content">
+                <i class="fas fa-plus"></i>
+                <span class="btn-label">Crear Nueva Ingeniería</span>
+            </span>
+        </a>
+    
+        <a href="{% url 'galeria_Admin' %}" class="btn-secondary">
+            <span class="btn-content">
+                <i class="fas fa-arrow-left"></i>
+                <span class="btn-label">Regresar</span>
+            </span>
+        </a>
+    </div>
 </div>
 
 <script>

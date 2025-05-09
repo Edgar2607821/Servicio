@@ -14,6 +14,7 @@
     max-height: 92vh;
     overflow-y: auto;
     margin-top: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 }
 
 /* Título del formulario */
@@ -64,58 +65,118 @@ h2 {
     box-shadow: 0px 0px 5px rgba(27, 57, 106, 0.3);
 }
 
-/* Contenedor de botones alineados */
 .button-group {
     display: flex;
-    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+    width: 100%;
 }
 
-/* Estilos del botón Guardar Cambios */
-.btn-primary {
-    background-color: #1b396a;
-    color: #ffffff;
-    padding: 10px 20px;
+.btn-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+/* Estilo común de botones */
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 15px;
     border-radius: 8px;
     font-size: 16px;
     font-weight: bold;
     text-decoration: none;
-    transition: background-color 0.3s ease;
-    width: 48%; /* Para que ambos botones tengan el mismo ancho */
-    text-align: center;
     border: none;
+    cursor: pointer;
+    
+    color: #ffffff;
+    line-height: 1.2;
+    flex: 1 1 0; /* ✅ ocupa el mismo espacio */
+    min-width: 0; /* ✅ evita desbordes por texto largo */
+}
+
+/* Colores específicos */
+.btn-primary {
+    background-color: #28a745;
+    color: #ffffff;
 }
 
 .btn-primary:hover {
-    background-color: #2d4d87;
-    cursor: pointer;
+    background-color: rgb(31, 129, 54);
+    color: #ffffff;
 }
 
-/* Estilos del botón Cancelar */
 .btn-secondary {
     background-color: #6c757d;
     color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-    width: 48%; /* Para que ambos botones tengan el mismo ancho */
-    text-align: center;
-    border: none;
-    transition: background-color 0.3s ease;
-    display: inline-block;
 }
 
 .btn-secondary:hover {
     background-color: #5a6268;
-    cursor: pointer;
+    color: #ffffff;
 }
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    color: #ffffff;
+}
+
+/* Íconos */
+.btn-primary i,
+.btn-secondary i,
+.btn-danger i {
+    font-size: 18px;
+    color: inherit; /* hereda el color del botón */
+}
+
+.btn-primary i:hover {
+    font-size: 18px;
+    color: inherit; /* hereda el color del botón */
+}
+
+.btn-secondary i:hover {
+    font-size: 18px;
+    color: inherit; /* hereda el color del botón */
+}
+
+.btn-danger i:hover {
+    font-size: 18px;
+    color: inherit; /* hereda el color del botón */
+}
+
 @media (max-width: 768px) {
     .form-row {
         flex-direction: column;
     }
     .form-column {
         flex: 1 1 100%;
+    }
+
+    .btn-primary i,
+    .btn-secondary i,
+    .btn-danger i {
+        font-size: 16px;
+        margin-right: 6px;
+    }
+    .btn-label {
+        display: none;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger {
+        padding: 10px; /* ajusta padding si el botón se ve muy ancho sin texto */
+        justify-content: center;
     }
 }
 </style>
@@ -144,9 +205,21 @@ h2 {
         </div>
         
         <!-- Contenedor para alinear los botones en una fila -->
+
         <div class="button-group">
-            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-            <a href="{% url 'lista_empresas' %}" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn-primary">
+                <span class="btn-content">
+                    <i class="fas fa-save"></i>
+                    <span class="btn-label">Guardar Cambios</span>
+                </span>
+            </button>
+        
+            <a href="{% url 'lista_empresas' %}" class="btn-secondary">
+                <span class="btn-content">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="btn-label">Cancelar</span>
+                </span>
+            </a>
         </div>
     </form>
 </div>

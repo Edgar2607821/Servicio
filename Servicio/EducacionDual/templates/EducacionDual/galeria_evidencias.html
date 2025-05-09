@@ -2,120 +2,271 @@
 {% load static %}
 
 {% block additional_styles %}
+<!-- AOS Animations -->
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+<!-- Lightbox CSS -->
+<link href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" rel="stylesheet">
+
 <style>
-    .content-wrapper {
+
+    .btnV {
+        --color: #3d8bfd;
+        position: fixed;   /* CAMBIO CLAVE: para que sea flotante */
+        bottom: 20px;      /* Distancia desde abajo */
+        left: 30px;        /* Distancia desde la izquierda */
         display: flex;
         justify-content: center;
-        align-items: flex-start;
+        align-items: center;
+        transition: all .5s;
+        border: none;
+        background-color: transparent;
+        z-index: 1000;     /* Para que esté encima de otros elementos */
+      }
+      
+      .btnV div {
+        letter-spacing: 2px;
+        font-weight: bold;
+        background: var(--color);
+        border-radius: 2rem;
+        color: white;
+        padding: 1rem;
+      }
+      
+      .btnV::before {
+        content: '';
+        z-index: -1;
+        background-color: var(--color);
+        border: 2px solid white;
+        border-radius: 2rem;
+        width: 110%;
+        height: 100%;
+        position: absolute;
+        transform: rotate(10deg);
+        transition: .5s;
+        opacity: 0.2;
+      }
+      
+      .btnV:hover {
+        cursor: pointer;
+        filter: brightness(1.2);
+        transform: scale(1.1);
+      }
+      
+      .btnV:hover::before {
+        transform: rotate(0deg);
+        opacity: 1;
+      }
+      
+      .btnV svg {
+        transform: translateX(-200%);
+        transition: .5s;
+        width: 0;
+        opacity: 0;
+      }
+      
+      .btnV:hover svg {
+        width: 25px;
+        transform: translateX(0%);
+        opacity: 1;
+      }
+      
+      .btnV:active {
+        filter: brightness(1.4);
+      }
+    
+    .content-wrapper {
+        display: flex;
         flex-direction: column;
-        gap: 1em;
+        align-items: center;
         padding: 1em;
         font-family: Arial, sans-serif;
     }
 
     .header-info {
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
     }
 
     .header-info h2 {
         color: #1b396a;
+        font-size: 2em;
     }
 
-    .mini-posts {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 2em;
-        padding: 1em 3em;
+    .gallery-masonry {
+        column-count: 3;
+        column-gap: 1em;
+    }
+    
+    .gallery-item {
+        display: inline-block;
+        margin: 0 0 1em;
         width: 100%;
-    }
-
-    .mini-post {
-        background: #fff;
         border-radius: 12px;
         overflow: hidden;
-        transition: all 0.3s ease-in-out;
-        width: calc(30% - 2em);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .mini-post:hover {
-        transform: scale(1.02);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .mini-post header {
-        padding: 0.8em;
-        background-color: #ecf0f1;
-        text-align: center;
-    }
-
-    .mini-post header h3 {
-        font-size: 1.3em;
-        color: #2c3e50;
-    }
-
-    .mini-post .image {
         position: relative;
-        display: block;
-        width: 100%;
-        overflow: hidden;
+        transition: transform 0.3s ease;
     }
-
-    .mini-post .image img {
+    
+    .gallery-item img {
         width: 100%;
         height: auto;
-        transition: transform 0.3s ease-in-out;
+        display: block;
+        transition: transform 0.5s ease;
+        border-radius: 12px;
+    }
+    
+    .gallery-item:hover img {
+        transform: scale(1.05);
+        filter: brightness(70%);
+    }
+    
+    .overlay-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 12px 15px;
+        font-size: 1.1em;
+        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(180deg, rgba(27, 57, 106, 0.0) 0%, rgba(27, 57, 106, 0.8) 100%);
+        text-align: center;
+        opacity: 0;
+        transition: opacity 0.4s ease, transform 0.4s ease;
+        transform: translateY(20%);
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+    }
+    
+    .gallery-item:hover .overlay-caption {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    @media (max-width: 992px) {
+        .gallery-masonry {
+            column-count: 2;
+        }
+    }
+    
+    @media (max-width: 600px) {
+        .gallery-masonry {
+            column-count: 1;
+        }
     }
 
-    .mini-post .image:hover img {
-        transform: scale(1.08);
+    
+    .intro-proyectos {
+        background: linear-gradient(90deg, rgb(208, 210, 213) 0%,rgb(255, 255, 255) 100%);
+        padding: 20px 30px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-
-    .mini-post .description {
-        padding: 0.8em;
+    
+    .intro-proyectos h2 {
+        font-size: 2em;
+        color: #1b396a;
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+    
+    .intro-proyectos p {
+        font-size: 1.1em;
         color: #555;
-        font-size: 0.95em;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: 0 auto 10px auto;
     }
 
-    @media screen and (max-width: 992px) {
-        .mini-post {
-            width: 45%;
-        }
+    .intro-proyectos {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.6s ease-in-out;
+    }
+    
+    .intro-proyectos.visible {
+        opacity: 1;
+        transform: translateY(0);
     }
 
-    @media screen and (max-width: 600px) {
-        .mini-post {
-            width: 100%;
-        }
+    .glightbox-container .gdesc-inner {
+        font-size: 1.2em;
+        color: #1b396a;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 10px;
+        border-radius: 8px;
+        text-align: center;
     }
+    
+    .glightbox-container .gdesc-inner:empty {
+        display: none;
+    }
+
+
 </style>
 {% endblock additional_styles %}
 
 {% block content %}
+<br>
+<div class="intro-proyectos">
+    <h2>Evidencias de Desempeño</h2>
+    <p>
+        Las evidencias presentadas a continuación documentan el trabajo y los logros alcanzados por nuestros estudiantes en diversos 
+        proyectos y actividades académicas. Cada evidencia refleja el esfuerzo, la creatividad y la aplicación práctica de los conocimientos 
+        adquiridos, demostrando su capacidad para enfrentar retos reales y su compromiso con la excelencia académica y profesional.
+    </p>
+</div>
 <section class="content-wrapper">
-    <div class="header-info">
-        <h2>Evidencias - {{ empresa.Nombre }} / {{ ingenieria.nombre }}</h2>
-        <p>Selecciona una imagen para verla en detalle.</p>
-    </div>
 
-    <div class="mini-posts">
+    <div class="gallery-masonry">
         {% for evidencia in evidencias %}
-            <article class="mini-post">
-                <header>
-                    <h3>{{ evidencia.titulo }}</h3>
-                </header>
-                <a href="{{ evidencia.imagen.url }}" target="_blank" class="image">
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="{{ forloop.counter0|add:'100' }}">
+                <a href="{{ evidencia.imagen.url }}" class="glightbox" data-gallery="galeria" data-title="{{ evidencia.titulo }}">
                     <img src="{{ evidencia.imagen.url }}" alt="{{ evidencia.titulo }}">
+                    <div class="overlay-caption">{{ evidencia.titulo }}</div>
                 </a>
-                <div class="description">
-                    {{ evidencia.descripcion }}
-                </div>
-            </article>
+            </div>
         {% empty %}
-            <p style="text-align: center;">No hay evidencias registradas para esta ingeniería.</p>
+            <p style="text-align: center;">No hay evidencias registradas para este proyecto.</p>
         {% endfor %}
     </div>
+    <button class="btnV" onclick="history.back()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+            <path d="M12.3199 9.38L9.7599 11.94L12.3199 14.5" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M20 11.9399H9.83" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M12 4C7.58 4 4 7 4 12C4 17 7.58 20 12 20" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <div>Regresar</div>
+    </button>
 </section>
+
 {% endblock content %}
+
+{% block additional_script %}
+<!-- AOS (Animate On Scroll) -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 1000,
+        once: true
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('.intro-proyectos').classList.add('visible');
+    });
+
+</script>
+
+<!-- GLightbox -->
+<script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+<script>
+    const lightbox = GLightbox({
+        selector: '.glightbox'
+    });
+</script>
+{% endblock additional_script %}

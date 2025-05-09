@@ -64,9 +64,13 @@ urlpatterns = [
     path('evidencias/editar/<int:pk>/', views.editar_evidencia, name='editar_evidencia'),
     path('evidencias/eliminar/<int:pk>/', views.eliminar_evidencia, name='eliminar_evidencia'),
     path('galeriaAdmin/', views.GaleriaAdmin, name='galeria_Admin'),
-    
     path('galeria/empresa/<int:empresa_id>/', views.Galeria_ingenierias , name='galeria_empresa_detalle'),
     path("galeria/empresa/<int:empresa_id>/ingenieria/<int:ingenieria_id>/", views.Galeria_proyectos, name="galeria_Proyetos_detalle"),
     path('galeria/empresa/<int:empresa_id>/ingenieria/<int:ingenieria_id>/proyecto/<int:proyecto_id>/', views.Galeria_evidencias, name='galeria_empresa_ingenieria_detalle'),
-
+    path('indexAdmin/', views.IndexListView.as_view(), name='index_list'),
+    path('indexAdmin/nuevo/', views.IndexCreateView.as_view(), name='index_create'),
+    path('indexAdmin/<int:pk>/editar/', views.IndexUpdateView.as_view(), name='index_update'),
+    path('indexAdmin/<int:pk>/eliminar/', views.IndexDeleteView.as_view(), name='index_delete'),
+    path('exportar_postulaciones/', views.exportar_postulaciones_excel, name='exportar_postulaciones'),
+    
 ]

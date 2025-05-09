@@ -8,25 +8,29 @@ from django.contrib.auth.views import LoginView
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .forms import (EvidenciaForm, LoginForm, AuthenticationForm, CustomUserCreationForm, 
-                    AdminProfileForm, ProyectoForm, UserProfileForm, EmpresasForm, DocumentoForm, ConvocatoriaForm, IngenieriaGaleriaForm)
-
+                    AdminProfileForm, ProyectoForm, UserProfileForm, EmpresasForm, DocumentoForm, 
+                    ConvocatoriaForm, IngenieriaGaleriaForm, IndexForm)
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash  # Evita que el usuario sea desconectado al cambiar la contraseña
-from django.http import FileResponse, Http404
-from .models import Documento, UserProfile, Empresas, Convocatoria, Postulacion, IngenieriaGaleria, Proyecto, Evidencia
+from django.http import FileResponse, Http404, HttpResponse
+from .models import Documento, UserProfile, Empresas, Convocatoria, Postulacion, IngenieriaGaleria, Proyecto, Evidencia, Index
 from pdf2image import convert_from_path
 from django.conf import settings
 import os
+from openpyxl import Workbook
 from django.db.models import Count
 # Colores Para el Diseño 
 # Azul 1b396a, rgb(27, 57, 106), hsl(217, 59%, 26%)
 # Blanco ffffff, rgb(255, 255, 255)
 
 def index(request): 
+    
     return render(request, 'EducacionDual/index.html')
 
 def QueEs(request): 
-    return render(request, 'EducacionDual/queEs.html')
+    Indexs = Index.objects.all()
+    return render(request, 'EducacionDual/queEs.html', {'Indexs': Indexs})
 
 def Normatividad(request):
     portadas = []
@@ -95,6 +99,8 @@ def Galeria_ingenierias(request, empresa_id):
     ingenierias = IngenieriaGaleria.objects.filter(id__in=proyectos.values_list('ingenieria_id', flat=True).distinct())
     return render(request, 'EducacionDual/galeria_ingenierias.html', {'empresa': empresa, 'ingenierias': ingenierias})
 
+
+
 def Galeria_proyectos(request, empresa_id, ingenieria_id):
     empresa = get_object_or_404(Empresas, id=empresa_id)
     ingenieria = get_object_or_404(IngenieriaGaleria, id=ingenieria_id)
@@ -121,6 +127,7 @@ def Galeria_evidencias(request, empresa_id, ingenieria_id, proyecto_id):
 def principalAlumno(request):
     return render(request, 'EducacionDual/principalAlumno.html')
 
+@login_required
 def register_user_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -134,6 +141,7 @@ def register_user_view(request):
     return render(request, 'EducacionDual/Registrate.html', {'form': form})
 
 #Login De Alumno
+
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
@@ -195,6 +203,7 @@ def principalAlumno(request):
     nombre_completo = f"{perfil.Nombre}"
     return render(request, 'EducacionDual/principalAlumno.html', {'nombre_completo': nombre_completo})
 
+@login_required
 def convocatorias_alumno(request):
     alumno = request.user.userprofile
     carrera = alumno.Carrera  # Debe coincidir con las opciones del campo ingenierias de la convocatoria
@@ -205,7 +214,7 @@ def convocatorias_alumno(request):
     )
     return render(request, 'EducacionDual/convocatorias_list_alumno.html', {'convocatorias': convocatorias})
 
-
+@login_required
 def convocatoria_detalle_alumno(request, convocatoria_id):
     convocatoria = get_object_or_404(Convocatoria, id=convocatoria_id)
     alumno = request.user.userprofile
@@ -219,6 +228,8 @@ def convocatoria_detalle_alumno(request, convocatoria_id):
         'ya_postulado': ya_postulado
     })
 
+
+@login_required
 def postularse(request, convocatoria_id):
     if not request.user.is_authenticated:
         messages.error(request, "Debes iniciar sesión para postularte.")
@@ -235,13 +246,13 @@ def postularse(request, convocatoria_id):
 
     return redirect('convocatoria_detalle_alumno', convocatoria_id=convocatoria_id)
 
-
+@login_required
 def todas_las_postulaciones(request):
     postulaciones = Postulacion.objects.select_related('alumno', 'convocatoria').all()
     return render(request, 'EducacionDual/postulacion_list_todas.html', {'postulaciones': postulaciones})
 
 
-
+@login_required
 def postulacion_detalle(request, postulacion_id):
     postulacion = get_object_or_404(Postulacion, id=postulacion_id)
 
@@ -272,6 +283,11 @@ def baseAdmin(request):  # Vista de dashboard del administrador
 
 
 #Login de Admin
+
+class AdminRequiredMixin(LoginRequiredMixin):
+    login_url = reverse_lazy('login_admin')
+
+
 def login_admin_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
@@ -290,6 +306,7 @@ def login_admin_view(request):
 def logout_view(request):
     logout(request)
     return redirect('QueEs')  # Redirige a la página de inicio de sesión después de cerrar sesión
+
 
 @user_passes_test(lambda u: u.is_superuser)
 def principalAdmin(request):
@@ -344,6 +361,7 @@ def Alumno_perfil_detalle_view(request, user_id):
     profile = get_object_or_404(UserProfile, NoControl__id=user_id)
     return render(request, 'EducacionDual/Alumno_perfil_detalle.html', {'profile': profile})
 
+@login_required
 def eliminar_alumno(request, alumno_id):
     alumno = get_object_or_404(UserProfile, id=alumno_id)
     usuario = alumno.NoControl  # El User asociado
@@ -392,11 +410,13 @@ def eliminar_empresa_view(request, empresa_id):
     return render(request, 'EducacionDual/eliminar_empresa.html', {'empresa': empresa})
 
 
-
+@login_required
 def lista_documentos_view(request):
     documentos = Documento.objects.all()
     return render(request, 'EducacionDual/lista_documentos.html', {'documentos': documentos})
 
+
+@login_required
 def crear_documento_view(request):
     if request.method == 'POST':
         form = DocumentoForm(request.POST, request.FILES)
@@ -407,7 +427,10 @@ def crear_documento_view(request):
         form = DocumentoForm()
     return render(request, 'EducacionDual/crear_documento.html', {'form': form})
 
+
+
 # Vista para editar un documento
+@login_required
 def editar_documento_view(request, documento_id):
     documento = get_object_or_404(Documento, id=documento_id)
     if request.method == 'POST':
@@ -420,6 +443,7 @@ def editar_documento_view(request, documento_id):
     return render(request, 'EducacionDual/editar_documento.html', {'form': form, 'documento': documento})
 
 # Vista para eliminar un documento
+@login_required
 def eliminar_documento_view(request, documento_id):
     documento = get_object_or_404(Documento, id=documento_id)
     if request.method == 'POST':
@@ -427,6 +451,7 @@ def eliminar_documento_view(request, documento_id):
         return redirect('lista_documentos')
     return render(request, 'EducacionDual/eliminar_documento.html', {'documento': documento})
 
+@login_required
 def mostrar_pdf(request, documento_id):
     try:
         documento = Documento.objects.get(pk=documento_id)
@@ -439,36 +464,42 @@ def mostrar_pdf(request, documento_id):
         raise Http404("Documento no encontrado")
     
 # Lista de convocatorias
-class ConvocatoriaListView(ListView):
+
+class ConvocatoriaListView(AdminRequiredMixin, ListView):
     model = Convocatoria
     template_name = 'EducacionDual/convocatoria_list.html'
     context_object_name = 'convocatorias'
 
 # Detalle de una convocatoria
-class ConvocatoriaDetailView(DetailView):
+
+class ConvocatoriaDetailView(AdminRequiredMixin, DetailView):
     model = Convocatoria
     template_name = 'EducacionDual/convocatoria_detail.html'
 
 # Crear convocatoria
-class ConvocatoriaCreateView(CreateView):
+
+class ConvocatoriaCreateView(AdminRequiredMixin, CreateView):
     model = Convocatoria
     form_class = ConvocatoriaForm
     template_name = 'EducacionDual/convocatoria_form.html'
     success_url = reverse_lazy('convocatoria_list')
 
 # Actualizar convocatoria
-class ConvocatoriaUpdateView(UpdateView):
+
+class ConvocatoriaUpdateView(AdminRequiredMixin, UpdateView):
     model = Convocatoria
     form_class = ConvocatoriaForm
     template_name = 'EducacionDual/convocatoria_form.html'
     success_url = reverse_lazy('convocatoria_list')
 
 # Eliminar convocatoria
-class ConvocatoriaDeleteView(DeleteView):
+
+class ConvocatoriaDeleteView(AdminRequiredMixin, DeleteView):
     model = Convocatoria
     template_name = 'EducacionDual/convocatoria_confirm_delete.html'
     success_url = reverse_lazy('convocatoria_list')
     
+@login_required
 def eliminar_postulacion(request, postulacion_id):
     postulacion = get_object_or_404(Postulacion, id=postulacion_id)
 
@@ -612,6 +643,76 @@ def eliminar_evidencia(request, pk):
         return redirect('lista_evidencias')
     return render(request, 'EducacionDual/confirmar_eliminar_evidencia.html', {'evidencia': evidencia})
 
-
+@login_required
 def GaleriaAdmin(request): 
     return render(request, 'EducacionDual/GaleriaAdmin.html')
+
+class IndexListView(AdminRequiredMixin, ListView):
+    model = Index
+    template_name = 'EducacionDual/Index_list.html'
+    context_object_name = 'indexs'
+
+# Detalle de Index
+
+
+
+class IndexCreateView(AdminRequiredMixin, CreateView):
+    model = Index
+    form_class = IndexForm
+    template_name = 'EducacionDual/Index_form.html'
+    success_url = reverse_lazy('index_list')
+
+# Actualizar Index
+
+class IndexUpdateView(AdminRequiredMixin, UpdateView):
+    model = Index
+    form_class = IndexForm
+    template_name = 'EducacionDual/Index_form.html'
+    success_url = reverse_lazy('index_list')
+
+# Eliminar Index
+
+class IndexDeleteView(AdminRequiredMixin, DeleteView):
+    model = Index
+    template_name = 'EducacionDual/Index_confirm_delete.html'
+    success_url = reverse_lazy('index_list')
+
+def exportar_postulaciones_excel(request):
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Postulaciones"
+
+    # Encabezados (agrega "No." al inicio)
+    ws.append([
+        "No.", "Alumno", "No. Control", "Correo", "Carrera", "Semestre", "Teléfono",
+        "Convocatoria", "Puesto", "Fecha de Apertura", "Fecha de Cierre", "Fecha de Postulación", "Estado", "Observaciones"
+    ])
+
+    postulaciones = Postulacion.objects.select_related('alumno', 'convocatoria')
+
+    for i, p in enumerate(postulaciones, start=1):
+        alumno = f"{p.alumno.Nombre} {p.alumno.Apellidos}"
+        nocontrol = p.alumno.NoControl.username
+        correo = p.alumno.NoControl.email
+        carrera = p.alumno.Carrera
+        semestre = p.alumno.Semestre
+        telefono = p.alumno.Telefono
+        convocatoria = p.convocatoria.titulo
+        puesto = p.convocatoria.puesto
+        fecha_apertura = p.convocatoria.fecha_apertura.strftime('%d/%m/%Y') if p.convocatoria.fecha_apertura else ''
+        fecha_cierre = p.convocatoria.fecha_cierre.strftime('%d/%m/%Y') if p.convocatoria.fecha_cierre else ''
+        fecha_postulacion = p.fecha_postulacion.strftime('%d/%m/%Y %H:%M') if p.fecha_postulacion else ''
+        estado = p.estado
+        observaciones = p.observaciones
+
+        ws.append([
+            i, alumno, nocontrol, correo, carrera, semestre, telefono,
+            convocatoria, puesto, fecha_apertura, fecha_cierre, fecha_postulacion, estado, observaciones
+        ])
+
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename=postulaciones_completas.xlsx'
+    wb.save(response)
+    return response

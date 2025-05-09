@@ -93,20 +93,21 @@
 {% endblock additional_styles %}
 {% block content %}
 
+
+{% for index in Indexs %}
 <div class="hero-educacion-dual">
     <div class="texto">
-        <h1>¿Qué es la educación dual?</h1>
-        <p>
-            La educación dual en el Tecnológico Nacional de México (TecNM) es un modelo que integra la enseñanza académica con la formación práctica en empresas, permitiendo a los estudiantes aplicar los conocimientos adquiridos en el aula directamente en el entorno laboral.
-        </p>
-        <p>
-            Este enfoque formativo responde a las necesidades actuales de la industria y fortalece el perfil profesional de los estudiantes, preparándolos para enfrentar los retos del mundo real.
-        </p>
+        <h1>{{ index.Titulo }}</h1>
+        <p>{{ index.Texto|linebreaks }}</p>
     </div>
     <div class="imagen">
-        <img src="{% static 'img/logoanimado2.gif' %}" alt="Logo TecNM">
+        <img src="{{ index.Imagen.url }}" alt="Imagen del Index">
     </div>
 </div>
+{% empty %}
+    <div class="text-center table-empty">No hay un Index registrado</div>
+{% endfor %}
+
 {% endblock content %}
 
 {% block additional_script %}
