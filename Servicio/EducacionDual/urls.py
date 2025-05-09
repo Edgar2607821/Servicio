@@ -72,5 +72,12 @@ urlpatterns = [
     path('indexAdmin/<int:pk>/editar/', views.IndexUpdateView.as_view(), name='index_update'),
     path('indexAdmin/<int:pk>/eliminar/', views.IndexDeleteView.as_view(), name='index_delete'),
     path('exportar_postulaciones/', views.exportar_postulaciones_excel, name='exportar_postulaciones'),
+     path('estadisticasg/', views.estadisticasg, name='estadisticasg'),
+    path('estadisticas/', views.estadisticas, name='estadisticas'),
+    path('graficas-carrera/', views.graficas_por_carrera, name='graficas_por_carrera'),
+    path('graficas_totales_por_ingenieria/', views.graficas_totales_por_ingenieria, name='graficas_totales_por_ingenieria'),
+    path('postulaciones_por_empresa/', views.postulaciones_por_empresa, name='postulaciones_por_empresa'),
+    path('postulaciones_por_semestre/', views.postulaciones_por_semestre, name='postulaciones_por_semestre'),
+    path('estadisticas_status/', views.estadisticas_status, name='estadisticas_status'),
     
 ]
