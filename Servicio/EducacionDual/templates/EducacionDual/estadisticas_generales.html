@@ -1,0 +1,175 @@
+{% extends "EducacionDual/baseAdministrador.html" %}
+{% load static %}
+
+{% block content %}
+<!-- Contenedor de las estadísticas -->
+<div class="container">
+    <h2 class="h2-container">Estadísticas Generales</h2>
+    <div class="stats-container">
+        <div class="stat-card">
+            <span class="stat-label">Usuarios registrados:</span>
+            <span class="stat-value">{{ total_usuarios }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Perfiles completados:</span>
+            <span class="stat-value">{{ perfiles_completados }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Convocatorias activas:</span>
+            <span class="stat-value">{{ convocatorias_activas }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Convocatorias inactivas:</span>
+            <span class="stat-value">{{ convocatorias_inactivas }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Postulaciones totales:</span>
+            <span class="stat-value">{{ total_postulaciones }}</span>
+        </div>
+        <!-- Botón estilo tarjeta -->
+        <a href="{% url "estadisticas" %}" class="stat-card stat-button">
+            <i class="fas fa-chart-bar" style="margin-right: 8px;"></i>
+            Estadísticas específicas
+        </a>
+    </div>
+    
+    <!-- Contenedor para la gráfica -->
+    <div class="chart-container">
+        <canvas id="chart" width="400" height="200"></canvas>
+    </div>
+    
+    <!-- Incluir el script de Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    const ctx = document.getElementById('chart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Usuarios', 'Perfiles', 'Conv. activas', 'Conv. inactivas', 'Postulaciones'],
+            datasets: [{
+                label: 'Estadísticas',
+                data: [
+                    {{ total_usuarios }},
+                    {{ perfiles_completados }},
+                    {{ convocatorias_activas }},
+                    {{ convocatorias_inactivas }},
+                    {{ total_postulaciones }}
+                ],
+                backgroundColor: [
+                    '#4e73df',
+                    '#1cc88a',
+                    '#36b9cc',
+                    '#f6c23e',
+                    '#e74a3b'
+                ],
+            }]
+        },
+    });
+    </script>
+</div>
+
+<!-- Estilos personalizados -->
+<style>
+/* Contenedor principal */
+.container {
+    max-width: 1150px;
+    margin: 25px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    max-height: 86vh;
+    overflow-y: auto;
+}
+
+/* Estilo del título */
+.h2-container {
+    font-size: 25px;
+    font-weight: bold;
+    color: #1c3255;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+/* Contenedor de estadísticas */
+.stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Tarjeta de estadística */
+.stat-card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333333;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Etiqueta dentro de la tarjeta */
+.stat-label {
+    display: block;
+    font-size: 14px;
+    font-weight: normal;
+    color: #000000;
+    margin-bottom: 20px;
+}
+
+/* Valor dentro de la tarjeta */
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1c3255;
+}
+
+/* Gráfica */
+.chart-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(25, 8, 91, 0.1);
+}
+
+canvas {
+    width: 100% !important;
+    height: auto !important;
+}
+
+/* Botón estilo tarjeta */
+.stat-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    text-decoration: none;
+    color: #1c3255;
+    background-color: #ffffff;
+    font-weight: bold;
+    padding: 15px 20px;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.stat-button:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+</style>
+{% endblock %}
