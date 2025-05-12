@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from django.urls import reverse_lazy
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,12 +26,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k=895+$$ewu$&ya2n7paa0a!&2gtsu6vp+3=f=xf8ep&c@*w+z'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
+
+# Seguridad
+
+
+
 
 
 # Application definition
@@ -76,16 +85,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Servicio.wsgi.application'
 
-CSRF_TRUSTED_ORIGINS = ['https://5c97-45-188-125-101.ngrok-free.app']
+# CSRF trusted origins
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',')
 
-# settings.py
+# Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'edgarballeza87@gmail.com'  # <-- Tu correo Gmail
-EMAIL_HOST_PASSWORD = 'fuwg znzc jqcn dfcq'  # <-- Contraseña de aplicación (importante)
-DEFAULT_FROM_EMAIL = 'edgarballeza87@gmail.com'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
+
 
 
 MEDIA_URL = '/media/'
@@ -94,15 +105,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
+# Base de datos
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'EducacionDual',
-        'USER': 'postgres',
-        'PASSWORD': 'Edgar821',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
@@ -130,9 +141,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 
-LANGUAGE_CODE = 'es'
-
-TIME_ZONE = 'America/Mexico_City'
+# Zona horaria y lenguaje
+TIME_ZONE = os.environ.get('TIME_ZONE', 'UTC')
+LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE', 'en-us')
 
 USE_I18N = True
 

@@ -1,12 +1,127 @@
 {% extends "EducacionDual/baseAdministrador.html" %}
 {% load static %}
 
+{% block additional_styles %}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&display=swap');
+
+.container {
+    max-width: 1250px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    max-height: 86vh;
+    overflow-y: auto;
+}
+
+/* Botón regresar */
+.btn-regresar {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    background-color: #1b396a;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-regresar:hover {
+    background-color: #16315a;
+}
+
+/* Título */
+.container h2 {
+    font-size: 28px;
+    color: #1b396a;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Intro descriptiva */
+.intro-proyectos {
+    background: linear-gradient(120deg, #f7f9fc 0%, #ffffff 100%);
+    padding: 25px 35px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    border-left: 8px solid #1b396a;
+    text-align: center;
+}
+
+.intro-proyectos p {
+    font-size: 1.05rem;
+    color: #444;
+    line-height: 1.6;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+/* Cards container */
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+}
+
+/* Columnas independientes */
+.columna {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* Tarjetas */
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(6px);
+    padding: 25px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 400px;
+    max-width: 100%;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card h4 {
+    font-size: 18px;
+    color: #1b396a;
+    margin-bottom: 15px;
+    font-family: 'Barlow Condensed', sans-serif;
+}
+
+.card canvas {
+    max-width: 100%;
+    height: 300px;
+}
+</style>
+{% endblock additional_styles %}
+
 {% block content %}
 <div class="container">
+    <div class="intro-proyectos">
+        <h2>Postulaciones Aceptadas y Rechazadas por Empresa</h2>
+        <p>
+            Esta sección muestra el estado de las postulaciones enviadas por los estudiantes a cada empresa registrada en el sistema. 
+            Se visualiza de manera clara cuántas fueron aceptadas, rechazadas o aún se encuentran pendientes, permitiendo un análisis detallado 
+            del proceso de selección y participación por parte de las organizaciones.
+        </p>
+    </div>
 
-
-    <h2>Postulaciones Aceptadas y Rechazadas por Empresa</h2>
-    <a href="{% url 'estadisticas' %}" class="btn-regresar">← Regresar</a>
     <div class="cards-container">
         <div class="columna">
             {% for item in datos_izquierda %}
@@ -16,7 +131,7 @@
                 </div>
             {% endfor %}
         </div>
-    
+
         <div class="columna">
             {% for item in datos_derecha %}
                 <div class="card">
@@ -26,97 +141,50 @@
             {% endfor %}
         </div>
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        {% for item in datos_izquierda %}
-            new Chart(document.getElementById("chart-izq-{{ forloop.counter }}"), {
-                type: 'bar',
-                data: {
-                    labels: ['Aceptados', 'Rechazados'],
-                    datasets: [{
-                        label: '{{ item.convocatoria__empresa__Nombre }}',
-                        data: [{{ item.aceptados }}, {{ item.rechazados }}],
-                        backgroundColor: ['#1cc88a', '#e74a3b']
-                    }]
-                },
-                options: { responsive: true }
-            });
-        {% endfor %}
-    
-        {% for item in datos_derecha %}
-            new Chart(document.getElementById("chart-der-{{ forloop.counter }}"), {
-                type: 'bar',
-                data: {
-                    labels: ['Aceptados', 'Rechazados'],
-                    datasets: [{
-                        label: '{{ item.convocatoria__empresa__Nombre }}',
-                        data: [{{ item.aceptados }}, {{ item.rechazados }}],
-                        backgroundColor: ['#1cc88a', '#e74a3b']
-                    }]
-                },
-                options: { responsive: true }
-            });
-        {% endfor %}
-    </script>
-    
-    <style>
-    .container {
-        max-width: 1150px;
-        margin: 25px auto;
-        padding: 20px;
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-        max-height: 86vh;
-        overflow-y: auto;
-    }
-
-    .btn-regresar {
-        display: inline-block;
-        margin-bottom: 20px;
-        padding: 8px 16px;
-        background-color: #1b396a;
-        color: #fff;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 14px;
-        transition: background-color 0.2s ease-in-out;
-    }
-
-    .btn-regresar:hover {
-        background-color: #16315a;
-    }
-
-    h2 {
-        text-align: center;
-        color: #1c3255;
-        margin-bottom: 40px;
-    }
-    
-    .cards-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 30px;
-        padding: 20px;
-    }
-    
-    .card {
-        background: #fff;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        width: 400px;
-        max-width: 100%;
-        text-align: center;
-    }
-    
-    .card canvas {
-        max-width: 100%;
-        height: 300px;
-    }
-    </style>
+    <a href="{% url 'estadisticas' %}" class="btn-regresar">← Regresar</a>
 </div>
 {% endblock %}
+
+{% block additional_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const config = (data) => ({
+        type: 'bar',
+        data: {
+            labels: ['Aceptados', 'Rechazados', 'Pendientes'],
+            datasets: [{
+                label: 'Postulaciones',
+                data: data,
+                backgroundColor: ['#1cc88a', '#e74a3b', '#f6c23e'],
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { precision: 0 }
+                }
+            }
+        }
+    });
+
+    {% for item in datos_izquierda %}
+    new Chart(
+        document.getElementById("chart-izq-{{ forloop.counter }}").getContext('2d'),
+        config([{{ item.aceptados }}, {{ item.rechazados }}, {{ item.pendientes }}])
+    );
+    {% endfor %}
+
+    {% for item in datos_derecha %}
+    new Chart(
+        document.getElementById("chart-der-{{ forloop.counter }}").getContext('2d'),
+        config([{{ item.aceptados }}, {{ item.rechazados }}, {{ item.pendientes }}])
+    );
+    {% endfor %}
+</script>
+{% endblock additional_scripts %}

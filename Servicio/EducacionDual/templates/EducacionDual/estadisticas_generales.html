@@ -1,78 +1,13 @@
 {% extends "EducacionDual/baseAdministrador.html" %}
 {% load static %}
 
-{% block content %}
-<!-- Contenedor de las estadísticas -->
-<div class="container">
-    <h2 class="h2-container">Estadísticas Generales</h2>
-    <div class="stats-container">
-        <div class="stat-card">
-            <span class="stat-label">Usuarios registrados:</span>
-            <span class="stat-value">{{ total_usuarios }}</span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-label">Perfiles completados:</span>
-            <span class="stat-value">{{ perfiles_completados }}</span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-label">Convocatorias activas:</span>
-            <span class="stat-value">{{ convocatorias_activas }}</span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-label">Convocatorias inactivas:</span>
-            <span class="stat-value">{{ convocatorias_inactivas }}</span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-label">Postulaciones totales:</span>
-            <span class="stat-value">{{ total_postulaciones }}</span>
-        </div>
-        <!-- Botón estilo tarjeta -->
-        <a href="{% url "estadisticas" %}" class="stat-card stat-button">
-            <i class="fas fa-chart-bar" style="margin-right: 8px;"></i>
-            Estadísticas específicas
-        </a>
-    </div>
-    
-    <!-- Contenedor para la gráfica -->
-    <div class="chart-container">
-        <canvas id="chart" width="400" height="200"></canvas>
-    </div>
-    
-    <!-- Incluir el script de Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-    const ctx = document.getElementById('chart').getContext('2d');
-    const chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Usuarios', 'Perfiles', 'Conv. activas', 'Conv. inactivas', 'Postulaciones'],
-            datasets: [{
-                label: 'Estadísticas',
-                data: [
-                    {{ total_usuarios }},
-                    {{ perfiles_completados }},
-                    {{ convocatorias_activas }},
-                    {{ convocatorias_inactivas }},
-                    {{ total_postulaciones }}
-                ],
-                backgroundColor: [
-                    '#4e73df',
-                    '#1cc88a',
-                    '#36b9cc',
-                    '#f6c23e',
-                    '#e74a3b'
-                ],
-            }]
-        },
-    });
-    </script>
-</div>
+{% block additional_styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<!-- Estilos personalizados -->
 <style>
 /* Contenedor principal */
 .container {
-    max-width: 1150px;
+    max-width: 1250px;
     margin: 25px auto;
     padding: 20px;
     background-color: #ffffff;
@@ -80,9 +15,10 @@
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
     max-height: 86vh;
     overflow-y: auto;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 }
 
-/* Estilo del título */
+/* Título principal */
 .h2-container {
     font-size: 25px;
     font-weight: bold;
@@ -101,7 +37,7 @@
     margin-top: 20px;
 }
 
-/* Tarjeta de estadística */
+/* Tarjeta individual */
 .stat-card {
     background-color: #ffffff;
     padding: 20px;
@@ -111,7 +47,19 @@
     font-size: 18px;
     font-weight: bold;
     color: #333333;
+    width: 200px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease forwards;
+    animation-delay: var(--delay, 0s);
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .stat-card:hover {
@@ -119,36 +67,19 @@
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Etiqueta dentro de la tarjeta */
 .stat-label {
     display: block;
     font-size: 14px;
     font-weight: normal;
     color: #000000;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-/* Valor dentro de la tarjeta */
 .stat-value {
     font-size: 24px;
     font-weight: bold;
     color: #1c3255;
-}
-
-/* Gráfica */
-.chart-container {
-    width: 100%;
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0px 4px 15px rgba(25, 8, 91, 0.1);
-}
-
-canvas {
-    width: 100% !important;
-    height: auto !important;
 }
 
 /* Botón estilo tarjeta */
@@ -171,5 +102,226 @@ canvas {
     transform: translateY(-5px);
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
 }
+
+/* Intro animada */
+.intro-proyectos {
+    background: linear-gradient(120deg, #f7f9fc 0%, #ffffff 100%);
+    padding: 30px 40px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-left: 8px solid #1b396a;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-in-out;
+}
+
+.intro-proyectos.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.intro-proyectos h2 {
+    font-size: 2rem;
+    color: #1b396a;
+    margin-bottom: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.intro-proyectos p {
+    font-size: 1.1em;
+    color: #444;
+    line-height: 1.8;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+
+.chart-container:hover {
+    box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+
+
+.chart-container {
+    width: 100%;
+    max-width: 1100px;
+    height: 450px; /* o más si necesitas más espacio vertical */
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(25, 8, 91, 0.1);
+    position: relative;
+}
+
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .stats-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stat-card {
+        width: 90%;
+    }
+}
 </style>
+{% endblock additional_styles %}
+
+{% block content %}
+<div class="container">
+    <!-- Intro animada -->
+    <div class="intro-proyectos visible">
+        <h2>Estadísticas Generales del Sistema</h2>
+        <p>
+            Esta sección muestra una visión general del sistema mediante indicadores clave que resumen la participación estudiantil y el estado de las convocatorias.
+            Incluye el número total de usuarios registrados, perfiles completados, convocatorias activas e inactivas, y el total de postulaciones realizadas, 
+            proporcionando una perspectiva integral sobre el uso y avance de la plataforma.
+        </p>
+    </div>
+
+    <!-- KPIs -->
+    <div class="stats-container">
+        <div class="stat-card" style="--delay: 0s">
+            <i class="fas fa-user-graduate" style="color:#2563eb; font-size: 20px;"></i>
+            <span class="stat-label">Alumnos registrados</span>
+            <span class="stat-value">{{ total_usuarios }}</span>
+        </div>
+        <div class="stat-card" style="--delay: 0.1s">
+            <i class="fas fa-id-badge" style="color:#10b981; font-size: 20px;"></i>
+            <span class="stat-label">Perfiles completados</span>
+            <span class="stat-value">{{ perfiles_completados }}</span>
+        </div>
+        <div class="stat-card" style="--delay: 0.2s">
+            <i class="fas fa-bolt" style="color:#3b82f6; font-size: 20px;"></i>
+            <span class="stat-label">Conv. habilitadas</span>
+            <span class="stat-value">{{ convocatorias_activas }}</span>
+        </div>
+        <div class="stat-card" style="--delay: 0.3s">
+            <i class="fas fa-ban" style="color:#facc15; font-size: 20px;"></i>
+            <span class="stat-label">Conv. inhabilitadas</span>
+            <span class="stat-value">{{ convocatorias_inactivas }}</span>
+        </div>
+        <div class="stat-card" style="--delay: 0.4s">
+            <i class="fas fa-file-alt" style="color:#ef4444; font-size: 20px;"></i>
+            <span class="stat-label">Postulaciones totales</span>
+            <span class="stat-value">{{ total_postulaciones }}</span>
+        </div>
+
+        <a href="{% url "estadisticas" %}" class="stat-card stat-button" style="--delay: 0.5s">
+            <i class="fas fa-chart-bar" style="margin-right: 8px;"></i>
+            Estadísticas específicas
+        </a>
+    </div>
+
+    <!-- Gráfica -->
+    <div class="chart-container">
+        <canvas id="chart"></canvas>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('.intro-proyectos').classList.add('visible');
+});
+
+const ctx = document.getElementById('chart').getContext('2d');
+const chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [
+            'Alumnos registrados',
+            'Perfiles completados',
+            'Conv. habilitadas',
+            'Conv. inhabilitadas',
+            'Convocatorias totales',
+            'Postulaciones',
+            'Postulaciones Aceptadas',
+            'Postulaciones Rechazadas',
+            'Postulaciones Pendientes',
+            'Empresas registradas',
+            'Proyectos registradas',
+            'Evidencias registradas'
+        ],
+        datasets: [{
+            label: 'Estadísticas Generales',
+            data: [
+                {{ total_usuarios }},
+                {{ perfiles_completados }},
+                {{ convocatorias_activas }},
+                {{ convocatorias_inactivas }},
+                {{ convocatorias_totales }},
+                {{ total_postulaciones }},
+                {{ aceptadas }},
+                {{ rechazadas }},
+                {{ pendientes }},
+                {{ total_empresas }},
+                {{ total_proyectos }},
+                {{ total_evidencias }}
+            ],
+            backgroundColor: [
+                '#2563eb',  // azul
+                '#10b981',  // verde
+                '#08dbff',  // azul claro
+                '#facc15',  // amarillo
+                '#fbbf24',  // naranja claro
+                '#ef4444',  // rojo
+                '#22c55e',  // verde aceptado
+                '#f87171',  // rojo rechazado
+                '#fcd34d',  // amarillo pendiente
+                '#6366f1',  // púrpura empresa
+                '#06b6d4',  // celeste proyecto
+                '#a855f7'   // morado evidencia
+            ],
+            borderRadius: 6
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return `${context.label}: ${context.parsed.y}`;
+                    }
+                }
+            },
+            title: {
+                display: true,
+                text: 'Indicadores Generales del Sistema',
+                font: {
+                    size: 18,
+                    weight: 'bold'
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    precision: 0
+                }
+            }
+        }
+    }
+});
+</script>
 {% endblock %}

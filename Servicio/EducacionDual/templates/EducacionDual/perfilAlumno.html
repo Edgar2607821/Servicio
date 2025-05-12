@@ -2,141 +2,146 @@
 {% extends "EducacionDual/baseAlumno.html" %}
 
 {% block additional_styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-    /* Contenedor principal del perfil */
-    .profile-container {
-        max-width: 900px;
-        margin: 50px auto;
-        padding: 30px;
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-        text-align: left;
-        max-height: 84vh;
-        overflow-y: auto;
-        margin-top: 10px;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&display=swap');
 
-    /* Encabezado del perfil */
-    .profile-header {
-        text-align: center;
-        color: #1b396a;
-        font-size: 28px;
-        font-weight: bold;
-        margin-bottom: 30px;
-        position: relative;
-    }
+.profile-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(6px);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+    font-family: 'Segoe UI', sans-serif;
+    overflow-y: auto;
+    max-height: 90vh;
+    margin-top: 10px; /* baja este valor o ponlo en 0 si quieres más arriba */
+}
 
-    .profile-header::after {
-        content: '';
-        display: block;
-        width: 60px;
-        height: 4px;
-        background-color: #3062b2;
-        margin: 8px auto 0;
-        border-radius: 2px;
-    }
+.profile-header {
+    text-align: center;
+    color: #1b396a;
+    font-size: 2.4rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: -25px;
+    position: relative;
+    font-family: 'Barlow Condensed', sans-serif;
+}
 
-    /* Información del perfil en dos columnas */
-    .profile-info {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        list-style: none;
-        padding: 0;
-        font-size: 18px;
-        color: #333;
-    }
+.profile-header::after {
+    content: '';
+    width: 70px;
+    height: 4px;
+    background: #1b396a;
+    display: block;
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
 
-    .profile-info li {
-        display: flex;
-        align-items: center;
-        padding: 10px 0;
-        border-bottom: 1px solid #f0f0f0;
-    }
+.profile-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    padding: 0;
+    list-style: none;
+}
 
-    .profile-info label {
-        font-weight: bold;
-        color: #1b396a;
-        margin-right: 10px;
-        display: flex;
-        align-items: center;
-    }
+.profile-info li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 16px 20px;
+    background: #f9fafb;
+    border-left: 6px solid #1b396a20;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
 
-    .profile-info label i {
-        font-size: 18px;
-        margin-right: 8px;
-        color: #3062b2;
-    }
+.profile-info li i {
+    font-size: 26px;
+    padding: 12px;
+    border-radius: 12px;
+    background-color: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+    height: 50px;
+}
+.profile-info li:hover {
+    transform: translateY(-3px);
+    background: #ffffff;
+}
 
-    .profile-info span {
-        color: #333;
-    }
+.profile-info label {
+    font-weight: bold;
+    color: #1b396a;
+    margin-bottom: 5px;
+    display: block;
+    font-size: 15px;
+}
 
-    /* Botón de editar perfil */
-    .text-center .btn-primary {
-        background-color: #1b396a;
-        color: #ffffff;
-        padding: 12px 20px;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: bold;
-        margin-top: 20px;
-        box-shadow: 0px 4px 10px rgba(27, 57, 106, 0.2);
-        transition: background-color 0.3s ease;
-        text-decoration: none;
-    }
+.profile-info i {
+    font-size: 28px;
+    flex-shrink: 0;
+    padding: 12px;
+    border-radius: 12px;
+    background-color: #f3f4f6;
+}
 
-    .btn-primary, .btn-warning {
-        padding: 12px 20px;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: bold;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        transition: background-color 0.3s ease;
-        text-decoration: none;
-    }
-    
-    .btn-warning {
-        background-color: #ffb600;
-        color: #ffffff;
-        border: none;
-    }
-    
-    .btn-warning:hover {
-        background-color: #e0a200;
-        color: #ffffff;
-    }
+.profile-info span {
+    font-size: 16px;
+    color: #374151;
+    display: block;
+}
 
-    .text-center .btn-primary:hover {
-        background-color: #2d4d87;
-        color: #ffffff;
-    }
+/* Colores personalizados */
+.icon-user { color: #1b396a; background-color: #e0ecff; }
+.icon-user-tie { color: #2563eb; background-color: #e3efff; }
+.icon-envelope { color: #f97316; background-color: #fff1e6; }
+.icon-grad { color: #9333ea; background-color: #f5e8ff; }
+.icon-calendar { color: #10b981; background-color: #e8fdf3; }
+.icon-gender { color: #facc15; background-color: #fef9c3; }
+.icon-phone { color: #ef4444; background-color: #ffe4e6; }
+.icon-semester { color: #3b82f6; background-color: #dbeafe; }
+.icon-joined { color: #22c55e; background-color: #dcfce7; }
+.icon-login { color: #64748b; background-color: #e2e8f0; }
 
-    /* Responsivo: una columna en pantallas pequeñas */
-    @media (max-width: 768px) {
-        .profile-info {
-            grid-template-columns: 1fr;
-        }
-    }
 
-    @media (max-width: 768px) {
-        .profile-container {
-            padding: 20px;
-        }
-    
-        .profile-info li {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-    
-        .profile-info label {
-            margin-bottom: 5px;
-        }
-    }
+.icon-user:hover { color: #1b396a; background-color: #e0ecff; }
+.icon-user-tie:hover { color: #2563eb; background-color: #e3efff; }
+.icon-envelope:hover { color: #f97316; background-color: #fff1e6; }
+.icon-grad:hover { color: #9333ea; background-color: #f5e8ff; }
+.icon-calendar:hover { color: #10b981; background-color: #e8fdf3; }
+.icon-gender:hover { color: #facc15; background-color: #fef9c3; }
+.icon-phone:hover { color: #ef4444; background-color: #ffe4e6; }
+.icon-semester:hover { color: #3b82f6; background-color: #dbeafe; }
+.icon-joined:hover { color: #22c55e; background-color: #dcfce7; }
+.icon-login:hover { color: #64748b; background-color: #e2e8f0; }
 
+
+.text-center .btn-warning {
+    background-color: #ffb600;
+    color: #ffffff;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    transition: 0.3s ease;
+    margin-top: 15px;
+    text-decoration: none;
+}
+
+.text-center .btn-warning:hover {
+    background-color: #e0a200;
+    color: #ffffff;
+}
 </style>
 {% endblock additional_styles %}
 
@@ -144,17 +149,68 @@
 <div class="profile-container">
     <div class="profile-header">Mi Perfil</div>
     <ul class="profile-info">
-        <li><label><i class="fas fa-user"></i> Nombre de Usuario:</label> <span>{{ profile.NoControl.username }}</span></li>
-        <li><label><i class="fas fa-user-tie"></i> Nombre Completo:</label> <span>{{ profile.Nombre }} {{ profile.Apellidos }}</span></li>
-        <li><label><i class="fas fa-envelope"></i> Correo Electrónico:</label> <span>{{ profile.NoControl.email }}</span></li>
-        <li><label><i class="fas fa-graduation-cap"></i> Carrera:</label> <span>{{ profile.get_Carrera_display }}</span></li>
-        <li><label><i class="fas fa-calendar"></i> Fecha de Nacimiento:</label> <span>{{ profile.Fecha_nacimiento|date:"d-m-Y" }}</span></li>
-        <li><label><i class="fas fa-venus-mars"></i> Género:</label> <span>{{ profile.get_Genero_display }}</span></li>
-        <li><label><i class="fas fa-phone"></i> Teléfono:</label> <span>{{ profile.Telefono }}</span></li>
-        <li><label><i class="fas fa-layer-group"></i> Semestre:</label> <span>{{ profile.get_Semestre_display }}</span></li>
-        <li><label><i class="fas fa-calendar-check"></i> Fecha de Creación:</label> <span>{{ profile.NoControl.date_joined|date:"d-m-Y" }}</span></li>
-        <li><label><i class="fas fa-sign-in-alt"></i> Último Inicio de Sesión:</label> <span>{{ profile.NoControl.last_login|date:"d-m-Y H:i" }}</span></li>
+        <li><i class="fas fa-user icon-user"></i>
+            <div>
+                <label>Número de Control:</label>
+                <span>{{ profile.NoControl.username }}</span>
+            </div>
+        </li>
+        <li><i class="fas fa-user-tie icon-user-tie"></i>
+            <div>
+                <label>Nombre Completo:</label>
+                <span>{{ profile.Nombre }} {{ profile.Apellidos }}</span>
+            </div>
+        </li>
+        <li><i class="fas fa-envelope icon-envelope"></i>
+            <div>
+                <label>Correo Electrónico:</label>
+                <span>{{ profile.NoControl.email }}</span>
+            </div>
+        </li>
+        <li><i class="fas fa-graduation-cap icon-grad"></i>
+            <div>
+                <label>Carrera:</label>
+                <span>{{ profile.get_Carrera_display }}</span>
+            </div>
+        </li>
+        <li><i class="fas fa-calendar icon-calendar"></i>
+            <div>
+                <label>Fecha de Nacimiento:</label>
+                <span>{{ profile.Fecha_nacimiento|date:"d-m-Y" }}</span>
+            </div>
+        </li>
+        <li><i class="fas fa-venus-mars icon-gender"></i>
+            <div>
+                <label>Género:</label>
+                <span>{{ profile.get_Genero_display }}</span>
+            </div>
+        </li>
+        <li><i class="fas fa-phone icon-phone"></i>
+            <div>
+                <label>Teléfono:</label>
+                <span>{{ profile.Telefono }}</span>
+            </div>
+        </li>
+        <li><i class="fas fa-layer-group icon-semester"></i>
+            <div>
+                <label>Semestre:</label>
+                <span>{{ profile.get_Semestre_display }}</span>
+            </div>
+        </li>
+        <li><i class="fas fa-calendar-check icon-joined"></i>
+            <div>
+                <label>Fecha de Creación:</label>
+                <span>{{ profile.NoControl.date_joined|date:"d-m-Y" }}</span>
+            </div>
+        </li>
+        <li><i class="fas fa-sign-in-alt icon-login"></i>
+            <div>
+                <label>Último Inicio de Sesión:</label>
+                <span>{{ profile.NoControl.last_login|date:"d-m-Y H:i" }}</span>
+            </div>
+        </li>
     </ul>
+
     <div class="text-center mt-4">
         <a href="{% url 'edit_Alumno' %}" class="btn btn-warning">Editar Perfil</a>
     </div>

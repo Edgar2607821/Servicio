@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Términos de Uso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            font-family: 'Barlow', sans-serif;
+            color: #333;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 60px auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        h3 {
+            color: #1b396a;
+            font-size: 28px;
+            margin-bottom: 10px;
+            border-left: 6px solid #1b396a;
+            padding-left: 15px;
+        }
+
+        p {
+            font-size: 17px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+            .btnV {
+        --color: #3d8bfd;
+        position: fixed;   /* CAMBIO CLAVE: para que sea flotante */
+        bottom: 20px;      /* Distancia desde abajo */
+        left: 30px;        /* Distancia desde la izquierda */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all .5s;
+        border: none;
+        background-color: transparent;
+        z-index: 1000;     /* Para que esté encima de otros elementos */
+      }
+      
+      .btnV div {
+        letter-spacing: 2px;
+        font-weight: bold;
+        background: var(--color);
+        border-radius: 2rem;
+        color: white;
+        padding: 1rem;
+      }
+      
+      .btnV::before {
+        content: '';
+        z-index: -1;
+        background-color: var(--color);
+        border: 2px solid white;
+        border-radius: 2rem;
+        width: 110%;
+        height: 100%;
+        position: absolute;
+        transform: rotate(10deg);
+        transition: .5s;
+        opacity: 0.2;
+      }
+      
+      .btnV:hover {
+        cursor: pointer;
+        filter: brightness(1.2);
+        transform: scale(1.1);
+      }
+      
+      .btnV:hover::before {
+        transform: rotate(0deg);
+        opacity: 1;
+      }
+      
+      .btnV svg {
+        transform: translateX(-200%);
+        transition: .5s;
+        width: 0;
+        opacity: 0;
+      }
+      
+      .btnV:hover svg {
+        width: 25px;
+        transform: translateX(0%);
+        opacity: 1;
+      }
+      
+      .btnV:active {
+        filter: brightness(1.4);
+      }
+
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 25px;
+            }
+
+            h3 {
+                font-size: 24px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Términos de Uso</h3>
+        <p>
+            Al acceder y utilizar esta plataforma, usted acepta cumplir con estos términos y condiciones. Esta plataforma es exclusiva para estudiantes registrados, personal administrativo y usuarios autorizados. 
+            El uso indebido, la suplantación de identidad o la alteración de información académica está estrictamente prohibido y puede ser motivo de sanción administrativa o legal.
+        </p>
+        <p>
+            Los usuarios son responsables de la veracidad de los datos que proporcionan y del contenido que suben (como evidencias, proyectos o postulaciones). La plataforma se reserva el derecho de restringir el acceso o eliminar cuentas en caso de incumplimiento de estos términos.
+        </p>
+    </div>
+        <button class="btnV" onclick="history.back()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+            <path d="M12.3199 9.38L9.7599 11.94L12.3199 14.5" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M20 11.9399H9.83" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M12 4C7.58 4 4 7 4 12C4 17 7.58 20 12 20" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <div>Regresar</div>
+    </button>
+</body>
+</html>

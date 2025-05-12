@@ -9,11 +9,13 @@
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-    max-height: 86vh;
+    max-height: 87vh;
     overflow-y: auto;  /* Scroll vertical si es necesario */
     margin-top: 15px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 }
+
+
 
 .profile-header {
         text-align: center;
@@ -205,6 +207,7 @@ h2.text-center {
 .Postulados {
     color: #3062b2;
 }
+
 .container-btn-file {
     display: flex;
     position: relative;
@@ -251,50 +254,51 @@ h2.text-center {
 <div class="container">
     
     <div class="profile-header">Todas las Postulaciones</div>
-
-    <table class="table table-bordered" id="TablePostulaciones">
-        <thead>
-            <tr>
-                <th>Alumno<br><input type="text" class="filter-input" placeholder="Filtrar por Alumno"></th>
-                <th>No. Control<br><input type="text" class="filter-input" placeholder="Filtrar por No. Control"></th>
-                <th>Correo<br><input type="text" class="filter-input" placeholder="Filtrar por Correo"></th>
-                <th>Convocatoria<br><input type="text" class="filter-input" placeholder="Filtrar por Convocatoria"></th>
-                <th>Estado<br><input type="text" class="filter-input" placeholder="Filtrar por Estado"></th>
-                <th>Fecha de Postulación<br><input type="text" class="filter-input" placeholder="Filtrar por Fecha"></th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for postulacion in postulaciones %}
+    
+        <table class="table table-bordered" id="TablePostulaciones">
+            <thead>
                 <tr>
-                    <td>{{ postulacion.alumno.Nombre }} {{ postulacion.alumno.Apellidos }}</td>
-                    <td>{{ postulacion.alumno.NoControl }}</td>
-                    <td>{{ postulacion.alumno.NoControl.email }}</td>
-                    <td>{{ postulacion.convocatoria.titulo }}</td>
-                    <td>
-                        {% if postulacion.estado == "Pendiente" %}
-                            <span class="estado-pendiente">{{ postulacion.estado }}</span>
-                        {% elif postulacion.estado == "Aceptado" %}
-                            <span class="estado-Aceptado">{{ postulacion.estado }}</span>
-                        {% elif postulacion.estado == "Rechazado" %}
-                            <span class="estado-rechazado">{{ postulacion.estado }}</span>
-                        {% else %}
-                            <span>{{ postulacion.estado }}</span>
-                        {% endif %}
-                    </td>
-                    
-                    <td>{{ postulacion.fecha_postulacion }}</td>
-                    <td>
-                        <a href="{% url 'postulacion_detalle' postulacion.id %}" class="btn btn-info btn-sm">Revisar</a>
-                    </td>
+                    <th>Alumno<br><input type="text" class="filter-input" placeholder="Filtrar por Alumno"></th>
+                    <th>No. Control<br><input type="text" class="filter-input" placeholder="Filtrar por No. Control"></th>
+                    <th>Correo<br><input type="text" class="filter-input" placeholder="Filtrar por Correo"></th>
+                    <th>Convocatoria<br><input type="text" class="filter-input" placeholder="Filtrar por Convocatoria"></th>
+                    <th>Estado<br><input type="text" class="filter-input" placeholder="Filtrar por Estado"></th>
+                    <th>Fecha de Postulación<br><input type="text" class="filter-input" placeholder="Filtrar por Fecha"></th>
+                    <th>Acciones</th>
                 </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="7">No hay postulaciones registradas.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for postulacion in postulaciones %}
+                    <tr>
+                        <td>{{ postulacion.alumno.Nombre }} {{ postulacion.alumno.Apellidos }}</td>
+                        <td>{{ postulacion.alumno.NoControl }}</td>
+                        <td>{{ postulacion.alumno.NoControl.email }}</td>
+                        <td>{{ postulacion.convocatoria.titulo }}</td>
+                        <td>
+                            {% if postulacion.estado == "Pendiente" %}
+                                <span class="estado-pendiente">{{ postulacion.estado }}</span>
+                            {% elif postulacion.estado == "Aceptado" %}
+                                <span class="estado-Aceptado">{{ postulacion.estado }}</span>
+                            {% elif postulacion.estado == "Rechazado" %}
+                                <span class="estado-rechazado">{{ postulacion.estado }}</span>
+                            {% else %}
+                                <span>{{ postulacion.estado }}</span>
+                            {% endif %}
+                        </td>
+                        
+                        <td>{{ postulacion.fecha_postulacion }}</td>
+                        <td>
+                            <a href="{% url 'postulacion_detalle' postulacion.id %}" class="btn btn-info btn-sm">Revisar</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7">No hay postulaciones registradas.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    
     <a href="{% url 'exportar_postulaciones' %}">
     <button class="container-btn-file">
         <svg

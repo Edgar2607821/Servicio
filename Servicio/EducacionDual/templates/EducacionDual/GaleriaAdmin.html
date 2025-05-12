@@ -1,112 +1,181 @@
 {% extends "EducacionDual/baseAdministrador.html" %}
 
 {% block additional_styles %}
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;1,800&family=Poetsen+One&display=swap');
-        
-        /* Contenedor principal */
-        .bien {
-            width: 80%;
-            height: auto;
-            margin-top: 60px;
-            margin-left: auto;
-            margin-right: auto;
-            box-shadow: 0px 0px 10px rgb(105, 105, 105);
-            border-radius: 10px;
-            text-align: center;
-            padding: 20px;
-            background-color: #fff;
-            max-height: 84vh;
-            overflow-y: auto;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-        }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&display=swap');
 
-        /* Título */
-        .bien h1 {
-            color: #1b396a;
-            
-            font-size: 48px;
-            font-weight: 800;
-            margin-bottom: 30px;
-        }
+.container-evidencias {
+    max-width: 1250px;
+    margin: 30px auto;
+    padding: 30px 40px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    text-align: center;
+    overflow-y: auto;
+    max-height: 86vh;
+}
 
-        /* Contenedor de enlaces en cuadrícula */
-        .button-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
+/* Título */
+.container-evidencias h2 {
+    font-size: 2rem;
+    color: #1b396a;
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'Barlow Condensed', sans-serif;
+}
 
-        /* Estilos de botones */
-        .button-grid a {
-            flex: 1 1 45%; /* Dos columnas en pantallas más grandes */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            font-family: 'Poetsen One', sans-serif;
-            background-color: #1b396a;
-            color: #fff;
-            text-decoration: none;
-            padding: 20px;
-            border-radius: 10px;
-            font-size: 20px;
-            
-            font-weight: 600;
-            transition: background-color 0.3s ease;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-        }
+/* Grid de botones */
+.grid-evidencias {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 20px;
+}
 
-        .button-grid a:hover {
-            background-color: #2d4d87;
-        }
+/* Tarjeta */
+.card-evidencia {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 260px;
+    min-height: 180px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    color: #1b396a;
+    font-weight: bold;
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
 
-        /* Iconos */
-        .button-grid a i {
-            font-size: 40px;
-            margin-bottom: 10px;
-            color: #ffd700;
-        }
+.card-evidencia:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+    background-color: #f5f8ff;
+    color: #1b396a;
+}
 
-        /* Responsive para pantallas más pequeñas */
-        @media (max-width: 768px) {
-            .button-grid a {
-                flex: 1 1 100%; /* Coloca un botón por fila en pantallas pequeñas */
-            }
-        }
+/* Ícono dentro de tarjeta */
+.card-evidencia i {
+    font-size: 36px;
+    margin-bottom: 12px;
+    color: #1b396a;
+}
 
-        .Galeria i{
-            color: #3062b2;
-        }
+.card-evidencia span {
+    display: block;
+    font-size: 16px;
+    margin-top: 5px;
+    font-weight: normal;
+}
 
-        .Galeria {
-            color: #3062b2;
-        }
-    </style>
+/* Intro animada */
+.intro-proyectos {
+    background: linear-gradient(120deg, #f7f9fc 0%, #ffffff 100%);
+    padding: 30px 40px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-left: 8px solid #1b396a;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-in-out;
+}
+
+.intro-proyectos.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.intro-proyectos h2 {
+    font-size: 2rem;
+    color: #1b396a;
+    margin-bottom: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.intro-proyectos p {
+    font-size: 1.1em;
+    color: #444;
+    line-height: 1.8;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-evidencias {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card-evidencia {
+        width: 90%;
+    }
+}
+</style>
 {% endblock additional_styles %}
 
+
 {% block content %}
-    <div class="bien">
-        <div class="credencial">
-            <h2>Selecciona una categoría para administrar las evidencias de los alumnos.</h2>
-            <h2>Puedes crear nuevas entradas o editar las existentes.</h2>
-            <br>
-            <div class="button-grid">
-                <a href="{% url "lista_ingenierias" %}">
-                    <i class="fas fa-tools"></i>
-                    <span>Ingenierias</span>
-                </a>
-                <a href="{% url "lista_proyectos" %}">
-                    <i class="fas fa-project-diagram"></i>
-                    <span>Proyectos</span>
-                </a>
-                <a href="{% url "lista_evidencias" %}">
-                    <i class="fas fa-images"></i>
-                    <span>Evidencias</span>
-                </a>
-            </div>
-        </div>
+<div class="container-evidencias">
+    <div class="intro-proyectos visible">
+        <h2>Gestión Integral de Evidencias</h2>
+        <p>
+            Esta sección te permite administrar eficientemente las evidencias generadas por los alumnos durante sus proyectos académicos. 
+            Aquí puedes acceder a las ingenierías disponibles, gestionar proyectos vinculados a empresas colaboradoras y organizar las evidencias que respaldan el desarrollo de cada actividad. 
+            El objetivo es mantener un registro visual y estructurado que refleje el avance y la participación de los estudiantes dentro del sistema de prácticas profesionales.
+        </p>
     </div>
 
+    <div class="grid-evidencias">
+        <a href="{% url 'lista_ingenierias' %}" class="card-evidencia" style="--delay: 0s">
+            <i class="fas fa-tools" style="color: #2563eb;"></i>
+            <span>Ingenierías</span>
+        </a>
+        <a href="{% url 'lista_proyectos' %}" class="card-evidencia" style="--delay: 0.1s">
+            <i class="fas fa-project-diagram" style="color: #10b981;"></i>
+            <span>Proyectos</span>
+        </a>
+        <a href="{% url 'lista_evidencias' %}" class="card-evidencia" style="--delay: 0.2s">
+            <i class="fas fa-images" style="color: #9333ea;"></i>
+            <span>Evidencias</span>
+        </a>
+    </div>
+
+</div>
 {% endblock content %}
+
+{% block additional_scripts %}
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('.intro-proyectos').classList.add('visible');
+    });
+
+</script>
+
+
+{% endblock additional_scripts %}
+
+
+
+

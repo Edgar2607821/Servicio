@@ -1,141 +1,210 @@
 {% extends "EducacionDual/baseAlumno.html" %}
 
 {% block additional_styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-    /* Contenedor principal */
-    .container {
-        max-width: 800px;
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-        max-height: 84vh;
-        overflow-y: auto;
-        margin-top: 10px;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    }
-    
-    /* Título principal */
-    .container h2 {
-        color: #1b396a;
-        font-size: 24px;
-        font-weight: bold;
-        text-align: center;
-        margin-bottom: 15px;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&display=swap');
 
-    /* Subtítulos */
-    .container h4 {
-        color: #1b396a;
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
+.container {
+    max-width: 850px;
+    margin: 30px auto;
+    padding: 40px 50px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', sans-serif;
+    margin-top:20px;
+    overflow:auto;
+    max-height: 87.5vh;
+}
 
-    /* Contenedor del formulario en dos columnas */
+.container h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    color: #1b396a;
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Layout */
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.form-column {
+    flex: 1 1 48%;
+    min-width: 260px;
+    position: relative;
+}
+
+.form-column label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #1b396a;
+    font-size: 14px;
+}
+
+/* Campo con ícono */
+.form-column .input-wrapper {
+    position: relative;
+}
+
+.form-column .input-wrapper i {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    font-size: 15px;
+}
+
+.form-column input,
+.form-column select {
+    width: 100%;
+    padding: 12px 14px 12px 40px;
+    font-size: 15px;
+    border: 1.6px solid #d1d5db;
+    border-radius: 8px;
+    background-color: #f9fafb;
+    transition: all 0.3s ease;
+}
+
+.form-column input:focus,
+.form-column select:focus {
+    outline: none;
+    border-color: #1b396a;
+    box-shadow: 0 0 0 3px rgba(27, 57, 106, 0.15);
+    background-color: #fff;
+}
+
+/* Botones */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-primary,
+.btn-secondary {
+    flex: 1;
+    padding: 12px 25px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    text-align: center;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #1b396a;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #274b8a;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
     .form-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
+        flex-direction: column;
     }
-    
-    /* Campos del formulario en columnas */
     .form-column {
-        flex: 1 1 48%; /* Ajusta el ancho de cada columna para hacer espacio a dos columnas */
-        min-width: 250px;
+        flex: 1 1 100%;
     }
-
-    /* Estilos de los campos de entrada */
-    .container form input[type="text"],
-    .container form input[type="email"],
-    .container form input[type="password"],
-    .container form input[type="date"],
-    .container form select {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #d1d1d1;
-        border-radius: 5px;
-        font-size: 14px;
-        transition: all 0.3s ease;
-    }
-    
-    .container form input:focus,
-    .container form select:focus {
-        border-color: #1b396a;
-        box-shadow: 0px 0px 5px rgba(27, 57, 106, 0.2);
-        outline: none;
-    }
-
-
-    /* Estilo de los botones */
-    .button-group {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        margin-top: 20px;
-    }
-    
-    .btn-primary,
-    .btn-secondary {
-        background-color: #1b396a;
-        color: #ffffff;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: bold;
-        text-decoration: none;
-        border: none;
-        cursor: pointer;
-        flex: 1;
-        text-align: center;
-    }
-    
-    .btn-secondary {
-        background-color: #6c757d;
-    }
-    
-    .btn-primary:hover {
-        color: #ffffff;
-        background-color: #2d4d87;
-    }
-    
-    .btn-secondary:hover {
-        background-color: #5a6268;
-        color: #ffffff;
-    }
-
-
-    /* Responsivo: una columna en pantallas pequeñas */
-    @media (max-width: 768px) {
-        .form-row {
-            flex-direction: column;
-        }
-        .form-column {
-            flex: 1 1 100%;
-        }
-    }
+}
 </style>
 {% endblock additional_styles %}
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="text-center">Editar Perfil</h2>
+    <h2 class="text-center">Actualizar Información de Perfil</h2>
+
     <form method="post">
         {% csrf_token %}
         <div class="form-row">
-            {% for field in form %}
-                <div class="form-column">
-                    <label>{{ field.label }}</label>
-                    {{ field }}
-                </div>
-            {% endfor %}
+
+            <!-- Nombre -->
+            <div class="form-column">
+                <label for="{{ form.Nombre.id_for_label }}">
+                    <i class="fas fa-user" style="color: #1b396a;"></i> {{ form.Nombre.label }}
+                </label>
+                {{ form.Nombre }}
+            </div>
+
+            <!-- Apellidos -->
+            <div class="form-column">
+                <label for="{{ form.Apellidos.id_for_label }}">
+                    <i class="fas fa-user-tag" style="color: #2563eb;"></i> {{ form.Apellidos.label }}
+                </label>
+                {{ form.Apellidos }}
+            </div>
+
+            <!-- Carrera -->
+            <div class="form-column">
+                <label for="{{ form.Carrera.id_for_label }}">
+                    <i class="fas fa-graduation-cap" style="color: #9333ea;"></i> {{ form.Carrera.label }}
+                </label>
+                {{ form.Carrera }}
+            </div>
+
+            <!-- Fecha de nacimiento -->
+            <div class="form-column">
+                <label for="{{ form.Fecha_nacimiento.id_for_label }}">
+                    <i class="fas fa-calendar-alt" style="color: #10b981;"></i> {{ form.Fecha_nacimiento.label }}
+                </label>
+                {{ form.Fecha_nacimiento }}
+            </div>
+
+            <!-- Género -->
+            <div class="form-column">
+                <label for="{{ form.Genero.id_for_label }}">
+                    <i class="fas fa-venus-mars" style="color: #f59e0b;"></i> {{ form.Genero.label }}
+                </label>
+                {{ form.Genero }}
+            </div>
+
+            <!-- Teléfono -->
+            <div class="form-column">
+                <label for="{{ form.Telefono.id_for_label }}">
+                    <i class="fas fa-phone" style="color: #ef4444;"></i> {{ form.Telefono.label }}
+                </label>
+                {{ form.Telefono }}
+            </div>
+
+            <!-- Semestre -->
+            <div class="form-column">
+                <label for="{{ form.Semestre.id_for_label }}">
+                    <i class="fas fa-layer-group" style="color: #6366f1;"></i> {{ form.Semestre.label }}
+                </label>
+                {{ form.Semestre }}
+            </div>
+
         </div>
+
         <div class="button-group">
             <button type="submit" class="btn btn-primary">Guardar Perfil</button>
             <a href="{% url 'Alumno_perfil' %}" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </div>
+
 {% endblock content %}

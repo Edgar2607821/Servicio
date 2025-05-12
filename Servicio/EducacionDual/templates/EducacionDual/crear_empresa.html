@@ -4,13 +4,16 @@
 <style>
 /* Contenedor del formulario */
 .container {
-    max-width: 600px;
+    max-width: 900px;
     margin: 30px auto;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    overflow-y: auto;  /* Scroll vertical si es necesario */
+    margin-top: 15px;
+    max-height: 88vh;
 }
 
 /* Título del formulario */
@@ -150,6 +153,71 @@ h2 {
     color: inherit; /* hereda el color del botón */
 }
 
+/* From Uiverse.io by Yaya12085 */ 
+.custum-file-upload {
+  height: 200px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  gap: 20px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #cacaca;
+  background-color: rgba(255, 255, 255, 1);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0px 48px 35px -48px rgba(0,0,0,0.1);
+}
+
+.custum-file-upload .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custum-file-upload .icon svg {
+  height: 80px;
+  fill: rgba(75, 85, 99, 1);
+}
+
+.custum-file-upload .text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custum-file-upload .text span {
+  font-weight: 400;
+  color: rgba(75, 85, 99, 1);
+}
+
+.custum-file-upload input {
+  display: none;
+}
+
+.image-upload-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.image-upload-grid .form-group {
+    flex: 1 1 calc(50% - 10px); /* dos columnas con margen entre ellas */
+    max-width: calc(50% - 10px);
+}
+
+.custum-file-upload img {
+    display: block;
+    margin: 10px auto 0 auto;  /* margen arriba y centrado horizontal */
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+
 @media (max-width: 768px) {
 
     .btn-primary i,
@@ -168,7 +236,17 @@ h2 {
         padding: 10px; /* ajusta padding si el botón se ve muy ancho sin texto */
         justify-content: center;
     }
-}
+    .image-upload-grid {
+        flex-direction: column;
+    }
+
+    .image-upload-grid .form-group {
+        max-width: 100%;
+        flex: 1 1 100%;
+        margin: 10px auto 0 auto;
+    }
+    
+    }
 </style>
 {% endblock additional_styles %}
 
@@ -185,14 +263,34 @@ h2 {
             {{ form.Descripcion.label_tag }}
             {{ form.Descripcion }}
         </div>
-        <div class="form-group">
-            {{ form.Logotipo.label_tag }}
-            {{ form.Logotipo }}
+        <div class="image-upload-grid">
+            <!-- Logotipo -->
+            <div class="form-group">
+                {{ form.Logotipo.label_tag }}
+                <p class="text-muted">Tamaño máximo permitido: <strong>2MB</strong></p>
+                <label for="id_Logotipo" class="custum-file-upload">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <path fill="" d="M10 1C9.73478 1 9.48043 1.10536 9.29289 1.29289L3.29289 7.29289C3.10536 7.48043 3 7.73478 3 8V20C3 21.6569 4.34315 23 6 23H7C7.55228 23 8 22.5523 8 22C8 21.4477 7.55228 21 7 21H6C5.44772 21 5 20.5523 5 20V9H10C10.5523 9 11 8.55228 11 8V3H18C18.5523 3 19 3.44772 19 4V9C19 9.55228 19.4477 10 20 10C20.5523 10 21 9.55228 21 9V4C21 2.34315 19.6569 1 18 1H10ZM9 7H6.41421L9 4.41421V7ZM14 15.5C14 14.1193 15.1193 13 16.5 13C17.8807 13 19 14.1193 19 15.5V16V17H20C21.1046 17 22 17.8954 22 19C22 20.1046 21.1046 21 20 21H13C11.8954 21 11 20.1046 11 19C11 17.8954 11.8954 17 13 17H14V16V15.5ZM16.5 11C14.142 11 12.2076 12.8136 12.0156 15.122C10.2825 15.5606 9 17.1305 9 19C9 21.2091 10.7909 23 13 23H20C22.2091 23 24 21.2091 24 19C24 17.1305 22.7175 15.5606 20.9844 15.122C20.7924 12.8136 18.858 11 16.5 11Z" clip-rule="evenodd" fill-rule="evenodd"></path> </g></svg>
+                    </div>
+                    <div class="text"><span>Click para subir logotipo</span></div>
+                    {{ form.Logotipo }}
+                </label>
+            </div>
+
+            <!-- Portada -->
+            <div class="form-group">
+                {{ form.Portada.label_tag }}
+                <p class="text-muted">Tamaño máximo permitido: <strong>2MB</strong></p>
+                <label for="id_Portada" class="custum-file-upload">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <path fill="" d="M10 1C9.73478 1 9.48043 1.10536 9.29289 1.29289L3.29289 7.29289C3.10536 7.48043 3 7.73478 3 8V20C3 21.6569 4.34315 23 6 23H7C7.55228 23 8 22.5523 8 22C8 21.4477 7.55228 21 7 21H6C5.44772 21 5 20.5523 5 20V9H10C10.5523 9 11 8.55228 11 8V3H18C18.5523 3 19 3.44772 19 4V9C19 9.55228 19.4477 10 20 10C20.5523 10 21 9.55228 21 9V4C21 2.34315 19.6569 1 18 1H10ZM9 7H6.41421L9 4.41421V7ZM14 15.5C14 14.1193 15.1193 13 16.5 13C17.8807 13 19 14.1193 19 15.5V16V17H20C21.1046 17 22 17.8954 22 19C22 20.1046 21.1046 21 20 21H13C11.8954 21 11 20.1046 11 19C11 17.8954 11.8954 17 13 17H14V16V15.5ZM16.5 11C14.142 11 12.2076 12.8136 12.0156 15.122C10.2825 15.5606 9 17.1305 9 19C9 21.2091 10.7909 23 13 23H20C22.2091 23 24 21.2091 24 19C24 17.1305 22.7175 15.5606 20.9844 15.122C20.7924 12.8136 18.858 11 16.5 11Z" clip-rule="evenodd" fill-rule="evenodd"></path> </g></svg>
+                    </div>
+                    <div class="text"><span>Click para subir portada</span></div>
+                    {{ form.Portada }}
+                </label>
+            </div>
         </div>
-        <div class="form-group">
-            {{ form.Portada.label_tag }}
-            {{ form.Portada }}
-        </div>
+
 
         <div class="button-group">
             <button type="submit" class="btn-primary">
@@ -210,6 +308,65 @@ h2 {
             </a>
 
         </div>
+
     </form>
+    
 </div>
 {% endblock content %}
+{% block additional_scripts %}
+<script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+        const maxSizeMB = 2;
+        const logotipo = document.getElementById("id_Logotipo");
+        const portada = document.getElementById("id_Portada");
+
+        for (let input of [logotipo, portada]) {
+            if (input && input.files.length > 0) {
+                const fileSizeMB = input.files[0].size / (1024 * 1024);
+                if (fileSizeMB > maxSizeMB) {
+                    alert(`El archivo "${input.name}" excede los ${maxSizeMB}MB permitidos.`);
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        }
+    });
+
+document.querySelectorAll('input[type="file"]').forEach(input => {
+    input.addEventListener('change', function () {
+        const label = this.closest('label');
+        const fileName = this.files[0]?.name || "Click para subir imagen";
+        const textSpan = label.querySelector('.text span');
+        const previewId = this.id + '_preview';
+
+        textSpan.textContent = fileName;
+
+        // Elimina una vista previa anterior si existe
+        const oldPreview = label.querySelector(`#${previewId}`);
+        if (oldPreview) oldPreview.remove();
+
+        // Solo si es imagen, crea miniatura
+        if (this.files[0] && this.files[0].type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = document.createElement('img');
+                img.id = previewId;
+                img.src = e.target.result;
+                img.style.maxWidth = '100px';
+                img.style.maxHeight = '100px';
+                img.style.marginTop = '10px';
+                img.style.borderRadius = '8px';
+                label.appendChild(img);
+            };
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+});
+</script>
+
+{% endblock additional_scripts %}
+
+
+
+
+

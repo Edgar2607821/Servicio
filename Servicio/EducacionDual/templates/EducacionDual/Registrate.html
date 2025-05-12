@@ -75,7 +75,58 @@
             color: rgb(146, 146, 146);
             cursor: pointer;
         }
-        
+        /* Checkbox moderno */
+.form-group input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #1b396a;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+    margin-right: 10px;
+    vertical-align: middle;
+    transition: all 0.2s ease-in-out;
+}
+
+.form-group input[type="checkbox"]:checked {
+    background-color: #1b396a;
+}
+
+.form-group input[type="checkbox"]::before {
+    content: "\f00c"; /* check icon */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: #fff;
+    font-size: 12px;
+    position: absolute;
+    top: 0;
+    left: 3px;
+    transform: scale(0);
+    transition: transform 0.2s ease-in-out;
+}
+
+.form-group input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
+
+/* Etiqueta con enlaces */
+.form-group label[for="id_accept_terms"] {
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.form-group label[for="id_accept_terms"] a {
+    color: #1b396a;
+    text-decoration: underline;
+}
+
+.form-group label[for="id_accept_terms"] a:hover {
+    text-decoration: none;
+}
+
         
 
     </style>
@@ -143,6 +194,14 @@
                                                     <i class="fa-solid fa-eye"></i>
                                                 </span>
                                                 {{ form.password2.errors }}
+                                            </div>
+                                            <br>
+                                            <div class="form-group">
+                                                {{ form.accept_terms.errors }}
+                                                {{ form.accept_terms }}
+                                                <label for="id_accept_terms">
+                                                    He leído y acepto los <a href="{% url "TerminosDeUso" %}" target="_blank">Términos de uso</a> y la <a href="{% url "PoliticaDePrivacidad" %}" target="_blank">Política de privacidad</a>.
+                                                </label>
                                             </div>
                                             <br>
     

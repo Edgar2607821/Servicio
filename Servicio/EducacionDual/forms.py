@@ -10,6 +10,11 @@ class LoginForm(AuthenticationForm):
 
 
 class CustomUserCreationForm(UserCreationForm):
+    accept_terms = forms.BooleanField(
+        label="He leído y acepto los Términos de uso y la Política de privacidad",
+        required=True
+    )
+
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
@@ -50,8 +55,9 @@ class EmpresasForm(forms.ModelForm):
         widgets = {
             'Nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre de la empresa'}),
             'Descripcion': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción de la empresa'}),
-            'Portada': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
-            'Logotipo': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
+            'Portada': forms.ClearableFileInput(attrs={'class': 'form-control-file','id': 'id_Portada', 'style': 'display:none;'}),
+            'Logotipo': forms.ClearableFileInput(attrs={'class': 'form-control-file', 'id': 'id_Logotipo', 'style': 'display:none;'}),
+            
         }
 
 class DocumentoForm(forms.ModelForm):

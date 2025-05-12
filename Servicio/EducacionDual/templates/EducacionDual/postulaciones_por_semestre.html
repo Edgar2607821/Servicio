@@ -1,44 +1,157 @@
 {% extends "EducacionDual/baseAdministrador.html" %}
 {% load static %}
 
+{% block additional_styles %}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&display=swap');
+
+.container {
+    max-width: 1250px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            max-height: 86vh;
+    overflow-y: auto;
+}
+
+.h2-container {
+    font-size: 28px;
+    font-weight: bold;
+    color: #1b396a;
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* Introductorio */
+.intro-proyectos {
+    background: linear-gradient(120deg, #f7f9fc 0%, #ffffff 100%);
+    padding: 25px 35px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    border-left: 8px solid #1b396a;
+    text-align: center;
+}
+
+.intro-proyectos p {
+    font-size: 1.05rem;
+    color: #444;
+    line-height: 1.6;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+/* Botón regresar */
+.btn-regresar {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    background-color: #1b396a;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-regresar:hover {
+    background-color: #16315a;
+}
+
+/* Gráfica */
+.chart-container {
+    width: 100%;
+    max-width: 1000px;
+    height: 450px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(25, 8, 91, 0.1);
+    position: relative;
+}
+
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+</style>
+{% endblock additional_styles %}
+
 {% block content %}
 <div class="container">
-    <h2 class="h2-container">Total de postulaciones por semestre</h2>
-    <a href="{% url 'estadisticas' %}" class="btn-regresar">← Regresar</a>
+    
+
+    <div class="intro-proyectos">
+        <h2 class="h2-container">Total de Postulaciones por Semestre</h2>
+        <p>
+            Esta gráfica permite visualizar la cantidad de postulaciones realizadas por los estudiantes agrupadas por semestre. 
+            Este análisis es útil para identificar cuáles niveles académicos tienen mayor participación en las convocatorias, 
+            lo que puede apoyar la planificación y mejora de futuras estrategias de vinculación.
+        </p>
+    </div>
 
     <div class="chart-container">
-        <canvas id="chart" width="400" height="200"></canvas>
+        <canvas id="chart"></canvas>
     </div>
+        <a href="{% url 'estadisticas' %}" class="btn-regresar">← Regresar</a>
 </div>
+{% endblock %}
 
+{% block additional_scripts %}
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 const ctx = document.getElementById('chart').getContext('2d');
+
 const chart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: [{% for item in postulaciones %}'{{ item.alumno__Semestre }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+        labels: [
+            {% for item in postulaciones %}
+                'Semestre {{ item.alumno__Semestre }}'{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        ],
         datasets: [{
             label: 'Postulaciones por semestre',
-            data: [{% for item in postulaciones %}{{ item.total_postulaciones }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+            data: [
+                {% for item in postulaciones %}
+                    {{ item.total_postulaciones }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            ],
             backgroundColor: [
-                '#4e73df',
-                '#1cc88a',
-                '#36b9cc',
-                '#f6c23e',
-                '#e74a3b',
-                '#8e44ad',
-                '#2ecc71',
-                '#e67e22',
-                '#3498db',
-                '#9b59b6'
+                '#2563eb', '#10b981', '#facc15', '#ef4444', '#3b82f6',
+                '#9333ea', '#06b6d4', '#f97316', '#22c55e', '#e11d48'
             ],
             borderRadius: 6
         }]
     },
     options: {
         responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return `${context.dataset.label}: ${context.parsed.y}`;
+                    }
+                }
+            },
+            title: {
+                display: true,
+                text: 'Distribución de Postulaciones por Semestre',
+                font: {
+                    size: 18,
+                    weight: 'bold'
+                }
+            }
+        },
         scales: {
             y: {
                 beginAtZero: true,
@@ -46,70 +159,8 @@ const chart = new Chart(ctx, {
                     precision: 0
                 }
             }
-        },
-        plugins: {
-            tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        return context.dataset.label + ': ' + context.parsed.y;
-                    }
-                }
-            }
         }
     }
 });
 </script>
-
-<!-- Estilos -->
-<style>
-.btn-regresar {
-        display: inline-block;
-        margin-bottom: 20px;
-        padding: 8px 16px;
-        background-color: #1b396a;
-        color: #fff;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 14px;
-        transition: background-color 0.2s ease-in-out;
-    }
-
-.btn-regresar:hover {
-        background-color: #16315a;
-    }
-.container {
-    max-width: 1150px;
-    margin: 25px auto;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-    max-height: 86vh;
-    overflow-y: auto;
-}
-
-.h2-container {
-    font-size: 25px;
-    font-weight: bold;
-    color: #1c3255;
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.chart-container {
-    width: 100%;
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0px 4px 15px rgba(25, 8, 91, 0.1);
-}
-
-canvas {
-    width: 100% !important;
-    height: auto !important;
-}
-</style>
-{% endblock %}
+{% endblock additional_scripts %}

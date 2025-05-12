@@ -133,7 +133,13 @@ def Galeria_evidencias(request, empresa_id, ingenieria_id, proyecto_id):
 def principalAlumno(request):
     return render(request, 'EducacionDual/principalAlumno.html')
 
-@login_required
+def terminosDeUso(request):
+    return render(request, 'EducacionDual/terminosDeUso.html')
+
+def politicaDePrivacidad(request):
+    return render(request, 'EducacionDual/politicaDePrivacidad.html')
+
+
 def register_user_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -188,7 +194,7 @@ def edit_Alumno_profile_view(request):
 
     return render(request, 'EducacionDual/editar_Perfil_Alum.html', {'form': form})
 
-@login_required
+
 def complete_profile(request):
     # Obtiene el perfil del usuario, o lo crea si no existe
     profile, created = UserProfile.objects.get_or_create(NoControl=request.user)
@@ -691,7 +697,7 @@ def exportar_postulaciones_excel(request):
     # Encabezados (agrega "No." al inicio)
     ws.append([
         "No.", "Alumno", "No. Control", "Correo", "Carrera", "Semestre", "Teléfono",
-        "Convocatoria", "Puesto", "Fecha de Apertura", "Fecha de Cierre", "Fecha de Postulación", "Estado", "Observaciones"
+        "Convocatoria", "Puesto", "Empresa", "Fecha de Apertura", "Fecha de Cierre", "Fecha de Postulación", "Estado", "Observaciones"
     ])
 
     postulaciones = Postulacion.objects.select_related('alumno', 'convocatoria')
@@ -705,6 +711,7 @@ def exportar_postulaciones_excel(request):
         telefono = p.alumno.Telefono
         convocatoria = p.convocatoria.titulo
         puesto = p.convocatoria.puesto
+        empresa = p.convocatoria.empresa.Nombre
         fecha_apertura = p.convocatoria.fecha_apertura.strftime('%d/%m/%Y') if p.convocatoria.fecha_apertura else ''
         fecha_cierre = p.convocatoria.fecha_cierre.strftime('%d/%m/%Y') if p.convocatoria.fecha_cierre else ''
         fecha_postulacion = p.fecha_postulacion.strftime('%d/%m/%Y %H:%M') if p.fecha_postulacion else ''
@@ -713,7 +720,7 @@ def exportar_postulaciones_excel(request):
 
         ws.append([
             i, alumno, nocontrol, correo, carrera, semestre, telefono,
-            convocatoria, puesto, fecha_apertura, fecha_cierre, fecha_postulacion, estado, observaciones
+            convocatoria, puesto, empresa, fecha_apertura, fecha_cierre, fecha_postulacion, estado, observaciones
         ])
 
     response = HttpResponse(
@@ -726,66 +733,112 @@ def exportar_postulaciones_excel(request):
 
 @login_required
 def estadisticasg(request):
+    # Usuarios
     total_usuarios = UserProfile.objects.filter(~Q(NoControl__isnull=True)).count()
-    perfiles_completados = UserProfile.objects.filter(~Q(Nombre__isnull=True), ~Q(Nombre=''),
-    ~Q(Apellidos__isnull=True), ~Q(Apellidos=''),
-    ~Q(Carrera__isnull=True), ~Q(Carrera=''),
-    ~Q(Fecha_nacimiento__isnull=True),
-    ~Q(Genero__isnull=True), ~Q(Genero=''),
-    ~Q(Telefono__isnull=True), ~Q(Telefono=''),
-    ~Q(Semestre__isnull=True), ~Q(Semestre='')).count()
+    total_usuariosAlumn = total_usuarios - 1  # Descontar al admin (ajustar si es necesario)
+
+    perfiles_completados = UserProfile.objects.filter(
+        ~Q(Nombre__isnull=True), ~Q(Nombre=''),
+        ~Q(Apellidos__isnull=True), ~Q(Apellidos=''),
+        ~Q(Carrera__isnull=True), ~Q(Carrera=''),
+        ~Q(Fecha_nacimiento__isnull=True),
+        ~Q(Genero__isnull=True), ~Q(Genero=''),
+        ~Q(Telefono__isnull=True), ~Q(Telefono=''),
+        ~Q(Semestre__isnull=True), ~Q(Semestre='')
+    ).count()
+
+    # Convocatorias
     convocatorias_activas = Convocatoria.objects.filter(estado="Habilitada").count()
     convocatorias_inactivas = Convocatoria.objects.filter(estado="Deshabilitada").count()
-    total_postulaciones = Postulacion.objects.count()
+    convocatorias_totales = convocatorias_activas + convocatorias_inactivas
 
-    total_usuariosAlumn= total_usuarios-1
+    # Postulaciones
+    total_postulaciones = Postulacion.objects.count()
+    aceptadas = Postulacion.objects.filter(estado='Aceptado').count()
+    rechazadas = Postulacion.objects.filter(estado='Rechazado').count()
+    pendientes = Postulacion.objects.filter(estado='Pendiente').count()
+
+    # Empresas
+    total_empresas = Empresas.objects.count()
+
+    # Proyectos y evidencias
+    total_proyectos = Proyecto.objects.count()
+    total_evidencias = Evidencia.objects.count()
+
     contexto = {
         'total_usuarios': total_usuariosAlumn,
         'perfiles_completados': perfiles_completados,
         'convocatorias_activas': convocatorias_activas,
         'convocatorias_inactivas': convocatorias_inactivas,
+        'convocatorias_totales': convocatorias_totales,
         'total_postulaciones': total_postulaciones,
+        'aceptadas': aceptadas,
+        'rechazadas': rechazadas,
+        'pendientes': pendientes,
+        'total_empresas': total_empresas,
+        'total_proyectos': total_proyectos,
+        'total_evidencias': total_evidencias,
     }
+
     return render(request, 'EducacionDual/estadisticas_generales.html', contexto)
+
+
 
 def graficas_totales_por_ingenieria(request):
     ABREVIATURAS = {
-        "Ingeniería Industrial": "IIND",
-        "Ingeniería Industrial MIXTA": "IIND-M",
-        "Ingeniería en Gestión Empresarial": "IGE",
-        "Ingeniería en Gestión Empresarial MIXTA": "IGE-M",
-        "Ingeniería en Sistemas Computacionales": "ISC",
-        "Ingeniería Ambiental": "IAMB",
-        "Ingeniería en Industrias Alimentarias": "IIAL",
-        "Ingeniería en Agronomía": "IAGR",
-        "Ingeniería en Inteligencia Artificial": "IIAR",
-        "Ingeniería en Desarrollo de Aplicaciones": "IDAP",
+        "INGENIERÍA INDUSTRIAL": "II",
+        "INGENIERÍA INDUSTRIAL MIXTA": "II-M",
+        "INGENIERÍA EN GESTIÓN EMPRESARIAL": "IGE",
+        "INGENIERÍA EN GESTIÓN EMPRESARIAL MIXTA": "IGE-M",
+        "INGENIERÍA EN SISTEMAS COMPUTACIONALES": "ISC",
+        "INGENIERÍA AMBIENTAL": "IAMB",
+        "INGENIERÍA EN INDUSTRIAS ALIMENTARIAS": "IIAL",
+        "INGENIERÍA EN AGRONOMÍA": "IAGR",
+        "INGENIERÍA EN INTELIGENCIA ARTIFICIAL": "IIAR",
+        "INGENIERÍA EN DESARROLLO DE APLICACIONES": "IDA",
     }
 
-    # Consulta de los usuarios por carrera
-    datos = (
-        UserProfile.objects
-        .filter(Carrera__isnull=False)
-        .exclude(Carrera='')
-        .values('Carrera')
-        .annotate(total=Count('id'))
-        .order_by('Carrera')
-    )
+    usuarios = UserProfile.objects.filter(Carrera__isnull=False, Genero__isnull=False).exclude(Carrera='', Genero='')
 
-    # Convertir los nombres de las carreras a sus abreviaturas
-    for item in datos:
-        item['Carrera'] = ABREVIATURAS.get(item['Carrera'], item['Carrera'])  # Si no tiene abreviatura, mantener el nombre completo
+    datos = defaultdict(lambda: {'Femenino': 0, 'Masculino': 0, 'Otro': 0})
+    resumen = []
+
+    for user in usuarios:
+        carrera = user.Carrera
+        genero = user.Genero
+        datos[carrera][genero] += 1
+
+    for carrera, generos in datos.items():
+        nombre_completo = carrera
+        abreviatura = ABREVIATURAS.get(carrera, carrera)
+        total = sum(generos.values())
+
+        resumen.append({
+            'nombre_completo': nombre_completo,
+            'abreviatura': abreviatura,
+            'total': total,
+            'generos': generos
+        })
 
     return render(request, 'EducacionDual/graficas_totales_por_ingenieria.html', {
-        'datos_por_carrera': datos
+        'datos_por_carrera': resumen
     })
 
 
-
-
-
 def graficas_por_carrera(request):
-      # Filtrar postulaciones con datos válidos
+    ABREVIATURAS = {
+        "INGENIERÍA INDUSTRIAL": "II",
+        "INGENIERÍA INDUSTRIAL MIXTA": "II-M",
+        "INGENIERÍA EN GESTIÓN EMPRESARIAL": "IGE",
+        "INGENIERÍA EN GESTIÓN EMPRESARIAL MIXTA": "IGE-M",
+        "INGENIERÍA EN SISTEMAS COMPUTACIONALES": "ISC",
+        "INGENIERÍA AMBIENTAL": "IAMB",
+        "INGENIERÍA EN INDUSTRIAS ALIMENTARIAS": "IIAL",
+        "INGENIERÍA EN AGRONOMÍA": "IAGR",
+        "INGENIERÍA EN INTELIGENCIA ARTIFICIAL": "IIAR",
+        "INGENIERÍA EN DESARROLLO DE APLICACIONES": "IDA",
+    }
+
     postulaciones = Postulacion.objects.filter(
         alumno__Carrera__isnull=False,
         alumno__Genero__isnull=False
@@ -794,45 +847,25 @@ def graficas_por_carrera(request):
         alumno__Genero=''
     )
 
-    Sexos = UserProfile.objects.filter(
-        Carrera__isnull=False,
-        Genero__isnull=False
-    )
+    conteo_por_carrera = defaultdict(lambda: {'Femenino': 0, 'Masculino': 0, 'Otro': 0})
+    for p in postulaciones:
+        carrera = p.alumno.Carrera
+        genero = p.alumno.Genero
+        conteo_por_carrera[carrera][genero] += 1
 
-
-    datos_por_carrera = defaultdict(lambda: {'Femenino': 0, 'Masculino': 0, 'Otro': 0})
-
-    for postulacion in postulaciones:
-        carrera = postulacion.alumno.Carrera
-        genero = postulacion.alumno.Genero
-        datos_por_carrera[carrera][genero] += 1
-
-    datos_generales = defaultdict(lambda: {'Femenino': 0, 'Masculino': 0, 'Otro': 0})
-
-    for sexo in Sexos:
-        carrera = sexo.Carrera
-        genero = sexo.Genero
-        datos_generales[carrera][genero] += 1
-
-    
+    # Convertimos a lista de dicts con abreviatura y nombre completo
+    datos_finales = []
+    for carrera, generos in conteo_por_carrera.items():
+        total = sum(generos.values())
+        datos_finales.append({
+            'nombre_completo': carrera,
+            'abreviatura': ABREVIATURAS.get(carrera, carrera),
+            'generos': generos,
+            'total': total
+        })
 
     return render(request, 'EducacionDual/graficas_por_carrera.html', {
-        'datos_por_carrera': dict(datos_por_carrera),
-        'datos_generales': dict(datos_generales)
-    })
-
-def vista_graficas(request):
-    datos = obtener_datos_postulaciones_por_carrera()  # tu lógica existente
-
-    # Divide en 2 columnas aproximadamente iguales
-    items = list(datos.items())
-    mitad = len(items) // 2
-    datos_izquierda = dict(items[:mitad])
-    datos_derecha = dict(items[mitad:])
-
-    return render(request, 'EducacionDual/graficas_por_carrera.html', {
-        'datos_izquierda': datos_izquierda,
-        'datos_derecha': datos_derecha
+        'datos_por_carrera': datos_finales
     })
 
 def estadisticas(request): 
@@ -845,7 +878,8 @@ def estadisticas_status(request):
         .values('convocatoria__empresa__Nombre')
         .annotate(
             aceptados=Count('id', filter=Q(estado='Aceptado')),
-            rechazados=Count('id', filter=Q(estado='Rechazado'))
+            rechazados=Count('id', filter=Q(estado='Rechazado')), 
+            pendientes=Count('id', filter=Q(estado='Pendiente')), 
         )
     )
 
@@ -861,16 +895,31 @@ def estadisticas_status(request):
 
     return render(request, 'EducacionDual/estadisticas_status.html', context)
 
+
 def postulaciones_por_empresa(request):
-    # Obtener el total de postulaciones por cada empresa
-    postulaciones = Postulacion.objects.values('convocatoria__empresa__Nombre') \
-        .annotate(total_postulaciones=Count('id')) \
+    # Gráfica general: total de postulaciones por empresa
+    postulaciones = (
+        Postulacion.objects
+        .values('convocatoria__empresa__Nombre')
+        .annotate(total_postulaciones=Count('id'))
         .order_by('convocatoria__empresa__Nombre')
-    
-    # Pasar los datos a la plantilla
+    )
+
+    # Gráficas individuales: postulaciones por género y empresa
+    datos_por_empresa = defaultdict(lambda: {'Femenino': 0, 'Masculino': 0, 'Otro': 0})
+
+    for p in Postulacion.objects.select_related('alumno', 'convocatoria__empresa'):
+        empresa = p.convocatoria.empresa.Nombre if p.convocatoria and p.convocatoria.empresa else None
+        genero = p.alumno.Genero if p.alumno else None
+
+        if empresa and genero:
+            datos_por_empresa[empresa][genero] += 1
+
     return render(request, 'EducacionDual/postulaciones_por_empresa.html', {
-        'postulaciones': postulaciones
+        'postulaciones': postulaciones,
+        'datos_por_empresa': dict(datos_por_empresa)
     })
+
 
 def postulaciones_por_semestre(request):
     # Obtener el total de postulaciones por semestre

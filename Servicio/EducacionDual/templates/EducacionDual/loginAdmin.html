@@ -79,7 +79,38 @@
             color: rgb(146, 146, 146);
             cursor: pointer;
         }
-        
+        .alert-danger {
+    background: linear-gradient(135deg, #ffe5e5, #fffafa);
+    border-left: 6px solid #dc2626;
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(220, 38, 38, 0.2);
+    color: #7f1d1d;
+    font-weight: 600;
+    position: relative;
+    margin-bottom: 20px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: fadeInDown 0.4s ease-out;
+}
+
+.alert-danger i {
+    color: #dc2626;
+    font-size: 18px;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
     </style>
     {% endblock additional_styles %}
 
@@ -116,6 +147,13 @@
                                             <a href="{% url "login_admin" %}" class="login-buttonAd">Administradores</a>
                                         </div>
                                         <br>
+                                        {% if form.errors %}
+                                            <div class="alert-danger">
+                                                <i class="fas fa-exclamation-circle"></i>
+                                                {{ form.non_field_errors.0|default:"Usuario o contraseña incorrectos." }}
+                                            </div>
+                                        {% endif %}
+
                                         
                                         <div class="input-group">
                                             <input type="text" id="id_username" name="username" class="input" required>
@@ -139,8 +177,8 @@
 
                                         <a class="small text-muted" href="{% url "password_reset" %}">¿Olvidaste tu contraseña?</a>
                                         <br>
-                                        <a href="#!" class="small text-muted">Términos de uso.</a>
-                                        <a href="#!" class="small text-muted">Política de privacidad</a>
+                                        <a href="{% url "TerminosDeUso" %}" class="small text-muted">Términos de uso.</a>
+                                        <a href="{% url "PoliticaDePrivacidad" %}" class="small text-muted">Política de privacidad</a>
                                     </form>
 
                                 </div>

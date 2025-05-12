@@ -65,25 +65,7 @@ h2 {
     padding: 20px;
 }
 
-/* Botón Crear */
-.btn-primary {
-    background-color: #3062b2;
-    color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-    display: inline-block;
-    margin-top: 20px;
-}
 
-.btn-primary:hover {
-    background-color: #2d4d87;
-    color: #ffffff;
-    text-decoration: none;
-}
 
 /* Botón Editar */
 /* Botón Editar */
@@ -161,6 +143,65 @@ h2 {
     color: #3062b2;
 }
 
+.btn-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.btn-primary{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    
+    color: #ffffff;
+    line-height: 1.2;
+    flex: 1 1 0; /* ✅ ocupa el mismo espacio */
+    min-width: 0; /* ✅ evita desbordes por texto largo */
+}
+
+.btn-primary {
+    background-color: #28a745;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: rgb(31, 129, 54);
+    color: #ffffff;
+}
+
+.btn-primary i{
+    font-size: 18px;
+    color: inherit; /* hereda el color del botón */
+}
+
+.btn-primary i:hover {
+    font-size: 18px;
+    color: inherit; /* hereda el color del botón */
+}
+
+@media (max-width: 768px) {
+    .btn-primary i{
+        font-size: 16px;
+        margin-right: 6px;
+    }
+    .btn-label {
+        display: none;
+    }
+
+    .btn-primary{
+        padding: 10px; /* ajusta padding si el botón se ve muy ancho sin texto */
+        justify-content: center;
+    }
+}
 </style>
 {% endblock additional_styles %}
 
@@ -195,6 +236,12 @@ h2 {
             {% endfor %}
         </tbody>
     </table>
-    <a href="{% url 'crear_documento' %}" class="btn btn-primary">Crear Nuevo Documento</a>
+    <br>
+        <a href="{% url 'crear_ingenieria' %}" class="btn-primary">
+            <span class="btn-content">
+                <i class="fas fa-plus"></i>
+                <span class="btn-label">Crear Nuevo Documento</span>
+            </span>
+    </a>
 </div>
 {% endblock %}

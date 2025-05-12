@@ -4,7 +4,7 @@
 <style>
 /* Contenedor de la página */
 .container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 50px auto;
     padding: 20px;
     background-color: #ffffff;
@@ -28,10 +28,10 @@ h2.text-center {
 /* Contenedor con scroll para la tabla */
 .table-container {
     max-height: 850px;
-    overflow-y: auto;
+    
     margin-top: 20px;
-    border-radius: 10px;
-    border: 1px solid #dddddd;
+
+    
 }
 
 .table-title {
@@ -172,6 +172,7 @@ h2.text-center {
             <tr>
                 <th>Nombre Completo<br><input type="text" class="filter-input" placeholder="Filtrar por Nombre"></th>
                 <th>Numero de Control<br><input type="text" class="filter-input" placeholder="Filtrar por Número de Control"></th>
+                <th>Carrera<br><input type="text" class="filter-input" placeholder="Carrera"></th>
                 <th>Ultimo Inicio de Sesion<br><input type="text" class="filter-input" placeholder="Filtrar por Ultimo Inicio de Sesion"></th>
                 <th>Acciones</th>
             </tr>
@@ -181,6 +182,7 @@ h2.text-center {
             <tr>
                 <td>{{ user.userprofile.Nombre }} {{user.userprofile.Apellidos}}</td>
                 <td>{{ user.username }}</td>
+                <td>{{ user.userprofile.Carrera }}</td>
                 <td>{{ user.last_login|date:"d-m-Y H:i" }}</td>
                 <td style="text-align: center;">
                     <a href="{% url 'Alumno_perfil_detalle' user.id %}" class="btn btn-info btn-sm">Ver Detalles</a>

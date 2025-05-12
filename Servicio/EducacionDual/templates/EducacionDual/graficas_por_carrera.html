@@ -1,52 +1,229 @@
 {% extends "EducacionDual/baseAdministrador.html" %}
 {% load static %}
 
+{% block additional_styles %}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&display=swap');
+
+.container {
+    max-width: 1250px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-height: 86vh;
+    overflow-y: auto;
+}
+
+.h2-container {
+    font-size: 28px;
+    font-weight: bold;
+    color: #1b396a;
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+}
+
+.intro-proyectos {
+    background: linear-gradient(135deg, #eef2f7 0%, #ffffff 100%);
+    padding: 25px 35px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    border-left: 8px solid #1b396a;
+    text-align: center;
+}
+
+.intro-proyectos p {
+    font-size: 1.05rem;
+    color: #444;
+    line-height: 1.6;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+/* Botón regresar */
+.btn-regresar {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 20px;
+    background-color: #1b396a;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-regresar:hover {
+    background-color: #16315a;
+}
+
+/* Contenedor gráfico */
+.chart-container {
+    width: 100%;
+    max-width: 1000px;
+    height: 450px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #f9fafb;
+    border-radius: 12px;
+    box-shadow: 0px 6px 18px rgba(25, 8, 91, 0.05);
+    position: relative;
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Tarjetas de género por carrera */
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    width: 420px;
+    max-width: 100%;
+    text-align: center;
+    border-left: 6px solid #1b396a;
+    transition: all 0.3s ease-in-out;
+}
+
+.card h4 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1b396a;
+    margin-bottom: 15px;
+    font-family: 'Barlow Condensed', sans-serif;
+}
+
+.card canvas {
+    max-width: 100%;
+    height: 300px;
+    border-radius: 8px;
+}
+</style>
+{% endblock additional_styles %}
 
 {% block content %}
 <div class="container">
-    <h2>Postulaciones por género</h2>
+    <div class="intro-proyectos">
+        <h2>Postulaciones por Carrera</h2>
+        <p>
+            Esta sección presenta un análisis del número total de alumnos que han realizado postulaciones, agrupados por carrera. 
+            La gráfica general proporciona una vista rápida de la participación por programa académico, mientras que las tarjetas individuales 
+            detallan la distribución de esas postulaciones según el género del alumnado. Esto permite identificar tanto la demanda por carrera 
+            como el nivel de equidad en la participación estudiantil.
+        </p>
+    </div>
+
+    <div class="chart-container" style="margin-bottom: 40px;">
+        <h4 style="text-align:center; margin-bottom: 20px; color: #1b396a; font-family: 'Barlow Condensed', sans-serif;">
+            Total de alumnos postulados por carrera
+        </h4>
+        <canvas id="grafica_total_por_carrera"></canvas>
+    </div>
+
+    <div class="cards-container">
+        {% for item in datos_por_carrera %}
+            <div class="card">
+                <h4>{{ item.nombre_completo }}</h4>
+                <canvas id="grafica_{{ forloop.counter }}"></canvas>
+            </div>
+        {% endfor %}
+    </div>
+
     <a href="{% url 'estadisticas' %}" class="btn-regresar">← Regresar</a>
-
-<div class="cards-container">
-    
-    {% for carrera, generos in datos_por_carrera.items %}
-    
-        <div class="card">
-            <canvas id="grafica_{{ forloop.counter }}"></canvas>
-        </div>
-    {% endfor %}
 </div>
+{% endblock %}
 
+{% block additional_scripts %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const datos = {{ datos_por_carrera|safe }};
+
+    const etiquetas = datos.map(item => item.abreviatura);
+    const nombres_completos = datos.map(item => item.nombre_completo);
+    const valores = datos.map(item => item.total);
+
+    // Colores de barras
     const colores = {
-        'Femenino': '#f67280',
-        'Masculino': '#1b396a',
-        'Otro': '#6c757d'
+        'Femenino': '#ff6f91',
+        'Masculino': '#0077b6',
+        'Otro': '#ffa600'
     };
 
-    Object.entries(datos).forEach(([carrera, generos], index) => {
+    // Gráfica general por carrera
+    const ctxTotal = document.getElementById('grafica_total_por_carrera').getContext('2d');
+    new Chart(ctxTotal, {
+        type: 'bar',
+        data: {
+            labels: etiquetas,
+            datasets: [{
+                label: 'Total de alumnos postulados',
+                data: valores,
+                backgroundColor: [
+                    '#2563eb', '#10b981', '#facc15', '#ef4444', '#3b82f6',
+                    '#9333ea', '#06b6d4', '#f97316', '#22c55e', '#e11d48'
+                ],
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(context) {
+                            return nombres_completos[context[0].dataIndex];
+                        },
+                        label: function(context) {
+                            return `${context.dataset.label}: ${context.parsed.y}`;
+                        }
+                    }
+                },
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { precision: 0 }
+                }
+            }
+        }
+    });
+
+    // Gráficas individuales por carrera y género
+    datos.forEach((item, index) => {
         const ctx = document.getElementById(`grafica_${index + 1}`).getContext('2d');
         new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: Object.keys(generos),
+                labels: Object.keys(item.generos),
                 datasets: [{
                     label: 'Cantidad',
-                    data: Object.values(generos),
-                    backgroundColor: Object.keys(generos).map(g => colores[g] || '#ccc')
+                    data: Object.values(item.generos),
+                    backgroundColor: Object.keys(item.generos).map(g => colores[g] || '#ccc'),
+                    borderRadius: 6
                 }]
             },
             options: {
                 responsive: true,
                 plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: carrera,
-                        font: { size: 16 }
-                    }
+                    legend: { display: false }
                 },
                 scales: {
                     y: {
@@ -58,67 +235,4 @@
         });
     });
 </script>
-
-
-
-</div>
-
-<style>
-.btn-regresar {
-    display: inline-block;
-    margin-bottom: 20px;
-    padding: 8px 16px;
-    background-color: #1b396a;
-    color: #fff;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 14px;
-    transition: background-color 0.2s ease-in-out;
-}
-
-.btn-regresar:hover {
-    background-color: #16315a;
-}
-
-    .container {
-        max-width: 1150px;
-        margin: 25px auto;
-        padding: 20px;
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-        max-height: 86vh;
-        overflow-y: auto;
-    }
-    
-    h2 {
-        text-align: center;
-        color: #1c3255;
-        margin-bottom: 40px;
-    }
-    
-    .cards-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 30px;
-        padding: 20px;
-    }
-    
-    .card {
-        background: #fff;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        width: 400px;
-        max-width: 100%;
-        text-align: center;
-    }
-    
-    .card canvas {
-        max-width: 100%;
-        height: 300px;
-    }
-    </style>
-{% endblock %}
+{% endblock additional_scripts %}

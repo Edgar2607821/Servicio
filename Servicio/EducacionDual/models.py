@@ -1,10 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
+from django.core.exceptions import ValidationError
 
 
 
-# Create your models here.
+def validar_tamano_imagen(imagen):
+    limite_mb = 2  # por ejemplo, 2MB
+    if imagen.size > limite_mb * 1024 * 1024:
+        raise ValidationError(f"La imagen no puede pesar más de {limite_mb} MB.")
+
+
+# Create your models here. 
 
 class UserProfile(models.Model):
     SEXO_CHOICES = [
@@ -18,6 +25,8 @@ class UserProfile(models.Model):
         ('7', '7'),
         ('8', '8'),
         ('9', '9'),
+        ('10', '10'),
+        ('11', '11'),
     ]
     
     CARRERA_CHOICES = [
@@ -43,7 +52,7 @@ class UserProfile(models.Model):
     Fecha_nacimiento = models.DateField(null=True, blank=True)
     Genero = models.CharField(max_length=10, blank=True, null=True, choices=SEXO_CHOICES)
     Telefono = models.CharField(max_length=15, blank=True, null=True)
-    Semestre = models.CharField(max_length=1, blank=True, null=True, choices=SEMESTRES_CHOICES)
+    Semestre = models.CharField(max_length=2, blank=True, null=True, choices=SEMESTRES_CHOICES)
     
     def __str__(self):
         return f"{self.Nombre} - {self.NoControl.username}"
@@ -56,6 +65,13 @@ class Empresas(models.Model):
 
     def __str__(self):
         return self.Nombre
+    
+    def clean(self):
+        if self.Portada:
+            validar_tamano_imagen(self.Portada)
+        if self.Logotipo:
+            validar_tamano_imagen(self.Logotipo)
+
 
 class Documento(models.Model):
     titulo = models.CharField(max_length=200)
@@ -63,6 +79,11 @@ class Documento(models.Model):
 
     def __str__(self):
         return self.titulo
+    
+    def clean(self):
+        if self.archivo and self.archivo.size > 5 * 1024 * 1024:  # máximo 5MB
+            raise ValidationError("El archivo PDF no puede superar los 5MB.")
+
 
 class Convocatoria(models.Model):
     ESTADO_CHOICES = [
@@ -115,6 +136,8 @@ class Postulacion(models.Model):
     def __str__(self):
         return f"{self.alumno} - {self.convocatoria} ({self.estado})"
 
+
+
 class IngenieriaGaleria(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(blank=True, null=True)
@@ -123,6 +146,12 @@ class IngenieriaGaleria(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+    def clean(self):
+        if self.imagen_portada:
+            validar_tamano_imagen(self.imagen_portada)
+        if self.imagen_logo:
+            validar_tamano_imagen(self.imagen_logo)
 
 
 class Proyecto(models.Model):
@@ -145,6 +174,10 @@ class Evidencia(models.Model):
     def __str__(self):
         return self.titulo
     
+    def clean(self):
+        if self.imagen:
+            validar_tamano_imagen(self.imagen)
+    
 
 
 class Index(models.Model):
@@ -154,3 +187,7 @@ class Index(models.Model):
 
     def __str__(self):
         return self.Titulo
+    
+    def clean(self):
+        if self.Imagen:
+            validar_tamano_imagen(self.Imagen)
